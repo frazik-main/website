@@ -204,8 +204,8 @@ To remove the news section, you can:
 To remove the projects, you can:
 
 - delete the (_projects/) directory
-- delete the projects page [\_pages/projects.md](_pages/projects.md)
-- remove reference to projects page in our [\_pages/dropdown.md](_pages/dropdown.md)
+- delete the projects page (_pages/projects.md)
+- remove reference to projects page in our (_pages/dropdown.md)
 - remove projects part in the `Collections` section in the [\_config.yml](_config.yml) file
 
 You can also:
