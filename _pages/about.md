@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Engineering the cognitive horizon
+subtitle: Content Knitting & Lead Alchemy
 
 profile:
   align: right
