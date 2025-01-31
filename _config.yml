@@ -88,7 +88,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: Frazik blog # blog_name will be displayed in your blog page
-blog_description: One Line of Code at a Time, explore the world of programming and Generative AI.
+blog_description: One Line of Code at a Time, explore the world and tech
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 
