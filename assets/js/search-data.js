@@ -368,6 +368,17 @@ ninja.data = [{
           window.location.href = "/website/blog/2015/formatting-and-links/";
         
       },
+    },{id: "post-understanding-pl-sql-collections-types-and-usage",
+      
+        title: "Understanding PL/SQL Collections - Types and Usage",
+      
+      description: "A comprehensive guide to different types of collections in PL/SQL",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/plsq-collections/";
+        
+      },
     },{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
