@@ -82,17 +82,6 @@ ninja.data = [{
           window.location.href = "/website/blog/2024/pseudocode/";
         
       },
-    },{id: "post-javascript-concepts-understanding-objects",
-      
-        title: "JavaScript Concepts - Understanding Objects",
-      
-      description: "A deep dive into JavaScript objects and their fundamental concepts",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/website/blog/2024/javascript-concepts-part1/";
-        
-      },
     },{id: "post-a-post-with-code-diff",
       
         title: "a post with code diff",
@@ -399,6 +388,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/website/blog/2010/plsq-collections/";
+        
+      },
+    },{id: "post-javascript-concepts-understanding-objects",
+      
+        title: "JavaScript Concepts - Understanding Objects",
+      
+      description: "A deep dive into JavaScript objects and their fundamental concepts",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/javascript-concepts-part1/";
         
       },
     },{id: "news-a-simple-inline-announcement",
