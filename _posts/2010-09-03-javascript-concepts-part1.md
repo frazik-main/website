@@ -1,7 +1,7 @@
 ---
 layout: post
 title: JavaScript Concepts - Understanding Objects
-date: 2024-04-10 12:00:00
+date: 2010-03-03 12:00:00
 description: A deep dive into JavaScript objects and their fundamental concepts
 tags: javascript programming objects
 categories: tutorials
