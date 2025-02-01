@@ -82,6 +82,17 @@ ninja.data = [{
           window.location.href = "/website/blog/2024/pseudocode/";
         
       },
+    },{id: "post-javascript-concepts-understanding-objects",
+      
+        title: "JavaScript Concepts - Understanding Objects",
+      
+      description: "A deep dive into JavaScript objects and their fundamental concepts",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2024/javascript-concepts-part1/";
+        
+      },
     },{id: "post-a-post-with-code-diff",
       
         title: "a post with code diff",
@@ -366,6 +377,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/website/blog/2015/formatting-and-links/";
+        
+      },
+    },{id: "post-caching-data-in-pl-sql",
+      
+        title: "Caching Data in PL/SQL",
+      
+      description: "How to effectively cache static data in PL/SQL using collections",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/caching-data-plsql/";
         
       },
     },{id: "post-understanding-pl-sql-collections-types-and-usage",
