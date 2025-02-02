@@ -16,7 +16,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/website/blog/";
           },
-        },{id: "post-a-post-with-image-galleries",
+        },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2025/2010-09-02-plsq-collections/";
+        
+      },
+    },{id: "post-a-post-with-image-galleries",
       
         title: "a post with image galleries",
       
@@ -377,17 +388,6 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/website/blog/2010/caching-data-plsql/";
-        
-      },
-    },{id: "post-understanding-pl-sql-collections-types-and-usage",
-      
-        title: "Understanding PL/SQL Collections - Types and Usage",
-      
-      description: "A comprehensive guide to different types of collections in PL/SQL",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/website/blog/2010/plsq-collections/";
         
       },
     },{id: "post-javascript-concepts-understanding-objects",
