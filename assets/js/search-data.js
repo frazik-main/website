@@ -16,18 +16,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/website/blog/";
           },
-        },{id: "post-",
-      
-        title: "",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/website/blog/2025/2010-09-02-plsq-collections/";
-        
-      },
-    },{id: "post-a-post-with-image-galleries",
+        },{id: "post-a-post-with-image-galleries",
       
         title: "a post with image galleries",
       
@@ -399,6 +388,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/website/blog/2010/javascript-concepts-part1/";
+        
+      },
+    },{id: "post-pl-sql-collections-a-comprehensive-guide",
+      
+        title: "PL/SQL Collections A Comprehensive Guide",
+      
+      description: "A detailed explanation of associative arrays, nested tables, and VARRAYs in PL/SQL, including examples and best practices.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/plsq-collections/";
         
       },
     },{id: "news-a-simple-inline-announcement",
