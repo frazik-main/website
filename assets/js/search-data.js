@@ -368,26 +368,15 @@ ninja.data = [{
           window.location.href = "/website/blog/2015/formatting-and-links/";
         
       },
-    },{id: "post-caching-data-in-pl-sql",
+    },{id: "post-caching-static-data-in-pl-sql-for-performance-improvement",
       
-        title: "Caching Data in PL/SQL",
+        title: "Caching Static Data in PL/SQL for Performance Improvement",
       
-      description: "How to effectively cache static data in PL/SQL using collections",
+      description: "Optimize PL/SQL performance by caching static data in a collection stored in the session&#39;s PGA.",
       section: "Posts",
       handler: () => {
         
           window.location.href = "/website/blog/2010/caching-data-plsql/";
-        
-      },
-    },{id: "post-javascript-concepts-understanding-objects",
-      
-        title: "JavaScript Concepts - Understanding Objects",
-      
-      description: "A deep dive into JavaScript objects and their fundamental concepts",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/website/blog/2010/javascript-concepts-part1/";
         
       },
     },{id: "post-pl-sql-collections-a-comprehensive-guide",
@@ -399,6 +388,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/website/blog/2010/plsq-collections/";
+        
+      },
+    },{id: "post-javascript-concepts-understanding-objects",
+      
+        title: "JavaScript Concepts - Understanding Objects",
+      
+      description: "A deep dive into JavaScript objects and their fundamental concepts",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/javascript-concepts-part1/";
         
       },
     },{id: "news-a-simple-inline-announcement",
