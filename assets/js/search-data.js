@@ -16,7 +16,40 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/website/blog/";
           },
-        },{id: "post-using-pl-sql-39-s-any-types-for-dynamic-typing",
+        },{id: "post-template-method-design-pattern-in-java",
+      
+        title: "Template Method Design Pattern in Java",
+      
+      description: "An explanation of the Template Method design pattern with a Java example.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/java-template-method-pattern/";
+        
+      },
+    },{id: "post-strategy-pattern-in-java",
+      
+        title: "Strategy Pattern in Java",
+      
+      description: "A comparison of the Strategy pattern with the Template Method pattern in Java, showing differences and providing a code example.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/java-strategy-design-pattern/";
+        
+      },
+    },{id: "post-custom-events-in-jquery-a-powerful-technique",
+      
+        title: "Custom Events in jQuery - A Powerful Technique",
+      
+      description: "Learn how to create and use custom events in jQuery to simulate the observer pattern and build dynamic web applications.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/javascript-jquery-trigger/";
+        
+      },
+    },{id: "post-using-pl-sql-39-s-any-types-for-dynamic-typing",
       
         title: "Using PL/SQL&#39;s ANY Types for Dynamic Typing",
       

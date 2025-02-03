@@ -1,4 +1,265 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://frazik-main.github.io/website/feed.xml" rel="self" type="application/atom+xml"/><link href="https://frazik-main.github.io/website/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-02-03T00:25:54+00:00</updated><id>https://frazik-main.github.io/website/feed.xml</id><title type="html">Frazik</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Using PL/SQL’s ANY Types for Dynamic Typing</title><link href="https://frazik-main.github.io/website/blog/2010/dynamic-typing-plsql/" rel="alternate" type="text/html" title="Using PL/SQL’s ANY Types for Dynamic Typing"/><published>2010-09-28T10:00:00+00:00</published><updated>2010-09-28T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/dynamic-typing-plsql</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/dynamic-typing-plsql/"><![CDATA[<p>PL/SQL is a statically-typed language. Data types must be declared and checked at compile time. However, situations arise where dynamic typing is necessary. For these cases, PL/SQL introduced <code class="language-plaintext highlighter-rouge">ANY</code> types (starting in Oracle 9i). These dynamic data types allow manipulation of data whose type isn’t known until runtime. The type is determined at runtime using introspection (e.g., the <code class="language-plaintext highlighter-rouge">gettype</code> function).</p> <p>You cannot directly manipulate the internal structure of <code class="language-plaintext highlighter-rouge">ANY</code> types; procedures and functions are required. The main <code class="language-plaintext highlighter-rouge">ANY</code> type family members are:</p> <ul> <li><code class="language-plaintext highlighter-rouge">AnyData</code> (holds a single value of any type, including built-in scalar datatypes and user-defined object types).</li> <li><code class="language-plaintext highlighter-rouge">AnyType</code> (holds a type description).</li> </ul> <p>The following example demonstrates a heterogeneous array of transport means using <code class="language-plaintext highlighter-rouge">SYS.AnyType</code>. Three user-defined types represent different transport types:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">TYPE</span> <span class="n">airplane_o</span> <span class="k">AS</span> <span class="k">OBJECT</span> <span class="p">(</span>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://frazik-main.github.io/website/feed.xml" rel="self" type="application/atom+xml"/><link href="https://frazik-main.github.io/website/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-02-03T00:33:40+00:00</updated><id>https://frazik-main.github.io/website/feed.xml</id><title type="html">Frazik</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Strategy Pattern in Java</title><link href="https://frazik-main.github.io/website/blog/2010/java-strategy-design-pattern/" rel="alternate" type="text/html" title="Strategy Pattern in Java"/><published>2010-10-04T10:00:00+00:00</published><updated>2010-10-04T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/java-strategy-design-pattern</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/java-strategy-design-pattern/"><![CDATA[<h1 id="strategy-pattern-in-java">Strategy Pattern in Java</h1> <p>The <strong>Strategy</strong> pattern offers an alternative to the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html">Template Method</a> pattern. Unlike the Template Method pattern which uses an abstract class, the Strategy pattern utilizes an interface. For a deeper understanding of encapsulating logic, refer to the post on the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html">Template Method</a> pattern. This example highlights the key differences.</p> <p>You can download an example of this Java code from <a href="https://code.google.com/p/codingwithpassionblog/source/browse/trunk/src/org/codingwithpassion/patterns/strategyMethod/DecorateData.java">this Google Code repository</a>. <em>(Note: Google Code is archived; this link may not be functional.)</em></p> <h2 id="example">Example</h2> <p>In this case, the class containing the algorithm isn’t an abstract superclass but a concrete class using a helper that implements an interface defining individual steps. This pattern is useful when concrete inheritance is needed for other purposes (since Java doesn’t support multiple inheritance) or if you prefer this approach over inheriting from an abstract class. Here’s an example:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Concrete Object implementation.
+ * Here we implement workflow.
+ */</span>
+<span class="kd">class</span> <span class="nc">CreateObject</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">datas</span> <span class="o">=</span> <span class="o">{</span><span class="s">"Kimmi"</span><span class="o">,</span> <span class="s">"Zuco"</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">21</span><span class="o">};</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Object</span><span class="o">[]</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CreateObject</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">datas</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Algorithm that controls flow (IOC - Inversion of Control).
+     * @return Object String representation.
+     */</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">decorate</span><span class="o">(</span><span class="nc">DecoratorHelper</span> <span class="n">helper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">();</span>
+        <span class="n">helper</span><span class="o">.</span><span class="na">objectStart</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">datas</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Object</span> <span class="n">data</span> <span class="o">=</span> <span class="n">datas</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="k">instanceof</span> <span class="nc">String</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">helper</span><span class="o">.</span><span class="na">stringValue</span><span class="o">(</span><span class="n">sb</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="k">instanceof</span> <span class="nc">Integer</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">helper</span><span class="o">.</span><span class="na">numberValue</span><span class="o">(</span><span class="n">sb</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">helper</span><span class="o">.</span><span class="na">objectEnd</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper interface to which we defer individual steps.
+ */</span>
+<span class="kd">interface</span> <span class="nc">DecoratorHelper</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Object creation for JSON objects.
+ */</span>
+<span class="kd">class</span> <span class="nc">JSONObject</span> <span class="kd">implements</span> <span class="nc">DecoratorHelper</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\"Object\":"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\n{"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n}"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\":"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\","</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\":"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">","</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Object creation for XML objects.
+ */</span>
+<span class="kd">class</span> <span class="nc">XmlObject</span> <span class="kd">implements</span> <span class="nc">DecoratorHelper</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;Object&gt;"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/Object&gt;"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;property&gt;&lt;key&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/key&gt;&lt;string&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/string&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/property&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;property&gt;&lt;key&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/key&gt;&lt;number&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/number&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/property&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Testing...
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DecorateData</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CreateObject</span> <span class="n">xml</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CreateObject</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">xml</span><span class="o">.</span><span class="na">decorate</span><span class="o">(</span><span class="k">new</span> <span class="nc">XmlObject</span><span class="o">()));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p><strong>Explanation:</strong></p> <ul> <li><strong>Lines 37-46:</strong> The template methods are moved into an interface. The definition remains similar to the previous example.</li> <li><strong>Lines 52-76, 82-114:</strong> In the interface implementation, subclassing is no longer necessary. Note that the access modifier of the methods must be <code class="language-plaintext highlighter-rouge">public</code> because they are accessed from outside the class hierarchy.</li> <li><strong>Line 17:</strong> The interface type must be provided to the template method. This type will be substituted with a concrete class instance at runtime (polymorphism). The method remains the same as in the Template Method example.</li> </ul> <h2 id="which-to-choose">Which to Choose?</h2> <p>The Strategy pattern, while more complex, offers greater flexibility. It represents a trade-off between concrete inheritance and delegation to an interface. The choice depends on factors such as whether the class implementing the steps needs its own inheritance hierarchy, the number of steps involved, and the number of different implementations required.</p>]]></content><author><name></name></author><category term="java,"/><category term="design-patterns"/><category term="java,"/><category term="design-patterns,"/><category term="strategy-pattern,"/><category term="template-method-pattern"/><summary type="html"><![CDATA[A comparison of the Strategy pattern with the Template Method pattern in Java, showing differences and providing a code example.]]></summary></entry><entry><title type="html">Template Method Design Pattern in Java</title><link href="https://frazik-main.github.io/website/blog/2010/java-template-method-pattern/" rel="alternate" type="text/html" title="Template Method Design Pattern in Java"/><published>2010-10-04T10:00:00+00:00</published><updated>2010-10-04T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/java-template-method-pattern</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/java-template-method-pattern/"><![CDATA[<h1 id="template-method-design-pattern-in-java">Template Method Design Pattern in Java</h1> <h2 id="introduction">Introduction</h2> <p>This article introduces the Template Method design pattern, a powerful tool for code reuse and separation of concerns. We’ll explore its benefits and demonstrate its implementation with a Java example. The Template Method pattern leverages concrete inheritance effectively, often providing a superior approach to code reuse compared to simple concrete inheritance. While object composition can achieve similar results, the Template Method pattern offers a clean and structured way to accomplish this.</p> <p>You can find the example Java code in this <a href="https://github.com/yourusername/yourrepo/blob/main/DecorateData.java">repository</a>. <em>(Replace with actual repository link)</em></p> <h2 id="usage">Usage</h2> <p>The Template Method pattern addresses a common problem: we know the steps of an algorithm and their order, but some steps’ implementations are unknown or irrelevant at the abstract level. The pattern encapsulates these unknown steps as abstract methods within an abstract superclass. Concrete subclasses then implement these abstract methods, filling in the gaps of the superclass algorithm. The superclass controls the algorithm’s workflow, while subclasses provide the specific implementations.</p> <p>This centralized workflow logic exemplifies <em>inversion of control</em>. The superclass calls methods defined in its subclasses, a fundamental approach for clean, reusable code.</p> <h2 id="example">Example</h2> <p>This example can be placed in a single file for easy testing.</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Abstract implementation -- class that controls the workflow.
+ * Describes the algorithm for generic object creation.
+ */</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">CreateObject</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">datas</span> <span class="o">=</span> <span class="o">{</span><span class="s">"Kimmi"</span><span class="o">,</span> <span class="s">"Zuco"</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">21</span><span class="o">};</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Object</span><span class="o">[]</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CreateObject</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">datas</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Algorithm controlling the workflow (IOC - Inversion of Control).
+     * @return Object String representation.
+     */</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">decorate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">();</span>
+        <span class="n">objectStart</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">datas</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Object</span> <span class="n">data</span> <span class="o">=</span> <span class="n">datas</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="k">instanceof</span> <span class="nc">String</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">stringValue</span><span class="o">(</span><span class="n">sb</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="k">instanceof</span> <span class="nc">Integer</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">numberValue</span><span class="o">(</span><span class="n">sb</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">objectEnd</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="c1">// These methods need to be implemented in subclasses.</span>
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">);</span>
+
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">);</span>
+
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">);</span>
+
+    <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Object creation for JSON objects.
+ */</span>
+<span class="kd">class</span> <span class="nc">JSONObject</span> <span class="kd">extends</span> <span class="nc">CreateObject</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\"Object\":"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\n{"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n}"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\":"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\","</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\":"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">","</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Object creation for XML objects.
+ */</span>
+<span class="kd">class</span> <span class="nc">XmlObject</span> <span class="kd">extends</span> <span class="nc">CreateObject</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;object&gt;"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/object&gt;"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;property&gt;&lt;key&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/key&gt;&lt;string&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/string&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/property&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;property&gt;&lt;key&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/key&gt;&lt;number&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/number&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/property&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DecorateData</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CreateObject</span> <span class="n">xml</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JSONObject</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">xml</span><span class="o">.</span><span class="na">decorate</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p><strong>Explanation:</strong></p> <ul> <li>Lines 6-32: Define the abstract <code class="language-plaintext highlighter-rouge">CreateObject</code> class, encapsulating the workflow for creating a string representation of an object.</li> <li>Lines 18-32: Implement the core algorithm’s workflow using abstract methods (lines 35-42). These abstract methods are implemented by subclasses, demonstrating the Inversion of Control paradigm.</li> <li>Lines 49-73: A concrete subclass (<code class="language-plaintext highlighter-rouge">JSONObject</code>) implements the abstract methods to create a JSON string representation.</li> <li>Lines 79-111: Another concrete subclass (<code class="language-plaintext highlighter-rouge">XmlObject</code>) creates an XML string representation.</li> <li>Lines 112-120: Simple testing code.</li> </ul> <h2 id="conclusion">Conclusion</h2> <p>The Template Method pattern provides a clean way to separate concerns. You can create a superclass focusing on business logic and workflow, leaving subclasses to handle specific, often lower-level, operations. This approach helps avoid bugs by centralizing complex algorithms while simplifying the code in subclasses. See this <a href="http://codingwithpassion.blogspot.com/2010/10/object-oriented-design-patterns-in-java.html">post</a> for a comparison with the Strategy pattern.</p>]]></content><author><name></name></author><category term="java,"/><category term="design-patterns"/><category term="design-patterns,"/><category term="java,"/><category term="template-method,"/><category term="oop"/><summary type="html"><![CDATA[An explanation of the Template Method design pattern with a Java example.]]></summary></entry><entry><title type="html">Custom Events in jQuery - A Powerful Technique</title><link href="https://frazik-main.github.io/website/blog/2010/javascript-jquery-trigger/" rel="alternate" type="text/html" title="Custom Events in jQuery - A Powerful Technique"/><published>2010-09-29T10:00:00+00:00</published><updated>2010-09-29T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/javascript-jquery-trigger</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/javascript-jquery-trigger/"><![CDATA[<p>This post demonstrates how to create and utilize custom events in jQuery to achieve dynamic behavior and simulate the observer pattern. We’ll leverage jQuery’s capabilities to manage event handlers on the fly, even as the DOM is modified.</p> <h3 id="live-event-handling">Live Event Handling</h3> <p>Our example uses jQuery’s <code class="language-plaintext highlighter-rouge">live()</code> method (note: <code class="language-plaintext highlighter-rouge">live()</code> is deprecated in newer jQuery versions; <code class="language-plaintext highlighter-rouge">on()</code> should be used instead for modern compatibility. This example is preserved for illustrative purposes of the original article) to manage event handlers dynamically. This means we can proactively establish event handlers for elements that don’t yet exist in the DOM. The syntax is similar to <code class="language-plaintext highlighter-rouge">bind()</code> or <code class="language-plaintext highlighter-rouge">click()</code>.</p> <h3 id="triggering-events">Triggering Events</h3> <p>We’ll use the <code class="language-plaintext highlighter-rouge">trigger()</code> method to invoke (trigger) event handlers programmatically. <code class="language-plaintext highlighter-rouge">trigger()</code> simulates the event, populating a jQuery event object. Note that properties reflecting event-specific values (like mouse coordinates) will not have values in this simulated context.</p> <h3 id="example">Example</h3> <p>Let’s examine the jQuery and HTML code.</p> <h4 id="jquery-code">jQuery Code</h4> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">$</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// Wait until DOM is fully loaded</span>
+  <span class="nf">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">#addBox</span><span class="dl">"</span><span class="p">).</span><span class="nf">click</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">td.box:first-child</span><span class="dl">"</span><span class="p">).</span><span class="nf">clone</span><span class="p">().</span><span class="nf">appendTo</span><span class="p">(</span><span class="dl">"</span><span class="s2">tr.boxLine</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nf">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">#paintBlue</span><span class="dl">"</span><span class="p">).</span><span class="nf">click</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">td.box</span><span class="dl">"</span><span class="p">).</span><span class="nf">trigger</span><span class="p">(</span><span class="dl">"</span><span class="s2">paintThem</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nf">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">td.box</span><span class="dl">"</span><span class="p">).</span><span class="nf">live</span><span class="p">(</span><span class="dl">"</span><span class="s2">paintThem</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//Note: live() is deprecated. Use on() for modern jQuery</span>
+    <span class="nf">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">css</span><span class="p">(</span><span class="dl">"</span><span class="s2">background</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">blue</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div> <ol> <li>A <code class="language-plaintext highlighter-rouge">click</code> handler adds a new box-like element to the DOM by cloning an existing table data element.</li> <li>Another <code class="language-plaintext highlighter-rouge">click</code> handler triggers a custom event named “paintThem” on all elements with the class <code class="language-plaintext highlighter-rouge">box</code>.</li> <li>The <code class="language-plaintext highlighter-rouge">live()</code> method (or <code class="language-plaintext highlighter-rouge">on()</code> in modern jQuery) establishes the handler for the custom “paintThem” event. This ensures that any elements with the class <code class="language-plaintext highlighter-rouge">box</code>, even those added dynamically, will respond to the event.</li> </ol> <h4 id="html-code">HTML Code</h4> <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;tr</span> <span class="na">class=</span><span class="s">"boxLine"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;td</span> <span class="na">class=</span><span class="s">"box"</span> <span class="na">style=</span><span class="s">"width:35px; height: 35px; background:red;"</span><span class="nt">&gt;&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"operations"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"addBox"</span><span class="nt">&gt;</span>Add box<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"paintBlue"</span><span class="nt">&gt;</span>Paint Boxes<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div> <p>This simple HTML creates a table with a red box and two buttons: one to add more boxes and another to trigger the custom event to change their color.</p> <h3 id="custom-events-and-the-observer-pattern">Custom Events and the Observer Pattern</h3> <p>Custom events provide a powerful mechanism for loosely coupling elements and their behaviors. They offer a simplified version of the observer (or publish/subscribe) pattern, enabling cleaner and more maintainable code. By triggering the event, any registered handlers automatically execute without the need for explicit calls, promoting loose coupling and easier management of dynamic behaviors. This makes the code more robust and easier to maintain, especially when dealing with asynchronous updates (like AJAX calls).</p> <p><strong>(Images from the original post were omitted as they were not directly reproducible in this markdown format.)</strong></p>]]></content><author><name></name></author><category term="javascript,"/><category term="jquery"/><category term="jQuery,"/><category term="custom"/><category term="events,"/><category term="observer"/><category term="pattern,"/><category term="javascript"/><summary type="html"><![CDATA[Learn how to create and use custom events in jQuery to simulate the observer pattern and build dynamic web applications.]]></summary></entry><entry><title type="html">Using PL/SQL’s ANY Types for Dynamic Typing</title><link href="https://frazik-main.github.io/website/blog/2010/dynamic-typing-plsql/" rel="alternate" type="text/html" title="Using PL/SQL’s ANY Types for Dynamic Typing"/><published>2010-09-28T10:00:00+00:00</published><updated>2010-09-28T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/dynamic-typing-plsql</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/dynamic-typing-plsql/"><![CDATA[<p>PL/SQL is a statically-typed language. Data types must be declared and checked at compile time. However, situations arise where dynamic typing is necessary. For these cases, PL/SQL introduced <code class="language-plaintext highlighter-rouge">ANY</code> types (starting in Oracle 9i). These dynamic data types allow manipulation of data whose type isn’t known until runtime. The type is determined at runtime using introspection (e.g., the <code class="language-plaintext highlighter-rouge">gettype</code> function).</p> <p>You cannot directly manipulate the internal structure of <code class="language-plaintext highlighter-rouge">ANY</code> types; procedures and functions are required. The main <code class="language-plaintext highlighter-rouge">ANY</code> type family members are:</p> <ul> <li><code class="language-plaintext highlighter-rouge">AnyData</code> (holds a single value of any type, including built-in scalar datatypes and user-defined object types).</li> <li><code class="language-plaintext highlighter-rouge">AnyType</code> (holds a type description).</li> </ul> <p>The following example demonstrates a heterogeneous array of transport means using <code class="language-plaintext highlighter-rouge">SYS.AnyType</code>. Three user-defined types represent different transport types:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">TYPE</span> <span class="n">airplane_o</span> <span class="k">AS</span> <span class="k">OBJECT</span> <span class="p">(</span>
     <span class="n">engine_type</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">35</span><span class="p">),</span>
     <span class="n">lift</span> <span class="n">NUMBER</span>
 <span class="p">)</span> <span class="o">/</span>
@@ -231,132 +492,4 @@
 
 <span class="nf">calculatePi</span><span class="p">();</span>
 <span class="nf">alert</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">result</span><span class="p">);</span> <span class="c1">// Works fine.</span>
-</code></pre></div></div> <p>This concludes our introduction to objects. To learn more, read about <a href="http://codingwithpassion.blogspot.com/2010/09/javascript-concepts-part-1-functions.html">JavaScript functions</a>.</p>]]></content><author><name></name></author><category term="javascript-concepts"/><category term="javascript,"/><category term="objects,"/><category term="json,"/><category term="programming"/><summary type="html"><![CDATA[An introduction to objects in JavaScript, including object creation, properties, JSON notation, and the window object.]]></summary></entry><entry><title type="html">PL/SQL Collections A Comprehensive Guide</title><link href="https://frazik-main.github.io/website/blog/2010/plsq-collections/" rel="alternate" type="text/html" title="PL/SQL Collections A Comprehensive Guide"/><published>2010-09-03T10:00:00+00:00</published><updated>2010-09-03T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/plsq-collections</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/plsq-collections/"><![CDATA[<p>It’s surprising how few database programmers truly understand and utilize collections in PL/SQL. They often favor a more SQL-like approach, overlooking potential performance gains and improvements in code readability.</p> <p>With collections, you can significantly enhance performance by caching frequently accessed data within a single program. Data processing can also be sped up, eliminating the need for relational tables or global temporary tables.</p> <p>While PL/SQL collections might seem cumbersome and confusing (especially compared to collections in languages like Java), they offer powerful capabilities. There are three main types:</p> <p><strong>Associative Arrays</strong></p> <p>These are single-dimensional, unbounded, and sparse collections of homogeneous elements. They don’t need to be filled sequentially. The following example demonstrates declaration, population, and iteration:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SET</span> <span class="n">SERVEROUTPUT</span> <span class="k">ON</span>
-
-<span class="k">DECLARE</span>
-    <span class="k">TYPE</span> <span class="n">names_list_t</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
-        <span class="k">INDEX</span> <span class="k">BY</span> <span class="n">PLS_INTEGER</span><span class="p">;</span>
-    <span class="n">people</span> <span class="n">names_list_t</span><span class="p">;</span>
-
-    <span class="n">l_row</span> <span class="n">PLS_INTEGER</span><span class="p">;</span> <span class="c1">-- Same type as index.</span>
-
-<span class="k">BEGIN</span>
-
-    <span class="n">people</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>         <span class="p">:</span><span class="o">=</span> <span class="s1">'Bob'</span><span class="p">;</span>
-    <span class="n">people</span><span class="p">(</span><span class="mi">33</span><span class="p">)</span>        <span class="p">:</span><span class="o">=</span> <span class="s1">'Bruce'</span><span class="p">;</span>
-    <span class="n">people</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>        <span class="p">:</span><span class="o">=</span> <span class="s1">'Rocky'</span><span class="p">;</span>
-    <span class="n">people</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">)</span>        <span class="p">:</span><span class="o">=</span> <span class="s1">'Grozni'</span><span class="p">;</span>
-    <span class="n">people</span><span class="p">(</span><span class="mi">1555555</span><span class="p">)</span>   <span class="p">:</span><span class="o">=</span> <span class="s1">'Ivan'</span><span class="p">;</span>
-
-    <span class="n">l_row</span> <span class="p">:</span><span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="k">FIRST</span><span class="p">;</span>
-
-    <span class="n">WHILE</span> <span class="p">(</span><span class="n">l_row</span> <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">)</span>
-    <span class="n">LOOP</span>
-        <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="n">people</span><span class="p">(</span><span class="n">l_row</span><span class="p">));</span>
-        <span class="n">l_row</span> <span class="p">:</span><span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="k">NEXT</span><span class="p">(</span><span class="n">l_row</span><span class="p">);</span>
-    <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
-<span class="k">END</span><span class="p">;</span>
-<span class="o">/</span>
-</code></pre></div></div> <p>Associative arrays are the most efficient type. However, they cannot be stored directly in database tables (use nested tables or VARRAYs for that). They are the only practical choice for sparse collections or when negative index subscripts are required.</p> <p><strong>Nested Tables</strong></p> <p>These are also single-dimensional and unbounded collections of homogeneous elements. They start dense but can become sparse through deletions. Nested tables are <em>multisets</em>, meaning element order isn’t inherent. This can be problematic if order needs to be preserved (use VARRAYs for that). While you can use keys and indexes, VARRAYs provide a more straightforward solution for maintaining order.</p> <p>The following example shows how to declare a nested table type at the schema level, declare nested tables based on that type, create their union, and display the result:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">TYPE</span> <span class="n">car_names_list_t</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-
-<span class="k">DECLARE</span>
-    <span class="n">great_cars</span>          <span class="n">car_names_list_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">car_names_list_t</span><span class="p">();</span>
-    <span class="n">not_so_great_cars</span>   <span class="n">car_names_list_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">car_names_list_t</span><span class="p">();</span>
-
-    <span class="n">all_this_cars</span>       <span class="n">car_names_list_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">car_names_list_t</span><span class="p">();</span>
-
-<span class="k">BEGIN</span>
-    <span class="n">great_cars</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-    <span class="n">great_cars</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Golf'</span><span class="p">;</span>
-    <span class="n">great_cars</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Impreza'</span><span class="p">;</span>
-    <span class="n">great_cars</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Focus'</span><span class="p">;</span>
-
-    <span class="n">not_so_great_cars</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="n">not_so_great_cars</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Zastava'</span><span class="p">;</span>
-    <span class="n">not_so_great_cars</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Dacia'</span><span class="p">;</span>
-
-    <span class="n">all_this_cars</span> <span class="p">:</span><span class="o">=</span> <span class="n">great_cars</span> <span class="n">MULTISET</span> <span class="k">UNION</span> <span class="n">not_so_great_cars</span><span class="p">;</span>
-
-    <span class="k">FOR</span> <span class="n">l_row</span> <span class="k">IN</span> <span class="n">all_this_cars</span><span class="p">.</span><span class="k">FIRST</span> <span class="p">..</span> <span class="n">all_this_cars</span><span class="p">.</span><span class="k">LAST</span>
-    <span class="n">LOOP</span>
-        <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="n">all_this_cars</span><span class="p">(</span><span class="n">l_row</span><span class="p">));</span>
-    <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
-
-<span class="k">END</span><span class="p">;</span>
-<span class="o">/</span>
-</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">EXTEND</code> is used to increase the size of nested tables. <code class="language-plaintext highlighter-rouge">MULTISET UNION</code> (and others like <code class="language-plaintext highlighter-rouge">MULTISET EXCEPT</code>) are used for high-level set operations. In such cases, <code class="language-plaintext highlighter-rouge">EXTEND</code> is often unnecessary.</p> <p>Nested tables are beneficial for high-level set operations, especially in older Oracle databases (&lt;= 10g). They are also the only option for storing large amounts of persistent data in a collection column because the database creates an underlying table.</p> <p><strong>VARRAYs (Variable-Size Arrays)</strong></p> <p>Similar to the other two, VARRAYs are single-dimensional collections of homogeneous elements. However, they are always bounded (have a maximum size) and never sparse. When declaring a VARRAY type, you must specify the maximum number of elements. A key difference from nested tables is that VARRAYs preserve element order when stored as database columns.</p> <p>This example demonstrates basic VARRAY usage:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SET</span> <span class="n">SERVEROUTPUT</span> <span class="k">ON</span>
-
-<span class="k">DECLARE</span>
-    <span class="k">TYPE</span> <span class="n">anime_movies_t</span> <span class="k">IS</span> <span class="n">VARRAY</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-
-    <span class="n">anime_movies</span> <span class="n">anime_movies_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">anime_movies_t</span><span class="p">();</span>
-
-<span class="k">BEGIN</span>
-    <span class="c1">-- Extend to accommodate the first element</span>
-    <span class="n">anime_movies</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-    <span class="n">anime_movies</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Akira'</span><span class="p">;</span>
-    <span class="c1">-- Extend to the full length</span>
-    <span class="n">anime_movies</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-    <span class="n">anime_movies</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Castle in the sky'</span><span class="p">;</span>
-    <span class="n">anime_movies</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'My neighbour Totoro'</span><span class="p">;</span>
-
-    <span class="c1">-- Loop or perform other operations here</span>
-<span class="k">END</span><span class="p">;</span>
-<span class="o">/</span>
-</code></pre></div></div> <p>Remember to use <code class="language-plaintext highlighter-rouge">EXTEND</code> to make room for elements.</p> <p>Use VARRAYs when you need to preserve element order in a database column, have a relatively small amount of data, don’t need to worry about deletions in the middle, have an intrinsic upper bound, or need to retrieve the entire collection at once.</p> <p>As a final tip, when working with PL/SQL collections, consider creating a package of procedures and functions to encapsulate collection management. This might even hide the underlying collection type, but that’s not always necessary or beneficial.</p>]]></content><author><name></name></author><category term="Database,"/><category term="Programming"/><category term="PL/SQL,"/><category term="collections,"/><category term="associative"/><category term="arrays,"/><category term="nested"/><category term="tables,"/><category term="VARRAY,"/><category term="Oracle"/><summary type="html"><![CDATA[A detailed explanation of associative arrays, nested tables, and VARRAYs in PL/SQL, including examples and best practices.]]></summary></entry><entry><title type="html">Caching Static Data in PL/SQL for Performance Improvement</title><link href="https://frazik-main.github.io/website/blog/2010/caching-data-plsql/" rel="alternate" type="text/html" title="Caching Static Data in PL/SQL for Performance Improvement"/><published>2010-09-03T10:00:00+00:00</published><updated>2010-09-03T10:00:00+00:00</updated><id>https://frazik-main.github.io/website/blog/2010/caching-data-plsql</id><content type="html" xml:base="https://frazik-main.github.io/website/blog/2010/caching-data-plsql/"><![CDATA[<p>In many applications, PL/SQL programs repeatedly access the same data from a database. If this data is static (rarely or never changes), repeatedly querying it is inefficient. A better approach is to cache this data in a collection stored within the session’s PGA. This method uses the collection’s index as an “intelligent key,” retrieving data quickly without repeated database queries.</p> <p>Consider the following example:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="n">PACKAGE</span> <span class="n">onlyonce</span> <span class="k">AS</span>
-
-    <span class="k">TYPE</span> <span class="n">names_t</span> <span class="k">IS</span>
-        <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="o">%</span><span class="k">TYPE</span>
-            <span class="k">INDEX</span> <span class="k">BY</span> <span class="n">PLS_INTEGER</span><span class="p">;</span>
-
-    <span class="k">names</span> <span class="n">names_t</span><span class="p">;</span>
-
-    <span class="k">FUNCTION</span> <span class="n">get_name</span><span class="p">(</span><span class="n">employee_id_in</span> <span class="k">IN</span> <span class="n">employees</span><span class="p">.</span><span class="n">employee_id</span><span class="o">%</span><span class="k">TYPE</span><span class="p">)</span>
-        <span class="k">RETURN</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="o">%</span><span class="k">TYPE</span><span class="p">;</span>
-
-<span class="k">END</span> <span class="n">onlyonce</span><span class="p">;</span>
-<span class="o">/</span>
-
-<span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="n">PACKAGE</span> <span class="n">BODY</span> <span class="n">onlyonce</span> <span class="k">AS</span>
-
-    <span class="k">FUNCTION</span> <span class="n">name_from_database</span><span class="p">(</span><span class="n">employee_id_in</span> <span class="k">IN</span> <span class="n">employees</span><span class="p">.</span><span class="n">employee_id</span><span class="o">%</span><span class="k">TYPE</span><span class="p">)</span>
-        <span class="k">RETURN</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="o">%</span><span class="k">TYPE</span>
-    <span class="k">IS</span>
-        <span class="n">local_names</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="o">%</span><span class="k">TYPE</span><span class="p">;</span>
-    <span class="k">BEGIN</span>
-        <span class="k">SELECT</span> <span class="n">first_name</span>
-            <span class="k">INTO</span> <span class="n">local_names</span>
-            <span class="k">FROM</span> <span class="n">employees</span>
-           <span class="k">WHERE</span> <span class="n">employee_id</span> <span class="o">=</span> <span class="n">employee_id_in</span><span class="p">;</span>
-        <span class="k">RETURN</span> <span class="n">local_names</span><span class="p">;</span>
-    <span class="n">EXCEPTION</span>
-        <span class="k">WHEN</span> <span class="n">NO_DATA_FOUND</span> <span class="k">THEN</span>
-            <span class="k">RETURN</span> <span class="k">NULL</span><span class="p">;</span> <span class="c1">-- Handle case where employee ID is not found</span>
-    <span class="k">END</span><span class="p">;</span>
-
-    <span class="k">FUNCTION</span> <span class="n">get_name</span><span class="p">(</span><span class="n">employee_id_in</span> <span class="k">IN</span> <span class="n">employees</span><span class="p">.</span><span class="n">employee_id</span><span class="o">%</span><span class="k">TYPE</span><span class="p">)</span>
-        <span class="k">RETURN</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="o">%</span><span class="k">TYPE</span>
-    <span class="k">IS</span>
-        <span class="n">return_value</span> <span class="n">employees</span><span class="p">.</span><span class="n">first_name</span><span class="o">%</span><span class="k">TYPE</span><span class="p">;</span>
-    <span class="k">BEGIN</span>
-        <span class="k">RETURN</span> <span class="k">names</span><span class="p">(</span><span class="n">employee_id_in</span><span class="p">);</span>
-    <span class="n">EXCEPTION</span>
-        <span class="k">WHEN</span> <span class="n">NO_DATA_FOUND</span> <span class="k">THEN</span>
-            <span class="k">names</span><span class="p">(</span><span class="n">employee_id_in</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="n">name_from_database</span><span class="p">(</span><span class="n">employee_id_in</span><span class="p">);</span>
-            <span class="k">RETURN</span> <span class="k">names</span><span class="p">(</span><span class="n">employee_id_in</span><span class="p">);</span>
-    <span class="k">END</span><span class="p">;</span>
-
-<span class="k">END</span> <span class="n">onlyonce</span><span class="p">;</span>
-<span class="o">/</span>
-
-<span class="k">SET</span> <span class="n">SERVEROUTPUT</span> <span class="k">ON</span>
-
-<span class="k">BEGIN</span>
-    <span class="k">FOR</span> <span class="n">j</span> <span class="k">IN</span> <span class="mi">1</span><span class="p">..</span><span class="mi">10</span> <span class="n">LOOP</span>
-        <span class="k">FOR</span> <span class="n">i</span> <span class="k">IN</span> <span class="mi">100</span><span class="p">..</span><span class="mi">150</span> <span class="n">LOOP</span>
-            <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="n">onlyonce</span><span class="p">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
-        <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
-    <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
-<span class="k">END</span><span class="p">;</span>
-<span class="o">/</span>
-</code></pre></div></div> <p>Let’s break down the code:</p> <p><strong>Lines 3-7:</strong> Declare a collection type (<code class="language-plaintext highlighter-rouge">names_t</code>) and a collection (<code class="language-plaintext highlighter-rouge">names</code>) to hold cached data.</p> <p><strong>Lines 16-26:</strong> <code class="language-plaintext highlighter-rouge">name_from_database</code> function retrieves data from the database one by one. Improved to handle <code class="language-plaintext highlighter-rouge">NO_DATA_FOUND</code> exception gracefully by returning <code class="language-plaintext highlighter-rouge">NULL</code>.</p> <p><strong>Line 28:</strong> Declaration of the main retrieval function (<code class="language-plaintext highlighter-rouge">get_name</code>). This function returns data either from the database or the collection, depending on whether the key exists in the collection. The only parameter is the employee ID.</p> <p><strong>Lines 32-40:</strong> The core caching logic. If an element with the given ID isn’t in the collection, it’s fetched from the database and added to the collection. The exception handling is improved to return <code class="language-plaintext highlighter-rouge">NULL</code> if the employee ID is not found in the database.</p> <p><strong>Lines 46-52:</strong> The code iterates through a range of employee IDs. The first iteration fetches data from the database; subsequent iterations retrieve data from the collection.</p> <p><strong>Performance Comparison:</strong> In testing, executing 10,000 queries against a table took approximately 2 seconds, while retrieving the same data from the collection took only 0.1 seconds�a significant performance improvement (an order of magnitude faster). Caching static data also improves code quality by implicitly documenting static structures within the program.</p>]]></content><author><name></name></author><category term="database,"/><category term="performance-tuning"/><category term="plsql,"/><category term="oracle,"/><category term="performance,"/><category term="caching,"/><category term="collections"/><summary type="html"><![CDATA[Optimize PL/SQL performance by caching static data in a collection stored in the session's PGA.]]></summary></entry></feed>
+</code></pre></div></div> <p>This concludes our introduction to objects. To learn more, read about <a href="http://codingwithpassion.blogspot.com/2010/09/javascript-concepts-part-1-functions.html">JavaScript functions</a>.</p>]]></content><author><name></name></author><category term="javascript-concepts"/><category term="javascript,"/><category term="objects,"/><category term="json,"/><category term="programming"/><summary type="html"><![CDATA[An introduction to objects in JavaScript, including object creation, properties, JSON notation, and the window object.]]></summary></entry></feed>
