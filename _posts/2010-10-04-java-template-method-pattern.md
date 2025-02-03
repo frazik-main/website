@@ -13,8 +13,6 @@ categories: java, design-patterns
 
 This article introduces the Template Method design pattern, a powerful tool for code reuse and separation of concerns. We'll explore its benefits and demonstrate its implementation with a Java example. The Template Method pattern leverages concrete inheritance effectively, often providing a superior approach to code reuse compared to simple concrete inheritance. While object composition can achieve similar results, the Template Method pattern offers a clean and structured way to accomplish this.
 
-You can find the example Java code in this [repository](https://github.com/yourusername/yourrepo/blob/main/DecorateData.java). _(Replace with actual repository link)_
-
 ## Usage
 
 The Template Method pattern addresses a common problem: we know the steps of an algorithm and their order, but some steps' implementations are unknown or irrelevant at the abstract level. The pattern encapsulates these unknown steps as abstract methods within an abstract superclass. Concrete subclasses then implement these abstract methods, filling in the gaps of the superclass algorithm. The superclass controls the algorithm's workflow, while subclasses provide the specific implementations.
