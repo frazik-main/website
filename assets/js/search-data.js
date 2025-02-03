@@ -16,15 +16,37 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/website/blog/";
           },
-        },{id: "post-a-post-with-code",
+        },{id: "post-using-pl-sql-39-s-any-types-for-dynamic-typing",
       
-        title: "a post with code",
+        title: "Using PL/SQL&#39;s ANY Types for Dynamic Typing",
       
-      description: "an example of a blog post with some code",
+      description: "Exploring PL/SQL&#39;s ANY types for handling data of unknown type at runtime.",
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/website/blog/2015/code/";
+          window.location.href = "/website/blog/2010/dynamic-typing-plsql/";
+        
+      },
+    },{id: "post-using-pl-sql-collections-to-optimize-data-retrieval",
+      
+        title: "Using PL/SQL Collections to Optimize Data Retrieval",
+      
+      description: "Learn how to use PL/SQL collections to combine master and detail tables in a single SELECT statement, reducing database round trips and improving performance.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/plsq-cut-down-round-trips/";
+        
+      },
+    },{id: "post-javascript-closures-a-deep-dive",
+      
+        title: "JavaScript Closures - A Deep Dive",
+      
+      description: "Understanding closures in JavaScript, a powerful concept for handling asynchronous callbacks.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/website/blog/2010/javascript-concepts-part4/";
         
       },
     },{id: "post-storing-collections-in-database-columns",
