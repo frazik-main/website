@@ -23,5 +23,5 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-"The computing scientist's main challenge is not to get confused by the complexities of his own making."
-― E. W. Dijkstra
+"Increasingly, people seem to misinterpret complexity as sophistication, which is baffling -- the incomprehensible should cause suspicion rather than admiration."
+― Niklaus Wirth
