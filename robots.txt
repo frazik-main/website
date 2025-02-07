@@ -1,1 +1,1 @@
-User-agent: * Disallow: Sitemap: https://frazik.com/website/sitemap.xml
+User-agent: * Disallow: Sitemap: https://frazik.com/sitemap.xml
