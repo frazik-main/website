@@ -7,14 +7,14 @@ ninja.data = [{
     title: "about",
     section: "Navigation",
     handler: () => {
-      window.location.href = "/";
+      window.location.href = "/website/";
     },
   },{id: "nav-blog",
           title: "blog",
           description: "",
           section: "Navigation",
           handler: () => {
-            window.location.href = "/blog/";
+            window.location.href = "/website/blog/";
           },
         },{id: "post-template-method-design-pattern-in-java",
       
@@ -24,7 +24,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/java-template-method-pattern/";
+          window.location.href = "/website/blog/2010/java-template-method-pattern/";
         
       },
     },{id: "post-strategy-pattern-in-java",
@@ -35,7 +35,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/java-strategy-design-pattern/";
+          window.location.href = "/website/blog/2010/java-strategy-design-pattern/";
         
       },
     },{id: "post-custom-events-in-jquery-a-powerful-technique",
@@ -46,7 +46,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/javascript-jquery-trigger/";
+          window.location.href = "/website/blog/2010/javascript-jquery-trigger/";
         
       },
     },{id: "post-using-pl-sql-39-s-any-types-for-dynamic-typing",
@@ -57,7 +57,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/dynamic-typing-plsql/";
+          window.location.href = "/website/blog/2010/dynamic-typing-plsql/";
         
       },
     },{id: "post-using-pl-sql-collections-to-optimize-data-retrieval",
@@ -68,7 +68,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/plsq-cut-down-round-trips/";
+          window.location.href = "/website/blog/2010/plsq-cut-down-round-trips/";
         
       },
     },{id: "post-javascript-closures-a-deep-dive",
@@ -79,7 +79,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/javascript-concepts-part4/";
+          window.location.href = "/website/blog/2010/javascript-concepts-part4/";
         
       },
     },{id: "post-storing-collections-in-database-columns",
@@ -90,7 +90,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/plsql-collections-as-columns/";
+          window.location.href = "/website/blog/2010/plsql-collections-as-columns/";
         
       },
     },{id: "post-javascript-concepts-callbacks-and-function-context",
@@ -101,7 +101,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/javascript-concepts-part3/";
+          window.location.href = "/website/blog/2010/javascript-concepts-part3/";
         
       },
     },{id: "post-javascript-functions-a-deep-dive",
@@ -112,7 +112,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/javascript-concepts-part2/";
+          window.location.href = "/website/blog/2010/javascript-concepts-part2/";
         
       },
     },{id: "post-javascript-concepts-objects",
@@ -123,7 +123,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/javascript-concepts-part1/";
+          window.location.href = "/website/blog/2010/javascript-concepts-part1/";
         
       },
     },{id: "post-caching-static-data-in-pl-sql-for-performance-improvement",
@@ -134,7 +134,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/caching-data-plsql/";
+          window.location.href = "/website/blog/2010/caching-data-plsql/";
         
       },
     },{id: "post-pl-sql-collections-a-comprehensive-guide",
@@ -145,7 +145,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2010/plsq-collections/";
+          window.location.href = "/website/blog/2010/plsq-collections/";
         
       },
     },{id: "news-a-simple-inline-announcement",
@@ -155,7 +155,7 @@ ninja.data = [{
           title: 'A long announcement with details',
           description: "",
           section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
+              window.location.href = "/website/news/announcement_2/";
             },},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
@@ -178,7 +178,7 @@ ninja.data = [{
         title: 'RSS Feed',
         section: 'Socials',
         handler: () => {
-          window.open("/feed.xml", "_blank");
+          window.open("/website/feed.xml", "_blank");
         },
       },{
         id: 'social-scholar',
