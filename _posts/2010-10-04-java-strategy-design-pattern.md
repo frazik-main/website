@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Strategy Pattern in Java
-date: 2010-10-04 10:00:00 # Replace with actual date
+date: 2010-10-04 10:00:00 
 description: A comparison of the Strategy pattern with the Template Method pattern in Java, showing differences and providing a code example.
 tags: java, design-patterns, strategy-pattern, template-method-pattern
 categories: java, design-patterns

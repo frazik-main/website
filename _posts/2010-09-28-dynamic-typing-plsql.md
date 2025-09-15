@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Using PL/SQL's ANY Types for Dynamic Typing
-date: 2010-09-28 10:00:00 # Replace with actual date
+date: 2010-09-28 10:00:00
 description: Exploring PL/SQL's ANY types for handling data of unknown type at runtime.
 tags: plsql, anytype, anydata, dynamic-typing, oracle
 categories: database, plsql

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Using PL/SQL Collections to Optimize Data Retrieval
-date: 2010-09-14 10:00:00 # Replace with actual date
+date: 2010-09-14 10:00:00
 description: Learn how to use PL/SQL collections to combine master and detail tables in a single SELECT statement, reducing database round trips and improving performance.
 tags: PLSQL, Oracle, Database, Performance Optimization, Collections
 categories: Database Programming
