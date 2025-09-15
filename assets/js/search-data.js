@@ -16,18 +16,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "post-template-method-design-pattern-in-java",
-      
-        title: "Template Method Design Pattern in Java",
-      
-      description: "An explanation of the Template Method design pattern with a Java example.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/java-template-method-pattern/";
-        
-      },
-    },{id: "post-strategy-pattern-in-java",
+        },{id: "post-strategy-pattern-in-java",
       
         title: "Strategy Pattern in Java",
       
@@ -36,6 +25,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2010/java-strategy-design-pattern/";
+        
+      },
+    },{id: "post-java-template-method-pattern",
+      
+        title: "Java Template Method Pattern",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2010/java-template-method-pattern/";
         
       },
     },{id: "post-custom-events-in-jquery-a-powerful-technique",
