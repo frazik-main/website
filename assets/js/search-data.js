@@ -16,7 +16,40 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "post-strategy-pattern-in-java",
+        },{id: "post-dynamically-changing-sql-where-clause-in-adf-view-objects",
+      
+        title: "Dynamically Changing SQL WHERE Clause in ADF View Objects",
+      
+      description: "This post describes how to dynamically modify the SQL WHERE clause in an ADF View Object by overriding the `buildWhereClause` method, which is particularly useful for optimizing queries without creating new database indexes.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2010/oracle-adf-advance-dynamic-query/";
+        
+      },
+    },{id: "post-custom-view-object-with-oracle-ref-cursor-in-adf",
+      
+        title: "Custom View Object with Oracle Ref Cursor in ADF",
+      
+      description: "This post demonstrates how to create a custom read-only view object in Oracle ADF JDeveloper, leveraging an Oracle REF CURSOR as an alternative data source. It covers initial JDeveloper setup, database package creation, and customizing the View Object implementation class.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2010/oracle-adf-advance-ref-cursor/";
+        
+      },
+    },{id: "post-xpath-navigating-and-querying-xml-documents",
+      
+        title: "XPath - Navigating and Querying XML Documents",
+      
+      description: "An introduction to XPath, explaining how to navigate and query XML documents using path expressions, predicates, and relative node selections.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2010/xpath-tutorial/";
+        
+      },
+    },{id: "post-strategy-pattern-in-java",
       
         title: "Strategy Pattern in Java",
       

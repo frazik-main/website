@@ -1,4 +1,353 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://frazik.com/feed.xml" rel="self" type="application/atom+xml"/><link href="https://frazik.com/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-09-15T19:16:15+00:00</updated><id>https://frazik.com/feed.xml</id><title type="html">Frazik</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Strategy Pattern in Java</title><link href="https://frazik.com/blog/2010/java-strategy-design-pattern/" rel="alternate" type="text/html" title="Strategy Pattern in Java"/><published>2010-10-04T10:00:00+00:00</published><updated>2010-10-04T10:00:00+00:00</updated><id>https://frazik.com/blog/2010/java-strategy-design-pattern</id><content type="html" xml:base="https://frazik.com/blog/2010/java-strategy-design-pattern/"><![CDATA[<h1 id="strategy-pattern-in-java">Strategy Pattern in Java</h1> <p>The <strong>Strategy</strong> pattern offers an alternative to the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html">Template Method</a> pattern. Unlike the Template Method pattern which uses an abstract class, the Strategy pattern utilizes an interface. For a deeper understanding of encapsulating logic, refer to the post on the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html">Template Method</a> pattern. This example highlights the key differences.</p> <p>You can download an example of this Java code from <a href="https://code.google.com/p/codingwithpassionblog/source/browse/trunk/src/org/codingwithpassion/patterns/strategyMethod/DecorateData.java">this Google Code repository</a>. <em>(Note: Google Code is archived; this link may not be functional.)</em></p> <h2 id="example">Example</h2> <p>In this case, the class containing the algorithm isn’t an abstract superclass but a concrete class using a helper that implements an interface defining individual steps. This pattern is useful when concrete inheritance is needed for other purposes (since Java doesn’t support multiple inheritance) or if you prefer this approach over inheriting from an abstract class. Here’s an example:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://frazik.com/feed.xml" rel="self" type="application/atom+xml"/><link href="https://frazik.com/" rel="alternate" type="text/html" hreflang="en"/><updated>2025-09-15T19:18:27+00:00</updated><id>https://frazik.com/feed.xml</id><title type="html">Frazik</title><subtitle>A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. </subtitle><entry><title type="html">Dynamically Changing SQL WHERE Clause in ADF View Objects</title><link href="https://frazik.com/blog/2010/oracle-adf-advance-dynamic-query/" rel="alternate" type="text/html" title="Dynamically Changing SQL WHERE Clause in ADF View Objects"/><published>2010-10-15T12:12:00+00:00</published><updated>2010-10-15T12:12:00+00:00</updated><id>https://frazik.com/blog/2010/oracle-adf-advance-dynamic-query</id><content type="html" xml:base="https://frazik.com/blog/2010/oracle-adf-advance-dynamic-query/"><![CDATA[<h2 id="introduction">Introduction</h2> <p>Sometimes, you may encounter requirements that necessitate dynamically changing the SQL query’s <code class="language-plaintext highlighter-rouge">WHERE</code> clause within an ADF View Object. I faced such a requirement when a customer prohibited the creation of additional indexes on a table. I overcame this problem by dynamically modifying the SQL query’s <code class="language-plaintext highlighter-rouge">WHERE</code> clause to leverage existing indexes.</p> <h2 id="overriding-buildwhereclause">Overriding buildWhereClause</h2> <p>To implement this functionality, you need to override the <code class="language-plaintext highlighter-rouge">buildWhereClause(StringBuffer sqlBuffer, int noBindVars)</code> method in your View Object’s implementation class.</p> <p>You use the <code class="language-plaintext highlighter-rouge">sqlBuffer</code> parameter within this method (which contains the SQL query’s <code class="language-plaintext highlighter-rouge">WHERE</code> clause as a <code class="language-plaintext highlighter-rouge">StringBuffer</code>) to modify the SQL according to your needs. Simply replace, remove, or add strings within this parameter.</p> <p>Remember to use the same bind variable names that will be used in the View Object’s SQL call (generic bind variable names typically follow the pattern <code class="language-plaintext highlighter-rouge">:vc_temp_1, :vc_temp_2, ...</code>).</p> <h2 id="example-code">Example Code</h2> <p>Here’s an example of how to override the method:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">buildWhereClause</span><span class="o">(</span><span class="nc">StringBuffer</span> <span class="n">sqlBuffer</span><span class="o">,</span> <span class="kt">int</span> <span class="n">noBindVars</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="c1">// Call super and see if there is an existing WHERE clause.</span>
+    <span class="kt">boolean</span> <span class="n">hasWhereClause</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">buildWhereClause</span><span class="o">(</span><span class="n">sqlBuffer</span><span class="o">,</span> <span class="n">noBindVars</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">hasWhereClause</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Modify the existing WHERE query.</span>
+        <span class="c1">// Example: sqlBuffer.append(" AND some_column = :vc_temp_3");</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="c1">// If you add a new WHERE clause, ensure to return true.</span>
+        <span class="c1">// Example: sqlBuffer.append(" some_column = :vc_temp_1");</span>
+        <span class="n">hasWhereClause</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// Set to true if a new clause is added</span>
+    <span class="o">}</span>
+
+    <span class="k">return</span> <span class="n">hasWhereClause</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="adf-development"/><category term="adf,"/><category term="view-object,"/><category term="sql,"/><category term="where-clause,"/><category term="dynamic-sql,"/><category term="java,"/><category term="override"/><summary type="html"><![CDATA[This post describes how to dynamically modify the SQL WHERE clause in an ADF View Object by overriding the `buildWhereClause` method, which is particularly useful for optimizing queries without creating new database indexes.]]></summary></entry><entry><title type="html">Custom View Object with Oracle Ref Cursor in ADF</title><link href="https://frazik.com/blog/2010/oracle-adf-advance-ref-cursor/" rel="alternate" type="text/html" title="Custom View Object with Oracle Ref Cursor in ADF"/><published>2010-10-14T15:31:00+00:00</published><updated>2010-10-14T15:31:00+00:00</updated><id>https://frazik.com/blog/2010/oracle-adf-advance-ref-cursor</id><content type="html" xml:base="https://frazik.com/blog/2010/oracle-adf-advance-ref-cursor/"><![CDATA[<h2 id="introduction">Introduction</h2> <p>By default, view objects read data directly from the database and automate JDBC interactions. However, by overriding specific methods in a View Object’s implementation class, we can define a custom mechanism for data retrieval. This allows us to source data from various origins such as web services, XML files, plain JDBC, or specific database constructs like <strong>cursors</strong> in Oracle databases. This example demonstrates how to create a <em>read-only</em> view object that uses an Oracle <strong>REF CURSOR</strong> as an alternative data source. Let’s get started!</p> <h2 id="initial-jdeveloper-setup">Initial JDeveloper Setup</h2> <ol> <li> <p>Create an Application Module. In our case, it’s an Application Module connected to the FOD database.</p> </li> <li> <p>Next, create a read-only View Object that selects <code class="language-plaintext highlighter-rouge">person_id</code>, <code class="language-plaintext highlighter-rouge">first_name</code>, and <code class="language-plaintext highlighter-rouge">last_name</code> (just three attributes for simplicity) from the <code class="language-plaintext highlighter-rouge">persons</code> table in the FOD schema. Don’t forget to generate the View Object class (<code class="language-plaintext highlighter-rouge">*Impl</code>). The query for the View Object will be simple:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">person_id</span><span class="p">,</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span>
+<span class="k">FROM</span> <span class="n">persons</span>
+<span class="k">WHERE</span> <span class="n">first_name</span> <span class="k">LIKE</span> <span class="p">:</span><span class="n">person_name</span>
+</code></pre></div> </div> <p>And how it looks in JDeveloper:</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiXCX4l9hnNfSeRx_LuhfpkYaL-0DRhipbQsU_TWRcul-7pSPTkohOObHhe_Kfd_K8OYcIvFcKnCmePhuW_LroC3gU775tjD4czdIYHL3KmNEKt4N8scb1lM5uJrcskMX7hj1fxNH-ET7HA/s320/1.GIF" alt="JDeveloper View Object Setup"/></p> </li> <li> <p>Then, create a Bind Variable named “<strong>person_name</strong>”.</p> <p>Test it:</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRjZUPSRTUPTB9u1OpwoeUdtY_90HPsmhUi-BcanPfTHxe8NjhQkRw5pCviecq1R26uzh_JMmWZ24Z-gRLTFxVF07109_oINdDD3-aVLsoXhDkkAZt-SDqQ1sT8oVxw73cCSRYE_nizYHV/s320/2.GIF" alt="JDeveloper Bind Variable Test"/></p> <p>And move on…</p> </li> </ol> <h2 id="initial-database-setup">Initial Database Setup</h2> <p>To use a REF CURSOR, you need to create a PL/SQL function that returns a <code class="language-plaintext highlighter-rouge">REF CURSOR</code> type. We will create the following package in the FOD schema:</p> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">CREATE</span> <span class="kr">OR</span> <span class="kr">REPLACE</span> <span class="kr">PACKAGE</span> <span class="n">fod_ref_cursor</span>
+<span class="kr">IS</span>
+   <span class="k">TYPE</span> <span class="n">ref_cursor</span> <span class="kr">IS</span> <span class="kt">REF</span> <span class="k">CURSOR</span><span class="p">;</span>
+
+   <span class="k">FUNCTION</span> <span class="n">get_person_from_name</span> <span class="p">(</span><span class="n">f_name</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">ref_cursor</span><span class="p">;</span>
+<span class="k">END</span> <span class="n">fod_ref_cursor</span><span class="p">;</span>
+<span class="o">/</span>
+
+<span class="k">SHOW</span> <span class="k">errors</span>
+
+<span class="kr">CREATE</span> <span class="kr">OR</span> <span class="kr">REPLACE</span> <span class="kr">PACKAGE</span> <span class="kr">BODY</span> <span class="n">fod_ref_cursor</span>
+<span class="kr">IS</span>
+   <span class="k">FUNCTION</span> <span class="n">get_person_from_name</span> <span class="p">(</span><span class="n">f_name</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">ref_cursor</span>
+   <span class="kr">IS</span>
+      <span class="n">the_cursor</span>   <span class="n">ref_cursor</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="k">OPEN</span> <span class="n">the_cursor</span> <span class="kr">FOR</span>
+         <span class="kr">SELECT</span> <span class="n">person_id</span><span class="p">,</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span>
+           <span class="kr">FROM</span> <span class="n">persons</span>
+          <span class="kr">WHERE</span> <span class="n">first_name</span> <span class="ow">LIKE</span> <span class="n">f_name</span><span class="p">;</span>
+
+      <span class="k">RETURN</span> <span class="n">the_cursor</span><span class="p">;</span>
+   <span class="k">END</span> <span class="n">get_person_from_name</span><span class="p">;</span>
+<span class="k">END</span> <span class="n">fod_ref_cursor</span><span class="p">;</span>
+<span class="o">/</span>
+
+<span class="k">SHOW</span> <span class="k">errors</span>
+</code></pre></div></div> <p>You can test the REF CURSOR using the following PL/SQL block:</p> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">SET</span> <span class="n">serveroutput</span> <span class="kr">on</span><span class="p">;</span>
+
+<span class="k">DECLARE</span>
+   <span class="n">the_cursor</span>     <span class="n">fod_ref_cursor</span><span class="p">.</span><span class="n">ref_cursor</span><span class="p">;</span>
+   <span class="n">p_id</span>           <span class="n">persons</span><span class="p">.</span><span class="n">person_id</span><span class="na">%TYPE</span><span class="p">;</span>
+   <span class="n">p_first_name</span>   <span class="n">persons</span><span class="p">.</span><span class="n">first_name</span><span class="na">%TYPE</span><span class="p">;</span>
+   <span class="n">p_last_name</span>    <span class="n">persons</span><span class="p">.</span><span class="n">last_name</span><span class="na">%TYPE</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+   <span class="n">the_cursor</span> <span class="o">:=</span> <span class="n">fod_ref_cursor</span><span class="p">.</span><span class="n">get_person_from_name</span> <span class="p">(</span><span class="o">'</span><span class="s1">Steven</span><span class="o">'</span><span class="p">);</span>
+
+   <span class="kr">LOOP</span>
+      <span class="k">FETCH</span> <span class="n">the_cursor</span>
+       <span class="kr">INTO</span> <span class="n">p_id</span><span class="p">,</span> <span class="n">p_first_name</span><span class="p">,</span> <span class="n">p_last_name</span><span class="p">;</span>
+
+      <span class="kr">EXIT</span> <span class="k">WHEN</span> <span class="n">the_cursor</span><span class="na">%NOTFOUND</span><span class="p">;</span>
+      <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">put_line</span> <span class="p">(</span><span class="n">p_id</span><span class="p">);</span>
+   <span class="k">END</span> <span class="kr">LOOP</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div></div> <h2 id="customizing-the-framework">Customizing the Framework</h2> <p>Next, you need to override some methods in <code class="language-plaintext highlighter-rouge">PersonsImpl.java</code>. (The code below is adapted and slightly simplified from Oracle Fusion advanced ADF examples).</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonImpl</span> <span class="kd">extends</span> <span class="nc">ViewObjectImpl</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">FUNCTION_NAME</span> <span class="o">=</span>
+        <span class="s">"fod_ref_cursor.get_person_from_name(?)"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">BIND_VARIABLE_NAME</span> <span class="o">=</span> <span class="s">"person_name"</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">fillAttributes</span><span class="o">(</span><span class="nc">ViewRowImpl</span> <span class="n">r</span><span class="o">,</span>
+                                <span class="nc">ResultSet</span> <span class="n">rs</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="n">populateAttributeForRow</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">rs</span><span class="o">.</span><span class="na">getLong</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+        <span class="n">populateAttributeForRow</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">2</span><span class="o">));</span>
+        <span class="n">populateAttributeForRow</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">3</span><span class="o">));</span>
+    <span class="o">}</span>
+
+
+    <span class="cm">/**
+     * This is the default constructor (do not remove).
+     */</span>
+    <span class="kd">public</span> <span class="nf">PersonImpl</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Overridden framework method.
+     *
+     * Executed when the framework needs to issue the database query for
+     * the query collection based on this view object. One view object
+     * can produce many related result sets, each potentially the result
+     * of different bind variable values. If the rowset in query is involved
+     * in a framework-coordinated master/detail viewlink, then the params array
+     * will contain one or more framework-supplied bind parameters. If there
+     * are any user-supplied bind parameter values, they will *PRECEED* the
+     * framework-supplied bind variable values in the params array, and the
+     * number of user parameters will be indicated by the value of the
+     * numUserParams argument.
+     */</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">executeQueryForCollection</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">params</span><span class="o">,</span>
+                                             <span class="kt">int</span> <span class="n">numUserParams</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">storeNewResultSet</span><span class="o">(</span><span class="n">qc</span><span class="o">,</span> <span class="n">retrieveRefCursor</span><span class="o">(</span><span class="n">qc</span><span class="o">,</span> <span class="n">params</span><span class="o">));</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">executeQueryForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">,</span> <span class="n">params</span><span class="o">,</span> <span class="n">numUserParams</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Overridden framework method.
+     *
+     * Wipe out all traces of a built-in query for this VO
+     */</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">getViewDef</span><span class="o">().</span><span class="na">setQuery</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="n">getViewDef</span><span class="o">().</span><span class="na">setSelectClause</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="n">setQuery</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Overridden framework method.
+     *
+     * The role of this method is to "fetch", populate, and return a single row
+     * from the datasource by calling createNewRowForCollection() and populating
+     * its attributes using populateAttributeForRow().
+     */</span>
+    <span class="kd">protected</span> <span class="nc">ViewRowImpl</span> <span class="nf">createRowFromResultSet</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">,</span> <span class="nc">ResultSet</span> <span class="n">rs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="cm">/*
+         * We ignore the JDBC ResultSet passed by the framework (null anyway) and
+         * use the resultset that we've stored in the query-collection-private
+         * user data storage
+         */</span>
+        <span class="n">rs</span> <span class="o">=</span> <span class="n">getResultSet</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span>
+
+        <span class="cm">/*
+         * Create a new row to populate
+         */</span>
+        <span class="nc">ViewRowImpl</span> <span class="n">r</span> <span class="o">=</span> <span class="n">createNewRowForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="cm">/*
+             * Populate new row by attribute slot number for current row in Result Set
+             */</span>
+            <span class="n">fillAttributes</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="n">rs</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Overridden framework method.
+     *
+     * Return true if the datasource has at least one more record to fetch.
+     */</span>
+    <span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">hasNextForCollection</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">getResultSet</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">nextOne</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">nextOne</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="cm">/*
+             * When were at the end of the result set, mark the query collection
+             * as "FetchComplete".
+             */</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">nextOne</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">setFetchCompleteForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+                <span class="cm">/*
+                 * Close the result set, we're done with it
+                 */</span>
+                <span class="n">rs</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">nextOne</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Overridden framework method.
+     *
+     * The framework gives us a chance to clean up any resources related
+     * to the datasource when a query collection is done being used.
+     */</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">releaseUserDataForCollection</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">rs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="cm">/*
+         * Ignore the ResultSet passed in since we've created our own.
+         * Fetch the ResultSet from the User-Data context instead
+         */</span>
+        <span class="nc">ResultSet</span> <span class="n">userDataRS</span> <span class="o">=</span> <span class="n">getResultSet</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">userDataRS</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">userDataRS</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+                <span class="cm">/* Ignore */</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">releaseUserDataForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">,</span> <span class="n">rs</span><span class="o">);</span>
+    <span class="o">}</span>
+
+
+    <span class="cm">/**
+     * Return a JDBC ResultSet representing the REF CURSOR return
+     * value from our stored package function.
+     */</span>
+    <span class="kd">private</span> <span class="nc">ResultSet</span> <span class="nf">retrieveRefCursor</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ResultSet</span> <span class="n">rs</span> <span class="o">=</span>
+            <span class="o">(</span><span class="nc">ResultSet</span><span class="o">)</span><span class="n">callStoredFunction</span><span class="o">(</span><span class="nc">OracleTypes</span><span class="o">.</span><span class="na">CURSOR</span><span class="o">,</span> <span class="no">FUNCTION_NAME</span><span class="o">,</span>
+                                          <span class="k">new</span> <span class="nc">Object</span><span class="o">[]</span> <span class="o">{</span> <span class="n">getNamedBindParamValue</span><span class="o">(</span><span class="no">BIND_VARIABLE_NAME</span><span class="o">,</span>
+                                                                                <span class="n">params</span><span class="o">)</span> <span class="o">});</span>
+        <span class="k">return</span> <span class="n">rs</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">Object</span> <span class="nf">getNamedBindParamValue</span><span class="o">(</span><span class="nc">String</span> <span class="n">varName</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">getBindingStyle</span><span class="o">()</span> <span class="o">==</span> <span class="nc">SQLBuilder</span><span class="o">.</span><span class="na">BINDING_STYLE_ORACLE_NAME</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">params</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">for</span> <span class="o">(</span><span class="nc">Object</span> <span class="n">param</span> <span class="o">:</span> <span class="n">params</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">Object</span><span class="o">[]</span> <span class="n">nameValue</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Object</span><span class="o">[])</span><span class="n">param</span><span class="o">;</span>
+                    <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">nameValue</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">name</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">varName</span><span class="o">))</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">nameValue</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="s">"No bind variable named '"</span> <span class="o">+</span> <span class="n">varName</span> <span class="o">+</span> <span class="s">"'"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Store a new result set in the query-collection-private user-data context
+     */</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">storeNewResultSet</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">,</span> <span class="nc">ResultSet</span> <span class="n">rs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ResultSet</span> <span class="n">existingRs</span> <span class="o">=</span> <span class="n">getResultSet</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span>
+        <span class="c1">// If this query collection is getting reused, close out any previous rowset</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">existingRs</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">existingRs</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">setUserDataForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">,</span> <span class="n">rs</span><span class="o">);</span>
+        <span class="n">hasNextForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span> <span class="c1">// Prime the pump with the first row.</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Retrieve the result set wrapper from the query-collection user-data
+     */</span>
+    <span class="kd">private</span> <span class="nc">ResultSet</span> <span class="nf">getResultSet</span><span class="o">(</span><span class="nc">Object</span> <span class="n">qc</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="nc">ResultSet</span><span class="o">)</span><span class="n">getUserDataForCollection</span><span class="o">(</span><span class="n">qc</span><span class="o">);</span>
+    <span class="o">}</span>
+
+
+    <span class="c1">//----------------[ Begin Helper Code ]------------------------------</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="no">NUMBER</span> <span class="o">=</span> <span class="nc">Types</span><span class="o">.</span><span class="na">NUMERIC</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="no">DATE</span> <span class="o">=</span> <span class="nc">Types</span><span class="o">.</span><span class="na">DATE</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">int</span> <span class="no">VARCHAR2</span> <span class="o">=</span> <span class="nc">Types</span><span class="o">.</span><span class="na">VARCHAR</span><span class="o">;</span>
+
+    <span class="cm">/**
+     * Simplifies calling a stored function with bind variables
+     *
+     * You can use the NUMBER, DATE, and VARCHAR2 constants in this
+     * class to indicate the function return type for these three common types,
+     * otherwise use one of the JDBC types in the java.sql.Types class.
+     *
+     * NOTE: If you want to invoke a stored procedure without any bind variables
+     * ====  then you can just use the basic getDBTransaction().executeCommand()
+     *
+     * @param sqlReturnType JDBC datatype constant of function return value
+     * @param stmt stored function statement
+     * @param bindVars Object array of parameters
+     * @return function return value as an Object
+     */</span>
+    <span class="kd">protected</span> <span class="nc">Object</span> <span class="nf">callStoredFunction</span><span class="o">(</span><span class="kt">int</span> <span class="n">sqlReturnType</span><span class="o">,</span> <span class="nc">String</span> <span class="n">stmt</span><span class="o">,</span>
+                                        <span class="nc">Object</span><span class="o">[]</span> <span class="n">bindVars</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CallableStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">st</span> <span class="o">=</span>
+ <span class="n">getDBTransaction</span><span class="o">().</span><span class="na">createCallableStatement</span><span class="o">(</span><span class="s">"begin ? := "</span> <span class="o">+</span> <span class="n">stmt</span> <span class="o">+</span> <span class="s">"; end;"</span><span class="o">,</span>
+                                            <span class="mi">0</span><span class="o">);</span>
+            <span class="n">st</span><span class="o">.</span><span class="na">registerOutParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">sqlReturnType</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">bindVars</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="n">bindVars</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">z</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="n">st</span><span class="o">.</span><span class="na">setObject</span><span class="o">(</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="o">,</span> <span class="n">bindVars</span><span class="o">[</span><span class="n">z</span><span class="o">]);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">st</span><span class="o">.</span><span class="na">executeUpdate</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="na">getObject</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**getEstimatedRowCount - overridden for custom java data source support.
+     */</span>
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getEstimatedRowCount</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">value</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">getEstimatedRowCount</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+    <span class="o">}</span>
+
+
+    <span class="cm">/**
+     * Returns the bind variable value for person_name.
+     * @return bind variable value for person_name
+     */</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getperson_name</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">getNamedWhereClauseParam</span><span class="o">(</span><span class="s">"person_name"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Sets `value` for bind variable person_name.
+     * @param value value to bind as person_name
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setperson_name</span><span class="o">(</span><span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">"person_name"</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p>You can use this code as a template; you’ll primarily need to modify <code class="language-plaintext highlighter-rouge">FUNCTION_NAME</code>, <code class="language-plaintext highlighter-rouge">BIND_VARIABLE_NAME</code>, and complete the <code class="language-plaintext highlighter-rouge">fillAttributes</code> method to correctly map the JDBC result set to your View Object’s attribute set. It’s that simple! In some circumstances, this method of data retrieval in a View Object can even speed up data loading.</p> <h2 id="plain-jdbc-data-pull">Plain JDBC Data Pull</h2> <p>If you prefer to use plain JDBC instead of a REF CURSOR, you can modify the <code class="language-plaintext highlighter-rouge">callStoredFunction</code> method like this:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">protected</span> <span class="nc">Object</span> <span class="nf">callStoredFunction</span><span class="o">(</span><span class="kt">int</span> <span class="n">sqlReturnType</span><span class="o">,</span> <span class="nc">String</span> <span class="n">stmt</span><span class="o">,</span>
+                                        <span class="nc">Object</span><span class="o">[]</span> <span class="n">bindVars</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">PreparedStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">getDBTransaction</span><span class="o">().</span><span class="na">createPreparedStatement</span><span class="o">(</span><span class="s">"SELECT person_id, first_name, last_name\n"</span> <span class="o">+</span>
+        <span class="s">"  FROM persons where person_id = 100"</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">st</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p>The complete code for this example can be downloaded from: <a href="http://codingwithpassionblog.googlecode.com/files/CustomViewObject.zip">CustomViewObject.zip</a></p>]]></content><author><name></name></author><category term="oracle-adf"/><category term="adf,"/><category term="jdeveloper,"/><category term="view"/><category term="object,"/><category term="ref"/><category term="cursor,"/><category term="oracle,"/><category term="plsql,"/><category term="java,"/><category term="custom"/><category term="data"/><category term="source"/><summary type="html"><![CDATA[This post demonstrates how to create a custom read-only view object in Oracle ADF JDeveloper, leveraging an Oracle REF CURSOR as an alternative data source. It covers initial JDeveloper setup, database package creation, and customizing the View Object implementation class.]]></summary></entry><entry><title type="html">XPath - Navigating and Querying XML Documents</title><link href="https://frazik.com/blog/2010/xpath-tutorial/" rel="alternate" type="text/html" title="XPath - Navigating and Querying XML Documents"/><published>2010-10-09T19:54:00+00:00</published><updated>2010-10-09T19:54:00+00:00</updated><id>https://frazik.com/blog/2010/xpath-tutorial</id><content type="html" xml:base="https://frazik.com/blog/2010/xpath-tutorial/"><![CDATA[<h2 id="introduction">Introduction</h2> <p>As the W3C standard states: <em>XPath is a language for addressing parts of an XML document</em>. That’s simple enough. XPath is basically a means to traverse an XML document and perform searches on it. We can use the structure of the XML document (semantics of the data) or the data itself to perform these searches. XPath can be used in XML transformations (XSLT) and in SOA (BPEL language). jQuery also uses similar logic for its selector search operations.</p> <h2 id="xml-document">XML Document</h2> <p>XPath can query any part of an XML document (any node at any level). XML documents are treated as trees of nodes. As a result of a search, XPath may return <code class="language-plaintext highlighter-rouge">null</code>, a string, a number, or another XML node (which can also be queried). XPath is used to navigate through elements or attributes of an XML document.</p> <p>We will use the following XML document for our examples:</p> <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;game-systems&gt;</span>
+  <span class="nt">&lt;system&gt;</span>
+    <span class="nt">&lt;type&gt;</span>Arcade<span class="nt">&lt;/type&gt;</span>
+    <span class="nt">&lt;name&gt;</span>MAME<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;emulator</span> <span class="na">usable=</span><span class="s">"true"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/emulator&gt;</span>
+  <span class="nt">&lt;/system&gt;</span>
+  <span class="nt">&lt;system&gt;</span>
+    <span class="nt">&lt;type&gt;</span>Pocket<span class="nt">&lt;/type&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Sony PSP<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;emulator</span> <span class="na">usable=</span><span class="s">"false"</span><span class="nt">&gt;</span>false<span class="nt">&lt;/emulator&gt;</span>
+  <span class="nt">&lt;/system&gt;</span>
+  <span class="nt">&lt;system&gt;</span>
+    <span class="nt">&lt;type&gt;</span>Console<span class="nt">&lt;/type&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Nintendo Wii<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;emulator</span> <span class="na">usable=</span><span class="s">"false"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/emulator&gt;</span>
+  <span class="nt">&lt;/system&gt;</span>
+  <span class="nt">&lt;system&gt;</span>
+    <span class="nt">&lt;type&gt;</span>Console<span class="nt">&lt;/type&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Sony PS2<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;emulator</span> <span class="na">usable=</span><span class="s">"false"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/emulator&gt;</span>
+  <span class="nt">&lt;/system&gt;</span>
+<span class="nt">&lt;/game-systems&gt;</span>
+</code></pre></div></div> <h2 id="basic-node-selection">Basic Node Selection</h2> <p>To navigate through an XML document, we use path expressions. The most common expressions we will use are slashes: single (<code class="language-plaintext highlighter-rouge">/</code>) or double (<code class="language-plaintext highlighter-rouge">//</code>).</p> <p>A single slash performs a search from the root node. In our XPath search, an expression like: <code class="language-plaintext highlighter-rouge">/game-systems/system/type</code> will return the following result (in XMLSpy):</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfZDTT9Y1H8ypwf9hMCsXwknqc1SwBjWSmveY7ywrR3_E6tVLVW5kqqIXnX32HgaH6jcbelkxaZHq8YmtDUuaqGHx3V4OsGGWm612gY76Dodi4YUH7g7PZkF5UiJ9a37IpoQknLDwX8bSX/s320/1.GIF" alt="XPath Single Slash Search Result"/></p> <p>A double slash (<code class="language-plaintext highlighter-rouge">//</code>) will traverse the entire XML tree and find all nodes that match the selection, regardless of their position. So, the selection <code class="language-plaintext highlighter-rouge">//type</code> in our example will produce the same result as the previous example.</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheKKLobANyh1PUEaYamePvH4eoJARmG_zmnm-w_Fn_XQbmlpNsW1o7GoAj563wIk8vOSdOzI_l58sewx33pEhFSgYooPmvuEwXSoNOgpr2urMm4YIS9tphufIY1a22Vq2Kj3TRkO_hpL4F/s320/2.GIF" alt="XPath Double Slash Search Result"/></p> <p>Other common path expressions to select XML nodes are <code class="language-plaintext highlighter-rouge">@</code>, <code class="language-plaintext highlighter-rouge">.</code>, and <code class="language-plaintext highlighter-rouge">..</code>.</p> <p><code class="language-plaintext highlighter-rouge">@</code> is used to select an attribute, as in: <code class="language-plaintext highlighter-rouge">/game-systems/system/emulator/@usable</code>, where we select the value of the <code class="language-plaintext highlighter-rouge">usable</code> attribute within the <code class="language-plaintext highlighter-rouge">emulator</code> node.</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgcJH-IDi29RT6SSyQ6wM13FYkNVFNrnv6hTeqE1PhAU6J7y0wSt-8XGi_0orwGaISrQgY0YYqk7dEia8XbIy6q-0NYNb87gy8K-q4MdDgs3-oepGSWDYK7KQuGKsKRvD47_LFssPPPgVR5/s320/3.GIF" alt="XPath Attribute Selection Result"/></p> <p><code class="language-plaintext highlighter-rouge">.</code> will select the current node, and <code class="language-plaintext highlighter-rouge">..</code> will select the parent node. This is similar to selecting file paths in a file system!</p> <p>To select the parent of an <code class="language-plaintext highlighter-rouge">emulator</code> node (which is <code class="language-plaintext highlighter-rouge">system</code>): <code class="language-plaintext highlighter-rouge">/game-systems/system/emulator/..</code>.</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidCAhKh4HXtnk6JUMm89tWlQpCQl6Kd1aXSkgWMH3dJLklNQ3GRmV0evAZhpHBSvr1QBXBHQJ2y7TkjP5UEPEsf6Z7foxGREMPZFEsA6DfS0QtfR4wwFebU0RejExDLOcnrIsX8pbP9xHL/s320/4.GIF" alt="XPath Parent Node Selection Result"/></p> <h2 id="finding-specific-nodes">Finding Specific Nodes</h2> <p>To find specific nodes, we use <strong>predicates</strong>. With this construction, we can perform searches to find nodes with specific element or attribute values. We can also extract specific results from a node-set (if there is more than one node resulting from a previous search). Predicates are always enclosed in square brackets <code class="language-plaintext highlighter-rouge">[]</code>.</p> <p>Finding the first <code class="language-plaintext highlighter-rouge">system/emulator</code> value can be done with the following search: <code class="language-plaintext highlighter-rouge">/game-systems/system[1]/emulator</code>.</p> <p>To find all system names with a usable emulator, we would write: <code class="language-plaintext highlighter-rouge">/game-systems/system/emulator[@usable='true']/../name</code>. Here, we use <code class="language-plaintext highlighter-rouge">..</code> as a way to move up to the parent element in the XML tree.</p> <p><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOHG5OROmf0bKEtRQMsO-MAwGY8jUh_m43U0-EhOthPbV4OKhe8k3GFVcfj4P-2H7NNEWSWwq4s3eTLR5kFY0aYC-RodVY793YqhcCzAkYJineBcSRORpWOXxQ0ipq2wG4objPIynjvvT_/s320/5.GIF" alt="XPath Predicate Search Result"/></p> <h2 id="finding-node-sets-relative-to-the-current-node">Finding Node-sets Relative to the Current Node</h2> <p>We can also use the XML tree structure (children, parents, etc.) to find specific nodes.</p> <p>For example, we can rewrite the previous example as follows: <code class="language-plaintext highlighter-rouge">/game-systems/system/emulator[@usable='true']/ancestor::system/name</code>.</p> <p>This expression is somewhat longer, but it achieves the same result. Here, we are using the <code class="language-plaintext highlighter-rouge">ancestor</code> axis, which returns the ancestors of the current element (<code class="language-plaintext highlighter-rouge">system</code> in this case). You can also search for children, attributes, descendants, and perform similar searches (in most cases) using basic node selectors and predicates. ```</p>]]></content><author><name></name></author><category term="xml-concepts"/><category term="xpath,"/><category term="xml,"/><category term="navigation,"/><category term="querying,"/><category term="programming"/><summary type="html"><![CDATA[An introduction to XPath, explaining how to navigate and query XML documents using path expressions, predicates, and relative node selections.]]></summary></entry><entry><title type="html">Strategy Pattern in Java</title><link href="https://frazik.com/blog/2010/java-strategy-design-pattern/" rel="alternate" type="text/html" title="Strategy Pattern in Java"/><published>2010-10-04T10:00:00+00:00</published><updated>2010-10-04T10:00:00+00:00</updated><id>https://frazik.com/blog/2010/java-strategy-design-pattern</id><content type="html" xml:base="https://frazik.com/blog/2010/java-strategy-design-pattern/"><![CDATA[<h1 id="strategy-pattern-in-java">Strategy Pattern in Java</h1> <p>The <strong>Strategy</strong> pattern offers an alternative to the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html">Template Method</a> pattern. Unlike the Template Method pattern which uses an abstract class, the Strategy pattern utilizes an interface. For a deeper understanding of encapsulating logic, refer to the post on the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html">Template Method</a> pattern. This example highlights the key differences.</p> <p>You can download an example of this Java code from <a href="https://code.google.com/p/codingwithpassionblog/source/browse/trunk/src/org/codingwithpassion/patterns/strategyMethod/DecorateData.java">this Google Code repository</a>. <em>(Note: Google Code is archived; this link may not be functional.)</em></p> <h2 id="example">Example</h2> <p>In this case, the class containing the algorithm isn’t an abstract superclass but a concrete class using a helper that implements an interface defining individual steps. This pattern is useful when concrete inheritance is needed for other purposes (since Java doesn’t support multiple inheritance) or if you prefer this approach over inheriting from an abstract class. Here’s an example:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
  * Concrete Object implementation.
  * Here we implement workflow.
  */</span>
@@ -468,76 +817,4 @@ Let's look at an example (this code can be placed in a single file for easy test
 <span class="nf">alert</span><span class="p">(</span><span class="nf">showMe</span><span class="p">());</span> <span class="c1">// meWindow (global context)</span>
 <span class="nf">alert</span><span class="p">(</span><span class="nx">m1</span><span class="p">.</span><span class="nf">whoAmI</span><span class="p">());</span> <span class="c1">// meFirst (m1 context)</span>
 <span class="nf">alert</span><span class="p">(</span><span class="nx">showMe</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="nx">m2</span><span class="p">));</span> <span class="c1">// meSecond (m2 context)</span>
-</code></pre></div></div> <p>The first alert uses the global context. The second uses <code class="language-plaintext highlighter-rouge">m1</code>’s context. The third explicitly sets the context to <code class="language-plaintext highlighter-rouge">m2</code>.</p> <p>In summary, understanding <code class="language-plaintext highlighter-rouge">this</code> and callback functions is essential for working effectively with asynchronous JavaScript. This is the end of Part 3; continue to <a href="http://codingwithpassion.blogspot.com/2010/09/javascript-concepts-part-4-closures.html">Part 4</a> (closures) for more.</p>]]></content><author><name></name></author><category term="javascript-concepts"/><category term="javascript,"/><category term="callbacks,"/><category term="function-context,"/><category term="this"/><summary type="html"><![CDATA[A deep dive into JavaScript callbacks and function context, exploring how `this` works and how to manage function contexts using `call()`]]></summary></entry><entry><title type="html">Storing Collections in Database Columns</title><link href="https://frazik.com/blog/2010/plsql-collections-as-columns/" rel="alternate" type="text/html" title="Storing Collections in Database Columns"/><published>2010-09-06T10:00:00+00:00</published><updated>2010-09-06T10:00:00+00:00</updated><id>https://frazik.com/blog/2010/plsql-collections-as-columns</id><content type="html" xml:base="https://frazik.com/blog/2010/plsql-collections-as-columns/"><![CDATA[<p>This post demonstrates how to store collections in database columns within a relational table. This technique is useful for persisting collection data without creating additional detail tables. While common in object databases like Google App Engine Bigtable, this approach is also applicable to relational databases.</p> <h3 id="simple-example">Simple Example</h3> <p>This example uses a <code class="language-plaintext highlighter-rouge">VARRAY</code> (you can also use a nested table � see <a href="http://codingwithpassion.blogspot.com/2010/09/oracle-plsql-collections.html">this article</a> about PL/SQL collections) as a column in a relational table.</p> <p>First, a schema-level collection type <code class="language-plaintext highlighter-rouge">varchar_collection_t</code> is declared, capable of holding up to four <code class="language-plaintext highlighter-rouge">VARCHAR2</code> elements. Then, a table <code class="language-plaintext highlighter-rouge">animes</code> is created with a column <code class="language-plaintext highlighter-rouge">characters</code> of this collection type. Finally, a collection is populated and inserted into the <code class="language-plaintext highlighter-rouge">animes</code> table.</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TYPE</span> <span class="n">varchar_collection_t</span> <span class="k">IS</span> <span class="n">VARRAY</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-<span class="o">/</span>
-
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">animes</span> <span class="p">(</span>
-    <span class="n">name</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
-    <span class="n">characters</span> <span class="n">varchar_collection_t</span>
-<span class="p">);</span>
-
-<span class="k">DECLARE</span>
-    <span class="n">anime_characters</span> <span class="n">varchar_collection_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">varchar_collection_t</span><span class="p">();</span>
-<span class="k">BEGIN</span>
-    <span class="n">anime_characters</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-
-    <span class="n">anime_characters</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Satsuki'</span><span class="p">;</span>
-    <span class="n">anime_characters</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Mei'</span><span class="p">;</span>
-    <span class="n">anime_characters</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Totoro'</span><span class="p">;</span>
-    <span class="n">anime_characters</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Kanta'</span><span class="p">;</span>
-
-    <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">animes</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">characters</span><span class="p">)</span>
-    <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'My Neighbor Totoro'</span><span class="p">,</span> <span class="n">anime_characters</span><span class="p">);</span>
-
-<span class="k">END</span><span class="p">;</span>
-<span class="o">/</span>
-</code></pre></div></div> <p>As shown, a simple <code class="language-plaintext highlighter-rouge">INSERT</code> statement is used to insert the collection into the table. <code class="language-plaintext highlighter-rouge">VARRAY</code> columns store collection data inline (similar to comma-separated values), while nested tables create a separate database table behind the scenes. Oracle recommends <code class="language-plaintext highlighter-rouge">VARRAY</code> for smaller arrays and nested tables for larger ones.</p> <p>One important note: you cannot directly manipulate data within a stored collection. You need to use <code class="language-plaintext highlighter-rouge">CAST</code> and <code class="language-plaintext highlighter-rouge">TABLE</code> syntax. This example shows how to filter using data from the collection:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">animes</span> <span class="n">a</span>
-<span class="k">WHERE</span> <span class="s1">'Mei'</span> <span class="k">IN</span> <span class="p">(</span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">TABLE</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">characters</span><span class="p">));</span>
-</code></pre></div></div> <p>Notice the use of the <code class="language-plaintext highlighter-rouge">TABLE</code> syntax. Even with only one row in the table, this demonstrates the concept effectively.</p>]]></content><author><name></name></author><category term="database-design"/><category term="oracle,"/><category term="plsql,"/><category term="database,"/><category term="collections,"/><category term="varray,"/><category term="nested"/><category term="table"/><summary type="html"><![CDATA[Demonstrates how to store collections in database columns using Oracle's VARRAY.]]></summary></entry><entry><title type="html">JavaScript Functions - A Deep Dive</title><link href="https://frazik.com/blog/2010/javascript-concepts-part2/" rel="alternate" type="text/html" title="JavaScript Functions - A Deep Dive"/><published>2010-09-05T00:00:00+00:00</published><updated>2010-09-05T00:00:00+00:00</updated><id>https://frazik.com/blog/2010/javascript-concepts-part2</id><content type="html" xml:base="https://frazik.com/blog/2010/javascript-concepts-part2/"><![CDATA[<p>This post delves into the often-overlooked deeper aspects of JavaScript functions.</p> <h2 id="introduction">Introduction</h2> <p>JavaScript, a ubiquitous language on the web, is frequently used without a thorough understanding of its underlying mechanisms. This “JavaScript Concepts” series aims to illuminate some of these deeper concepts. This article provides a concise overview of JavaScript functions.</p> <h2 id="functions-the-core-idea">Functions: The Core Idea</h2> <p>In many traditional object-oriented languages (Java, C++, C#, etc.), objects encapsulate both data and methods. These languages treat data and methods as distinct entities. Methods modify an object’s state by altering its properties (fields).</p> <p>JavaScript takes a different approach.</p> <p>In JavaScript, <strong>functions are considered objects</strong>. There’s no distinction between object types like <code class="language-plaintext highlighter-rouge">String</code>, <code class="language-plaintext highlighter-rouge">Number</code>, <code class="language-plaintext highlighter-rouge">window</code> objects, custom objects, and <em>functions</em>. Functions are defined by a constructor named “Function,” similar to constructors in other object-oriented languages.</p> <p>A function can have parameters, and its value (being an object) can be assigned to a variable, a property of an object, returned as a function’s return value, or passed as a parameter to another function. This is all possible because functions in JavaScript are treated like other objects. Therefore, we say that functions are <strong>first-class objects</strong> in JavaScript.</p> <h3 id="example-functions">Example Functions:</h3> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">one</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">doStuff</span><span class="dl">"</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nf">two</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">calculate stuff</span><span class="dl">"</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nf">three</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="dl">"</span><span class="s2">stuff</span><span class="dl">"</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div> <h2 id="function-names">Function Names</h2> <p>Consider this example:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">findMatrix</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello Neo, what is the Matrix?</span><span class="dl">"</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div></div> <p>This does <em>not</em> create a function named “findMatrix” in the way you might expect. While the syntax may seem familiar, it’s essentially syntactic sugar (a feature JavaScript is known for) similar to using <code class="language-plaintext highlighter-rouge">var</code> to create <code class="language-plaintext highlighter-rouge">window</code> properties (as discussed in a previous article about JavaScript objects). It creates a function instance and assigns it to the <code class="language-plaintext highlighter-rouge">window</code> property using the function’s name, as shown below:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">findMatrix</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
-  <span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello Neo, what is the Matrix?</span><span class="dl">"</span><span class="p">);</span>
-<span class="p">};</span>
-</code></pre></div></div> <p>When declaring a top-level named function, a <code class="language-plaintext highlighter-rouge">Function</code> instance is created and assigned to a property (with the function’s name) of the <code class="language-plaintext highlighter-rouge">window</code> object.</p> <p>While this might seem like a subtle detail, it’s crucial to understand that <code class="language-plaintext highlighter-rouge">Function</code> instances are <strong>values</strong> that can be assigned to variables, properties, or parameters, just like instances of other object types. Importantly, these function instances are useless unless assigned to a variable, property, or parameter.</p>]]></content><author><name></name></author><category term="javascript-concepts"/><category term="javascript,"/><category term="functions,"/><category term="programming"/><summary type="html"><![CDATA[Exploring the deeper concepts of JavaScript functions, including their object nature and first-class status.]]></summary></entry><entry><title type="html">JavaScript Concepts - Objects</title><link href="https://frazik.com/blog/2010/javascript-concepts-part1/" rel="alternate" type="text/html" title="JavaScript Concepts - Objects"/><published>2010-09-04T10:00:00+00:00</published><updated>2010-09-04T10:00:00+00:00</updated><id>https://frazik.com/blog/2010/javascript-concepts-part1</id><content type="html" xml:base="https://frazik.com/blog/2010/javascript-concepts-part1/"><![CDATA[<h1 id="javascript-concepts-objects">JavaScript Concepts: Objects</h1> <h2 id="introduction">Introduction</h2> <p>JavaScript is a widely used web language, but many page authors don’t utilize its deeper concepts. This “JavaScript Concepts series” aims to introduce some of these advanced features. This is the first article in the series.</p> <h2 id="why-objects">Why Objects?</h2> <p>The most important concept in JavaScript is that functions are <em>first-class objects</em>. To understand this, we must first grasp JavaScript objects.</p> <p>In JavaScript, newly created objects hold no data and offer minimal semantics. JavaScript objects don’t support “classic” object-oriented programming in the way programmers familiar with languages like Java might expect.</p> <p>We can create objects using the <code class="language-plaintext highlighter-rouge">new</code> operator (other methods exist, as we’ll see later).</p> <p>Objects contain properties and “methods.” Unlike statically-typed languages, properties and methods aren’t predeclared; we create them dynamically. This flexibility comes with a cost!</p> <p>In the following example, we create a new <code class="language-plaintext highlighter-rouge">Object</code> instance and assign it to a variable named <code class="language-plaintext highlighter-rouge">house</code>:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">house</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Object</span><span class="p">();</span>
-<span class="nx">house</span><span class="p">.</span><span class="nx">noOfdoors</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-<span class="nx">house</span><span class="p">.</span><span class="nx">address</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Main road 51</span><span class="dl">"</span><span class="p">;</span>
-<span class="nx">house</span><span class="p">.</span><span class="nx">yearBuild</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
-</code></pre></div></div> <p>Properties aren’t limited to primitive types; an object property can be another object instance. Let’s add an <code class="language-plaintext highlighter-rouge">owner</code> property to our <code class="language-plaintext highlighter-rouge">house</code> instance:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">owner</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Object</span><span class="p">();</span>
-<span class="nx">owner</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Kimi Raikkonen</span><span class="dl">"</span><span class="p">;</span>
-<span class="nx">owner</span><span class="p">.</span><span class="nx">occupation</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Rally driver</span><span class="dl">"</span><span class="p">;</span>
-<span class="nx">owner</span><span class="p">.</span><span class="nx">previousOccupation</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">F1 driver</span><span class="dl">"</span><span class="p">;</span>
-<span class="nx">house</span><span class="p">.</span><span class="nx">owner</span> <span class="o">=</span> <span class="nx">owner</span><span class="p">;</span>
-</code></pre></div></div> <p>To access a nested property:</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">homeOwnerName</span> <span class="o">=</span> <span class="nx">house</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
-</code></pre></div></div> <h2 id="json">JSON</h2> <p>A more concise notation for creating objects is JSON (JavaScript Object Notation), preferred by many developers. See <a href="http://www.json.org">http://www.json.org</a> for more information.</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">house</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="na">noOfdoors</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-  <span class="na">address</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Main road 51</span><span class="dl">"</span><span class="p">,</span>
-  <span class="na">yearBuild</span><span class="p">:</span> <span class="k">new</span> <span class="nc">Date</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-  <span class="na">owner</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Kimi Raikkonen</span><span class="dl">"</span><span class="p">,</span>
-    <span class="na">occupation</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Rally driver</span><span class="dl">"</span><span class="p">,</span> <span class="c1">//Corrected duplicate 'name' property</span>
-  <span class="p">},</span>
-<span class="p">};</span>
-<span class="nf">alert</span><span class="p">(</span><span class="dl">"</span><span class="s2">House owner: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">house</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="c1">// Works fine.</span>
-</code></pre></div></div> <h2 id="window-object">Window Object</h2> <p>When you declare a variable at the top level (global or window scope) using <code class="language-plaintext highlighter-rouge">var</code>, you’re creating a top-level property of the <code class="language-plaintext highlighter-rouge">window</code> object. Omitting <code class="language-plaintext highlighter-rouge">var</code> inside a function also creates a top-level <code class="language-plaintext highlighter-rouge">window</code> property.</p> <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Simon</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// Global variable, property of window object.</span>
-<span class="nf">alert</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="c1">// Works fine.</span>
-
-<span class="kd">function</span> <span class="nf">calculatePi</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// something...</span>
-  <span class="nx">result</span> <span class="o">=</span> <span class="mf">3.14</span><span class="p">;</span> <span class="c1">// Without var, this is a window property.</span>
-<span class="p">}</span>
-
-<span class="nf">calculatePi</span><span class="p">();</span>
-<span class="nf">alert</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">result</span><span class="p">);</span> <span class="c1">// Works fine.</span>
-</code></pre></div></div> <p>This concludes our introduction to objects. To learn more, read about <a href="http://codingwithpassion.blogspot.com/2010/09/javascript-concepts-part-1-functions.html">JavaScript functions</a>.</p>]]></content><author><name></name></author><category term="javascript-concepts"/><category term="javascript,"/><category term="objects,"/><category term="json,"/><category term="programming"/><summary type="html"><![CDATA[An introduction to objects in JavaScript, including object creation, properties, JSON notation, and the window object.]]></summary></entry></feed>
+</code></pre></div></div> <p>The first alert uses the global context. The second uses <code class="language-plaintext highlighter-rouge">m1</code>’s context. The third explicitly sets the context to <code class="language-plaintext highlighter-rouge">m2</code>.</p> <p>In summary, understanding <code class="language-plaintext highlighter-rouge">this</code> and callback functions is essential for working effectively with asynchronous JavaScript. This is the end of Part 3; continue to <a href="http://codingwithpassion.blogspot.com/2010/09/javascript-concepts-part-4-closures.html">Part 4</a> (closures) for more.</p>]]></content><author><name></name></author><category term="javascript-concepts"/><category term="javascript,"/><category term="callbacks,"/><category term="function-context,"/><category term="this"/><summary type="html"><![CDATA[A deep dive into JavaScript callbacks and function context, exploring how `this` works and how to manage function contexts using `call()`]]></summary></entry></feed>
