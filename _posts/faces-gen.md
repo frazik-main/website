@@ -1,0 +1,21 @@
+---
+layout: post
+title: Introducing the JDeveloper ADF View Controller Generator
+date: 2011-04-13 10:50:00
+description: An introduction to a JDeveloper plugin for generating Oracle ADF view controller projects from a model project, emphasizing its benefits for prototyping and customization over existing tools like Oracle HeadStart.
+tags: jdeveloper, adf, oracle, generator, plugin, prototyping, development
+categories: jdeveloper-adf
+---
+
+## Introduction
+
+Hello everyone. I'd like to present a small project I've been working on in my spare time (which I don't have much of). The ultimate purpose of this "generator project" is to create a JDeveloper plugin that generates a complete view controller project for Oracle ADF using only the model project. This generator will enable programmers to create complete view controller projects (or several view controllers) at any stage of the application model project. For example, we can create a model from a database schema and then generate a complete view controller based on that model in about half an hour. We can then show this prototype to our customer and allow them to decide what necessary changes need to be performed.
+
+Besides prototyping, this can also help overcome many problems that JDeveloper programming presents. :) I know what you may be thinking: "This idea sounds similar to an existing Oracle product called HeadStart." However, this generator is flexible and can be customized to an organization's specific needs and its usual development methods for Oracle ADF. Also, I believe that programmers (go figure) like to program. This means they won't just be clicking, but actively creating business logic and unit tests on the model, which is crucial. You can also leverage existing skills within your organization using this generator, and there is practically no learning curve, as opposed to HeadStart.
+
+You can see how the generator works by watching these two videos on YouTube:
+
+*   [ADF View Controller Generator Demo Part 1](https://www.youtube.com/watch?v=JiJzFl1F4p8)
+*   [ADF View Controller Generator Demo Part 2](https://www.youtube.com/watch?v=S6nZb_ZmyQM)
+
+I hope you like it! The full source code for the project used in the demonstration can be downloaded [here](http://codingwithpassionblog.googlecode.com/files/GeneratorTutorial.zip).
