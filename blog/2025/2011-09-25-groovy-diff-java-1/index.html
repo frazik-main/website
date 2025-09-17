@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"> <html><body> <h2 id="what-is-groovy-all-about">What is Groovy all about?</h2> <p><strong>Groovy</strong> is a <a href="http://en.wikipedia.org/wiki/Dynamic_programming_language" rel="external nofollow noopener" target="_blank">dynamic programming language</a> that runs on the JVM. This means it is compiled to Java bytecode and then executed on the Java Virtual Machine. You can read more about its features and download Groovy from the <a href="http://groovy.codehaus.org/" rel="external nofollow noopener" target="_blank">official website</a>.</p> <p>After unpacking or installing Groovy, you can use the Groovy console (located at <code class="language-plaintext highlighter-rouge">$GROOVY_HOME/bin/groovyConsole</code>) for writing and experimenting with Groovy scripts.</p> <p>Groovy aims to provide greater productivity compared to Java (and other mainstream object-oriented languages), and it excels at this.</p> <p>A simple “hello world” in Groovy (no <code class="language-plaintext highlighter-rouge">main</code> method or anything required):</p> <div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">println</span> <span class="s2">"Hello programmers!"</span>
+</code></pre></div></div> <h2 id="basic-differences">Basic Differences</h2> <p>Almost all Java code is valid Groovy code, allowing for seamless mixing of Java and Groovy within your projects.</p> <ul> <li>Groovy provides more default imports than Java, including <code class="language-plaintext highlighter-rouge">java.io</code>, <code class="language-plaintext highlighter-rouge">java.math</code>, <code class="language-plaintext highlighter-rouge">java.util</code>, <code class="language-plaintext highlighter-rouge">java.net</code>, <code class="language-plaintext highlighter-rouge">groovy.lang</code>, and <code class="language-plaintext highlighter-rouge">groovy.util</code>. This is because a significant percentage of Java classes utilize these packages.</li> <li> <p>In Groovy conditional statements, both <code class="language-plaintext highlighter-rouge">null</code> values and empty collections evaluate to <code class="language-plaintext highlighter-rouge">false</code>. For example:</p> <div class="language-java highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="nc">Map</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">();</span>
+<span class="c1">// In Java you must do following for example:</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">map</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">map</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+<span class="c1">// In Groovy this is enough:</span>
+<span class="k">if</span> <span class="o">(!</span><span class="n">map</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+</code></pre></div> </div> <p>Similarly, an empty string also evaluates to <code class="language-plaintext highlighter-rouge">false</code>.</p> </li> <li> <code class="language-plaintext highlighter-rouge">public</code> is the default visibility for classes, fields, constants, and methods in Groovy, contrasting with Java’s package-private default visibility.</li> <li>Unlike Java, where the compiler forces you to catch <code class="language-plaintext highlighter-rouge">checked exceptions</code>, Groovy does not require this. While this can lead to cleaner code and remove a sense of false security, the decision of whether to catch these exceptions depends on your specific problem domain.</li> </ul> <h2 id="silent-helpers">Silent Helpers</h2> <p>Groovy offers several features that enhance productivity by removing unnecessary syntax from Java equivalents and replacing it with smart defaults.</p> <ul> <li> <strong>Semicolons</strong>: In Groovy, semicolons are generally optional. However, if you place multiple statements on a single line, you must separate them with semicolons.</li> <li> <strong>Parentheses</strong>: While generally required, parentheses are optional in a few specific cases, such as with the <code class="language-plaintext highlighter-rouge">println</code> command or closures (which will be discussed in the second part of this tutorial).</li> <li> <p><strong><code class="language-plaintext highlighter-rouge">return</code> statement</strong>: In non-void methods, the <code class="language-plaintext highlighter-rouge">return</code> statement is often optional. Groovy automatically returns the result of the last evaluated expression. For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">something</span><span class="o">()</span> <span class="o">{</span>
+    <span class="s2">"a"</span> <span class="o">==</span> <span class="s2">"b"</span>
+<span class="o">}</span>
+<span class="c1">// Will return "false".</span>
+</code></pre></div> </div> <p>However, it is often advisable to use the <code class="language-plaintext highlighter-rouge">return</code> statement explicitly for better code readability.</p> </li> </ul> <h2 id="properties-fields">Properties (fields)</h2> <p>Groovy provides field access notation for Java bean properties (or fields). It automatically generates getters and setters for private fields behind the scenes. To leverage this, simply leave the default visibility on your fields. For example:</p> <div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">()</span>
+<span class="c1">// You can access all Java bean properties</span>
+<span class="c1">// using their field name.</span>
+<span class="n">println</span> <span class="n">date</span><span class="o">.</span><span class="na">time</span>
+<span class="c1">// prints some long number...</span>
+
+<span class="kd">class</span> <span class="nc">MyClass</span> <span class="o">{</span>
+
+    <span class="c1">// Default visibility for fields is private,</span>
+    <span class="c1">// but Groovy generates setters and getters</span>
+    <span class="c1">// behind the scenes.</span>
+    <span class="n">String</span> <span class="n">firstName</span>
+    <span class="n">String</span> <span class="n">lastName</span>
+
+    <span class="c1">// Compiles without problem.</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">access</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">MyClass</span> <span class="n">myClass</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyClass</span><span class="o">()</span>
+        <span class="n">myClass</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="s2">"John"</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <h2 id="constructors">Constructors</h2> <p>In Groovy, you can instantiate beans using a <strong>list of named arguments</strong>. This powerful feature allows you to effectively treat maps as objects that can be passed around. For example:</p> <div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Here we create a new SimpleDateFormat and set default</span>
+<span class="c1">// values to some of its properties.</span>
+<span class="n">SimpleDateFormat</span> <span class="n">format</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="nf">SimpleDateFormat</span><span class="o">(</span><span class="nl">lenient:</span> <span class="kc">false</span><span class="o">,</span> <span class="nl">numberFormat:</span> <span class="s2">"ddMMyyyy"</span><span class="o">)</span>
+</code></pre></div></div> <h2 id="added-operations">Added Operations</h2> <p>Groovy introduces several new operators not found in Java:</p> <ul> <li> <p><strong>Null-safe operator (<code class="language-plaintext highlighter-rouge">?.</code>)</strong>: This operator provides null-safe object navigation, similar to a null-checked dot (<code class="language-plaintext highlighter-rouge">.</code>) operator. For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// In Java, if you have an object named "obj" that</span>
+<span class="c1">// encapsulates an object named "field", you must do</span>
+<span class="c1">// the following to check if "field" is null:</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">obj</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">obj</span><span class="o">.</span><span class="na">field</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+
+<span class="c1">// In Groovy, you can use the null-safe operator</span>
+<span class="c1">// for the same check and get the same result:</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">obj</span><span class="o">?.</span><span class="na">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+</code></pre></div> </div> <p>This operator helps avoid <code class="language-plaintext highlighter-rouge">java.lang.NullPointerException</code>s, making code safer and cleaner.</p> </li> <li> <p><strong>Elvis operator (<code class="language-plaintext highlighter-rouge">?:</code>)</strong>: This is a shortened version of Java’s ternary (if-then-else) operator. It’s playfully called the ‘Elvis Operator’ due to its resemblance to Elvis Presley’s trademark hair! For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// When using the ternary operator in Java,</span>
+<span class="c1">// you normally code something like this:</span>
+<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="o">(</span><span class="n">row</span><span class="o">.</span><span class="na">getDateFromDatabase</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span>
+             <span class="n">row</span><span class="o">.</span><span class="na">getDateFromDatabase</span><span class="o">()</span> <span class="o">:</span> <span class="k">new</span> <span class="n">Date</span><span class="o">();</span>
+<span class="c1">// In Groovy, you can get the same result by using the Elvis operator:</span>
+<span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="na">getDateFromDatabase</span> <span class="o">?:</span> <span class="k">new</span> <span class="n">Date</span><span class="o">()</span>
+<span class="c1">// It automatically checks for null values.</span>
+</code></pre></div> </div> </li> <li> <p><strong>Spread-dot operator (<code class="language-plaintext highlighter-rouge">*.</code>)</strong>: This operator calls a method on every item within a collection. For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// This will create a new List with all employees' salaries.</span>
+<span class="n">List</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">allEmployees</span><span class="o">*.</span><span class="na">getSalary</span><span class="o">()</span>
+</code></pre></div> </div> <p>This eliminates the need to loop through a list simply to extract single properties into another list, offering a more concise and Groovy way of handling collections!</p> </li> <li> <p><strong>Spaceship operator (<code class="language-plaintext highlighter-rouge">&lt;=&gt;</code>)</strong>: This operator is particularly useful when implementing the <code class="language-plaintext highlighter-rouge">Comparable</code> interface. In Java, correctly implementing the <code class="language-plaintext highlighter-rouge">int compare</code> method (returning negative if the first value is smaller, positive if bigger, or zero otherwise) requires careful attention to the API specification. Groovy simplifies this with the spaceship operator, which performs exactly this comparison:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// This method will properly compare</span>
+<span class="c1">// (in correspondence to Java API) two integers.</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="kt">int</span> <span class="n">number1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">number2</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">number1</span> <span class="o">&lt;=&gt;</span> <span class="n">number2</span>
+<span class="o">}</span>
+</code></pre></div> </div> </li> <li> <p><strong>Equals operator (<code class="language-plaintext highlighter-rouge">==</code>)</strong>: In Groovy, <code class="language-plaintext highlighter-rouge">==</code> is equivalent to Java’s <code class="language-plaintext highlighter-rouge">equals()</code> method. It is null-safe, meaning it will not throw a <code class="language-plaintext highlighter-rouge">NullPointerException</code> when dealing with null values. It’s important to note that if an object implements the <code class="language-plaintext highlighter-rouge">Comparable</code> interface, <code class="language-plaintext highlighter-rouge">==</code> will use the <code class="language-plaintext highlighter-rouge">compareTo()</code> method rather than <code class="language-plaintext highlighter-rouge">equals()</code>. For identity comparison, you can use the <code class="language-plaintext highlighter-rouge">is()</code> method.</p> </li> </ul> <h2 id="basic-types-in-groovy">Basic Types in Groovy</h2> <p>In Groovy, you have access to all primitive Java types, along with some Groovy-specific types. Additionally, you can benefit from Groovy’s syntactic sugar when working with basic types.</p> <ul> <li> <p><strong>Numbers</strong>: Groovy treats primitive types as objects, allowing you to call methods on them. For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// This is perfectly legal in Groovy</span>
+<span class="mi">222222</span><span class="o">.</span><span class="na">abs</span><span class="o">()</span>
+<span class="c1">// Although not so useful in this particular</span>
+<span class="c1">// example.</span>
+</code></pre></div> </div> <p>Groovy uses <code class="language-plaintext highlighter-rouge">BigDecimal</code> for floating-point calculations. While potentially slower than <code class="language-plaintext highlighter-rouge">long</code> and <code class="language-plaintext highlighter-rouge">double</code>, it eliminates the common quirks and precision issues associated with <code class="language-plaintext highlighter-rouge">float</code> and <code class="language-plaintext highlighter-rouge">double</code>.</p> </li> <li> <p><strong>Strings</strong>: While Java <code class="language-plaintext highlighter-rouge">String</code>s can be used, Groovy offers several advantages, most notably <strong>embedded Groovy expressions</strong> within strings. Anything enclosed within <code class="language-plaintext highlighter-rouge">${}</code> will be evaluated and interpolated into the string.</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">amount</span> <span class="o">=</span> <span class="mi">255</span>
+<span class="n">Date</span> <span class="n">today</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Date</span><span class="o">()</span>
+
+<span class="n">String</span> <span class="n">out</span> <span class="o">=</span> <span class="s2">"Something, something, ${today} is amount: ${amount}"</span>
+
+<span class="n">println</span> <span class="n">out</span>
+<span class="c1">// This will print the following:</span>
+<span class="c1">// Something, something, Sun Sep 25 18:34:52 CEST 2011 is amount: 255</span>
+</code></pre></div> </div> <p>This eliminates the need for clumsy Java string concatenation, improving readability and conciseness.</p> <p><strong>Multiline strings (<code class="language-plaintext highlighter-rouge">"""</code>)</strong> are another Groovy extension. They allow you to easily create string literals that span multiple lines and include line breaks.</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// So this is how you used to do this in Java:</span>
+<span class="n">String</span> <span class="n">bla1</span> <span class="o">=</span> <span class="s2">"Something, something,..."</span> <span class="o">+</span> <span class="s2">"\n\n"</span> <span class="o">+</span>
+              <span class="s2">"              Another thing...."</span>
+<span class="c1">// Same code in Groovy:</span>
+<span class="n">String</span> <span class="n">bla1</span> <span class="o">=</span> <span class="s2">"""Something, something,...
+
+                Another thing...."""</span>
+</code></pre></div> </div> <p>This avoids the need for <code class="language-plaintext highlighter-rouge">+ "\n" +</code> concatenation for multiline strings.</p> </li> <li> <p><strong><code class="language-plaintext highlighter-rouge">as</code> operator</strong>: This is a powerful casting operator (similar to Java’s <code class="language-plaintext highlighter-rouge">(String) someObject</code>) but with extended capabilities. It can cast <code class="language-plaintext highlighter-rouge">String</code>s to <code class="language-plaintext highlighter-rouge">Number</code>s (and vice-versa), <code class="language-plaintext highlighter-rouge">List</code>s to <code class="language-plaintext highlighter-rouge">Array</code>s (and vice-versa), <code class="language-plaintext highlighter-rouge">Set</code>s to <code class="language-plaintext highlighter-rouge">List</code>s or <code class="language-plaintext highlighter-rouge">Array</code>s (and vice-versa), and even <code class="language-plaintext highlighter-rouge">String</code>s to <code class="language-plaintext highlighter-rouge">List</code>s (and vice-versa). For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">number</span> <span class="o">=</span> <span class="o">(</span><span class="s2">"12345"</span> <span class="k">as</span> <span class="kt">int</span><span class="o">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">println</span> <span class="n">number</span>
+<span class="c1">// 12344</span>
+<span class="kt">boolean</span> <span class="n">isEqual</span> <span class="o">=</span> <span class="mi">123</span> <span class="k">as</span> <span class="n">String</span> <span class="o">==</span> <span class="s2">"123"</span>
+<span class="c1">// true</span>
+<span class="n">println</span> <span class="n">isEqual</span>
+<span class="n">List</span> <span class="n">abcList</span> <span class="o">=</span> <span class="s2">"abc"</span> <span class="k">as</span> <span class="n">List</span>
+<span class="n">println</span> <span class="n">abcList</span>
+<span class="c1">// [a, b, c]</span>
+</code></pre></div> </div> <p>These features are precisely what one would expect from a dynamic scripting language and are quite powerful.</p> </li> </ul> <h2 id="maps-lists-and-ranges">Maps, Lists, and Ranges</h2> <p>Groovy integrates list and map concepts more naturally into its type system.</p> <ul> <li> <p><strong>Lists and Maps</strong>: Groovy offers a more natural syntax for defining Lists and Maps compared to Java. It uses comma-separated sequences of items enclosed in square brackets for definition. Let’s look at some examples:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="c1">// In Java</span>
+<span class="n">List</span> <span class="n">cars1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+<span class="n">cars1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s2">"Citroen"</span><span class="o">);</span>
+<span class="n">cars1</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s2">"Audi"</span><span class="o">);</span>
+<span class="c1">// [Citroen, Audi]</span>
+
+<span class="c1">// In Groovy</span>
+<span class="n">List</span> <span class="n">cars2</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"Citroen"</span><span class="o">,</span> <span class="s2">"Audi"</span><span class="o">]</span>
+<span class="c1">// [Citroen, Audi]</span>
+
+<span class="c1">// Maps in Groovy (you know the Java part ;) )</span>
+<span class="n">Map</span> <span class="n">map1</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"amount"</span> <span class="o">:</span> <span class="mi">15</span><span class="o">,</span> <span class="s2">"size"</span> <span class="o">:</span> <span class="mi">5</span><span class="o">]</span>
+
+<span class="c1">// Empty list</span>
+<span class="n">List</span> <span class="n">l</span> <span class="o">=</span> <span class="o">[]</span>
+<span class="c1">// Empty map</span>
+<span class="n">Map</span> <span class="n">m</span> <span class="o">=</span> <span class="o">[:]</span>
+
+<span class="c1">// Get element from List</span>
+<span class="n">String</span> <span class="n">car</span> <span class="o">=</span> <span class="n">cars2</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+
+<span class="c1">// Get element from Map</span>
+<span class="n">String</span> <span class="n">amount</span> <span class="o">=</span> <span class="n">map1</span><span class="o">[</span><span class="s2">"amount"</span><span class="o">]</span>
+
+<span class="c1">// Add item to list (somewhat different)</span>
+<span class="n">cars2</span> <span class="o">&lt;&lt;</span> <span class="s2">"Ferrari"</span>
+<span class="c1">// [Citroen, Audi, Ferrari]</span>
+
+<span class="c1">// Add item to map</span>
+<span class="n">map1</span><span class="o">[</span><span class="s2">"mass"</span><span class="o">]</span> <span class="o">=</span> <span class="mi">55</span>
+</code></pre></div> </div> </li> <li> <p><strong>Ranges</strong>: Ranges are related to lists and represent a combination of a lower and upper bound. In the case of an integer range, this includes all numbers between the two bounds (inclusive). For example:</p> <div class="language-groovy highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">List</span> <span class="n">computerComponents</span> <span class="o">=</span> <span class="o">[</span><span class="s2">"Monitor"</span><span class="o">,</span> <span class="s2">"CPU"</span><span class="o">,</span> <span class="s2">"GPU"</span><span class="o">,</span> <span class="s2">"Mem"</span><span class="o">,</span> <span class="s2">"HDD"</span><span class="o">]</span>
+<span class="c1">// [Monitor, CPU, GPU, Mem, HDD]</span>
+
+<span class="c1">// Here you define only a subset of the previous list.</span>
+<span class="n">List</span> <span class="n">subComponents</span> <span class="o">=</span> <span class="n">computerComponents</span><span class="o">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">2</span><span class="o">]</span>
+<span class="c1">// [CPU, GPU]</span>
+</code></pre></div> </div> </li> </ul> <h2 id="regular-expressions">Regular Expressions</h2> <p>Groovy provides first-class support for regular expressions at the language level, introducing new literals, operators for matching, and a concise syntax for extracting groups. While regular expressions are a complex topic on their own and beyond the full scope of this introductory article, it’s important to note that Groovy uses forward slashes (not backslashes, like Java) for defining regular expressions. It also introduces two new operators for matching:</p> <ul> <li> <strong><code class="language-plaintext highlighter-rouge">=~</code></strong>: This operator checks if the pattern on the right side can be <em>found anywhere</em> within the string on the left side. It returns a <code class="language-plaintext highlighter-rouge">Matcher</code> object, which evaluates to <code class="language-plaintext highlighter-rouge">true</code> in a boolean context if a match is found.</li> <li> <strong><code class="language-plaintext highlighter-rouge">==~</code></strong>: This operator checks if the string on the left side <em>exactly matches</em> the entire pattern on the right side. It returns <code class="language-plaintext highlighter-rouge">true</code> for an exact match, <code class="language-plaintext highlighter-rouge">false</code> otherwise.</li> </ul> <p>Example:</p> <div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">println</span> <span class="s2">"999999"</span> <span class="o">==~</span> <span class="s">/\d+/</span>
+<span class="c1">// true</span>
+
+<span class="n">println</span> <span class="s2">"mercury9"</span> <span class="o">==~</span> <span class="s">/\d+/</span>
+<span class="c1">// false</span>
+
+<span class="n">println</span> <span class="s2">"mercury"</span> <span class="o">==~</span> <span class="s">/\w+/</span>
+<span class="c1">// true</span>
+</code></pre></div></div> <h2 id="what-is-groovy-missing">What is Groovy missing</h2> <p>Groovy is not missing much, but some features not present (or different) from Java include:</p> <ul> <li>Character literals.</li> <li>Java-like <code class="language-plaintext highlighter-rouge">for</code> loop (specifically, the lack of a comma operator for multiple initializations/increments).</li> <li> <code class="language-plaintext highlighter-rouge">do...while</code> loops.</li> <li>Inner and anonymous classes (though closures, to be covered in Part 2 of this tutorial, and the ability to declare multiple classes in a single Groovy file, mitigate this).</li> </ul> </body></html>

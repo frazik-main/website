@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"> <html><body> <h2 id="introduction">Introduction</h2> <p>Factory design patterns belong to the group of patterns known as “creational.” These patterns assist in the instantiation of classes, thereby separating the object creation process from its usage. (While creating new classes isn’t exactly like low-level memory allocation for pointers, this analogy highlights the underlying abstraction.) The name “factory” is derived from the concept of a “factory of objects.”</p> <p>Instead of directly using the <code class="language-plaintext highlighter-rouge">new</code> keyword for object creation, this pattern provides an alternative. With factory patterns, you can choose which concrete class to instantiate at runtime. This also allows you to introduce new classes into your code without modifying the existing base code.</p> <p>This concept largely boils down to common sense applications of polymorphism. Remember: Always program to an interface, not a concrete class!</p> <p>I will use the same example to demonstrate both patterns. In this example, we need to decorate a string with special characters. For instance, “decorate me” will become “** decorate me **” by adding two asterisks at both ends. All my examples are kept simple to focus on the core concept and the problem at hand.</p> <h2 id="factory-method">Factory Method</h2> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Simple example of Factory Method pattern.
+ * @author jan.krizan
+ */</span>
+<span class="kd">interface</span> <span class="nc">Decorator</span> <span class="o">{</span>
+
+    <span class="nc">String</span> <span class="nf">doDecorating</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">StarDecorator</span> <span class="kd">implements</span> <span class="nc">Decorator</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">doDecorating</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"** "</span> <span class="o">+</span> <span class="n">str</span> <span class="o">+</span> <span class="s">" **"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">OtherDecorator</span> <span class="kd">implements</span> <span class="nc">Decorator</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">doDecorating</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"&lt;&lt;|-- "</span> <span class="o">+</span> <span class="n">str</span> <span class="o">+</span> <span class="s">" --|&gt;&gt;"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Factory</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">STAR_DECORATOR</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">OTHER_DECORATOR</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Decorator</span> <span class="nf">createSpecificDecorator</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="no">STAR_DECORATOR</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">StarDecorator</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="no">OTHER_DECORATOR</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">OtherDecorator</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">String</span> <span class="n">nonDecoratet</span> <span class="o">=</span> <span class="s">"Please decorate me!"</span><span class="o">;</span>
+
+        <span class="nc">Decorator</span> <span class="n">decorator</span> <span class="o">=</span> <span class="n">createSpecificDecorator</span><span class="o">(</span><span class="no">STAR_DECORATOR</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">decorator</span><span class="o">.</span><span class="na">doDecorating</span><span class="o">(</span><span class="n">nonDecoratet</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p>The output of this example is: “** Please decorate me! **”. Let’s break down the code:</p> <ul> <li> <strong>Lines 5-8:</strong> We first create an interface, <code class="language-plaintext highlighter-rouge">Decorator</code>.</li> <li> <strong>Lines 10-15 and 17-22:</strong> Then, we implement that interface with <code class="language-plaintext highlighter-rouge">StarDecorator</code> and <code class="language-plaintext highlighter-rouge">OtherDecorator</code>. As you can see, this is straightforward so far.</li> <li> <strong>Lines 29-37:</strong> This section represents the factory that chooses which class to instantiate based on the input parameter.</li> <li>The <code class="language-plaintext highlighter-rouge">main</code> method then tests this functionality.</li> </ul> <h2 id="abstract-factory">Abstract Factory</h2> <p>As its name suggests, the Abstract Factory pattern operates at a higher level of abstraction. In this pattern, even the factory itself is abstract (either an interface or an abstract class), and we choose the specific factory at runtime, not the “working” class directly. This chosen factory then “knows” which classes it needs to instantiate to fulfill the task at hand.</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ *
+ * Simple example of Abstract Factory pattern.
+ * @author jan.krizan
+ */</span>
+<span class="kd">interface</span> <span class="nc">DecoratorFactory</span> <span class="o">{</span>
+
+    <span class="nc">Decorator</span> <span class="nf">createDecorator</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">StarDecoratorFactory</span> <span class="kd">implements</span> <span class="nc">DecoratorFactory</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">Decorator</span> <span class="nf">createDecorator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">StarDecorator</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">OtherDecoratorFactory</span> <span class="kd">implements</span> <span class="nc">DecoratorFactory</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">Decorator</span> <span class="nf">createDecorator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">OtherDecorator</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">interface</span> <span class="nc">Decorator</span> <span class="o">{</span>
+
+    <span class="nc">String</span> <span class="nf">doDecorating</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">StarDecorator</span> <span class="kd">implements</span> <span class="nc">Decorator</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">doDecorating</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"** "</span> <span class="o">+</span> <span class="n">str</span> <span class="o">+</span> <span class="s">" **"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">OtherDecorator</span> <span class="kd">implements</span> <span class="nc">Decorator</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">doDecorating</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"&lt;&lt;|-- "</span> <span class="o">+</span> <span class="n">str</span> <span class="o">+</span> <span class="s">" --|&gt;&gt;"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Factory</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">STAR_DECORATOR</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">OTHER_DECORATOR</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">DecoratorFactory</span> <span class="nf">createSpecificDecorator</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="no">STAR_DECORATOR</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">StarDecoratorFactory</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">==</span> <span class="no">OTHER_DECORATOR</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">OtherDecoratorFactory</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">String</span> <span class="n">nonDecoratet</span> <span class="o">=</span> <span class="s">"Please decorate me!"</span><span class="o">;</span>
+
+        <span class="nc">DecoratorFactory</span> <span class="n">decoratorFac</span> <span class="o">=</span> <span class="n">createSpecificDecorator</span><span class="o">(</span><span class="no">OTHER_DECORATOR</span><span class="o">);</span>
+
+        <span class="nc">Decorator</span> <span class="n">decorator</span> <span class="o">=</span> <span class="n">decoratorFac</span><span class="o">.</span><span class="na">createDecorator</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">decorator</span><span class="o">.</span><span class="na">doDecorating</span><span class="o">(</span><span class="n">nonDecoratet</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p>You’ll notice that this code is quite similar to the Factory Method example. However, there are small but important differences:</p> <ul> <li> <strong>Lines 11-16 and 18-23:</strong> Here, we introduce another layer of abstraction: <code class="language-plaintext highlighter-rouge">DecoratorFactory</code> and its concrete implementations. While this might seem like unnecessary code for this simple example, it can be beneficial if, for instance, you have more than one method to implement, and you don’t want all concrete classes to implement all methods (only a relevant subset). In this way, your concrete classes implement only the methods required for their specific work and can ignore others. You can extend interfaces to achieve this. If this sounds a bit confusing, I recommend searching for more comprehensive examples of the Abstract Factory pattern to see its full potential, for example, <a href="http://www.javacamp.org/designPattern/" rel="external nofollow noopener" target="_blank">here</a>.</li> </ul> <p>Creating class instances and testing are similar processes. The primary difference is the additional step of obtaining the <code class="language-plaintext highlighter-rouge">Decorator</code> instance through the <code class="language-plaintext highlighter-rouge">createDecorator</code> method of the <code class="language-plaintext highlighter-rouge">DecoratorFactory</code>.</p> <p>While using the Abstract Factory pattern for such a simple example might seem like overkill, my intention is to clearly illustrate the differences between the two patterns.</p> <p>You can download the code for these two examples from <a href="http://code.google.com/p/codingwithpassionblog/source/browse/#svn/trunk/src/org/codingwithpassion/patterns%3Fstate%3Dclosed" rel="external nofollow noopener" target="_blank">here</a>. ```</p> </body></html>

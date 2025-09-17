@@ -1,0 +1,1067 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> PL/SQL Packages for Excel and Word Automation in Oracle Forms (WEBUTIL, OLE2) | Frazik </title> <meta name="author" content="Frazik Content Knitting and Lead Alchemy"> <meta name="description" content="PL/SQL packages for automating Excel and Word document creation and manipulation within Oracle Forms 10g applications using WEBUTIL and OLE2."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/data_array.svg?a67830f68c3523b294fc45d8e9b8773d"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://frazik.com/blog/2011/plsql-word-excel/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Frazik </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">PL/SQL Packages for Excel and Word Automation in Oracle Forms (WEBUTIL, OLE2)</h1> <p class="post-meta"> Created in February 01, 2011 </p> <p class="post-tags"> <a href="/blog/2011"> <i class="fa-solid fa-calendar fa-sm"></i> 2011 </a>   ·   <a href="/blog/tag/plsql"> <i class="fa-solid fa-hashtag fa-sm"></i> plsql,</a>   <a href="/blog/tag/oracle"> <i class="fa-solid fa-hashtag fa-sm"></i> oracle</a>   <a href="/blog/tag/forms"> <i class="fa-solid fa-hashtag fa-sm"></i> forms,</a>   <a href="/blog/tag/excel"> <i class="fa-solid fa-hashtag fa-sm"></i> excel,</a>   <a href="/blog/tag/word"> <i class="fa-solid fa-hashtag fa-sm"></i> word,</a>   <a href="/blog/tag/webutil"> <i class="fa-solid fa-hashtag fa-sm"></i> webutil,</a>   <a href="/blog/tag/ole2"> <i class="fa-solid fa-hashtag fa-sm"></i> ole2,</a>   <a href="/blog/tag/automation"> <i class="fa-solid fa-hashtag fa-sm"></i> automation,</a>   <a href="/blog/tag/programming"> <i class="fa-solid fa-hashtag fa-sm"></i> programming</a>   ·   <a href="/blog/category/oracle-forms"> <i class="fa-solid fa-tag fa-sm"></i> oracle-forms,</a>   <a href="/blog/category/plsql"> <i class="fa-solid fa-tag fa-sm"></i> plsql</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="introduction">Introduction</h2> <p>Several years ago, I was given a requirement for Excel/Word reporting through a PL/SQL Oracle Forms 10g application. A key constraint was that these reports needed to populate existing templates with data, and I was prohibited from using any dedicated reporting tools. Coming from a Java and object-oriented background, I initially began developing a Java bean to be integrated into Forms. My idea was to create reports using this bean (leveraging Apache POI) and then embed it into the Forms applet.</p> <p>I was almost finished when I discovered that Oracle provides a library, WEBUTIL, which can, among other things, handle communication between Forms and Word or Excel. Consequently, I decided to leverage this library and developed the following PL/SQL packages for Word and Excel communication, utilizing WEBUTIL and OLE2.</p> <p>I hope you find them useful. I will not provide extensive inline comments within the code itself due to their complexity, but if you have questions, please feel free to comment (or contact me privately), and I will endeavor to respond as soon as possible.</p> <h2 id="excel-package">Excel Package</h2> <h3 id="package-specification">Package Specification</h3> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">PACKAGE</span> <span class="n">excel</span>
+<span class="kr">IS</span>
+   <span class="cm">/*
+    Global excel.Application Object --&gt; This represents the Excel Application object.
+    */</span>
+   <span class="n">appl_id</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Open a file to act as a template. Parameters are:
+    _application_ -- The global Excel application parameter initialized at the
+                     beginning.
+    _file_ -- The file name to open (can be from a database or filesystem).
+   */</span>
+   <span class="k">FUNCTION</span> <span class="n">file_open</span> <span class="p">(</span><span class="k">application</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Close the current file.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">file_close</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">);</span>
+
+   <span class="cm">/*
+    Saves the current file (useful for saving the current file with a different name).
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">file_save_as</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">);</span>
+
+   <span class="cm">/*
+    Insert number (not formatted)
+    x - Horizontal axis.
+    y - Vertical axis.
+    v - Value.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_number</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">NUMBER</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Insert number and format it as a decimal value.
+    x - Horizontal axis.
+    y - Vertical axis.
+    v - Value.
+    Note: !!!THIS DOES NOT WORK IN EXCEL 2007!!!
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_number_decimal</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">NUMBER</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Insert characters (not formatted)
+    x - Horizontal axis.
+    y - Vertical axis.
+    v - Value.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_char</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Insert character - formatted
+    color - Number representing the color (e.g., 15 for gray).
+    style - 'BOLD' or 'ITALIC'.
+    x - Horizontal axis.
+    y - Vertical axis.
+    v - Value.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_char_formated</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">color</span>       <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="kr">style</span>       <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Set autofit for the entire sheet.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">set_auto_fit</span> <span class="p">(</span><span class="n">worksheet</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">);</span>
+
+   <span class="cm">/*
+    Set autofit for a specified range 'r'. For example, 'A2:E11'.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">set_auto_fit_range</span> <span class="p">(</span><span class="n">worksheet</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">r</span> <span class="kt">VARCHAR2</span><span class="p">);</span>
+
+   <span class="cm">/*
+    Apply decimal format (0.00) to range 'r'.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">set_decimal_format_range</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">r</span>           <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Create a new workbook.
+   */</span>
+   <span class="k">FUNCTION</span> <span class="n">new_workbook</span> <span class="p">(</span><span class="k">application</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Create a new worksheet.
+   */</span>
+   <span class="k">FUNCTION</span> <span class="n">new_worksheet</span> <span class="p">(</span><span class="n">workbook</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Saves the file in the client's temporary folder (necessary when editing templates).
+   */</span>
+   <span class="k">FUNCTION</span> <span class="n">download_file</span> <span class="p">(</span>
+      <span class="n">file_name</span>         <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">table_name</span>        <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">column_name</span>       <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">where_condition</span>   <span class="ow">IN</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+      <span class="k">RETURN</span> <span class="kt">VARCHAR2</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Run a macro on the client's Excel document.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">run_macro_on_document</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">macro</span>      <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Limits network load (detail not provided).
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_number_array</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+</code></pre></div></div> <h3 id="package-body">Package Body</h3> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">PACKAGE</span> <span class="k">BODY</span> <span class="n">excel</span>
+<span class="kr">IS</span>
+   <span class="k">FUNCTION</span> <span class="n">file_open</span> <span class="p">(</span><span class="k">application</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="k">document</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">documents</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">documents</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">application</span><span class="p">,</span> <span class="o">'</span><span class="s1">Workbooks</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">FILE</span><span class="p">);</span>
+      <span class="k">document</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">documents</span><span class="p">,</span> <span class="o">'</span><span class="s1">Open</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">documents</span><span class="p">);</span>
+      <span class="k">RETURN</span> <span class="k">document</span><span class="p">;</span>
+   <span class="k">END</span> <span class="n">file_open</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">file_save_as</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">FILE</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">SaveAs</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">file_save_as</span><span class="p">;</span>
+
+   <span class="k">FUNCTION</span> <span class="n">new_workbook</span> <span class="p">(</span><span class="k">application</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span>
+   <span class="kr">IS</span>
+      <span class="n">workbook</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">workbooks</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">workbooks</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="k">application</span><span class="p">,</span> <span class="o">'</span><span class="s1">Workbooks</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">workbook</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">workbooks</span><span class="p">,</span> <span class="o">'</span><span class="s1">Add</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">workbooks</span><span class="p">);</span>
+      <span class="k">RETURN</span> <span class="n">workbook</span><span class="p">;</span>
+   <span class="k">END</span> <span class="n">new_workbook</span><span class="p">;</span>
+
+   <span class="k">FUNCTION</span> <span class="n">new_worksheet</span> <span class="p">(</span><span class="n">workbook</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span>
+   <span class="kr">IS</span>
+      <span class="n">worksheets</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">worksheet</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">worksheets</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="o">'</span><span class="s1">Worksheets</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">worksheet</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">worksheets</span><span class="p">,</span> <span class="o">'</span><span class="s1">Add</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">worksheets</span><span class="p">);</span>
+      <span class="k">RETURN</span> <span class="n">worksheet</span><span class="p">;</span>
+   <span class="k">END</span> <span class="n">new_worksheet</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">file_close</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+   <span class="kr">IS</span>
+   <span class="k">BEGIN</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Close</span><span class="o">'</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">file_close</span><span class="p">;</span>
+
+   <span class="cm">/*
+       Macro:    Cells(3, 4).Value = 3
+                 Cells(3, 4).Select
+                 Selection.NumberFormat = "0.00"
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_number_decimal</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">NUMBER</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">cell</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="k">IF</span> <span class="n">v</span> <span class="ow">IS</span> <span class="ow">NOT</span> <span class="ow">NULL</span>
+      <span class="kr">THEN</span>
+         <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+         <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Value</span><span class="o">'</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">selection</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Numberformat</span><span class="o">'</span><span class="p">,</span> <span class="o">'</span><span class="s1">#.##0,00</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selection</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">cell</span><span class="p">);</span>
+      <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+   <span class="k">END</span><span class="p">;</span>
+
+   <span class="cm">/* Macro:
+       Cells(x, y).Value = v
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_number</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">NUMBER</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">cell</span>   <span class="n">ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="k">IF</span> <span class="n">v</span> <span class="ow">IS</span> <span class="ow">NOT</span> <span class="ow">NULL</span>
+      <span class="kr">THEN</span>
+         <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+         <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Value</span><span class="o">'</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">cell</span><span class="p">);</span>
+      <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+   <span class="k">END</span><span class="p">;</span>
+
+
+   <span class="k">PROCEDURE</span> <span class="n">insert_char</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">cell</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="k">IF</span> <span class="n">v</span> <span class="ow">IS</span> <span class="ow">NOT</span> <span class="ow">NULL</span>
+      <span class="kr">THEN</span>
+         <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+         <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Value</span><span class="o">'</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">cell</span><span class="p">);</span>
+      <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+   <span class="k">END</span><span class="p">;</span>
+
+
+   <span class="cm">/*
+       Macro:
+           Cells(x, y).Value = v
+           Cells(x, y).Select
+           Selection.Interior.ColorIndex = color
+           if (style in 'BOLD')
+               Selection.Font.Bold = True
+           else if (style in 'ITALIC')
+               Selection.Font.Italic = True
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_char_formated</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">x</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">y</span>           <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="n">v</span>           <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">color</span>       <span class="kt">NUMBER</span><span class="p">,</span>
+      <span class="kr">style</span>       <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">cell</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">font</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">interior</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="k">IF</span> <span class="n">v</span> <span class="ow">IS</span> <span class="ow">NOT</span> <span class="ow">NULL</span>
+      <span class="kr">THEN</span>
+         <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+         <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Value</span><span class="o">'</span><span class="p">,</span> <span class="n">v</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">selection</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">font</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Font</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">interior</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Interior</span><span class="o">'</span><span class="p">);</span>
+
+         <span class="k">IF</span> <span class="nf">UPPER</span> <span class="p">(</span><span class="kr">style</span><span class="p">)</span> <span class="ow">IN</span> <span class="p">(</span><span class="o">'</span><span class="s1">BOLD</span><span class="o">'</span><span class="p">,</span> <span class="o">'</span><span class="s1">ITALIC</span><span class="o">'</span><span class="p">)</span>
+         <span class="kr">THEN</span>
+            <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="kr">style</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+         <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">interior</span><span class="p">,</span> <span class="o">'</span><span class="s1">ColorIndex</span><span class="o">'</span><span class="p">,</span> <span class="n">color</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">interior</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">font</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selection</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">cell</span><span class="p">);</span>
+      <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+   <span class="k">END</span><span class="p">;</span>
+
+   <span class="cm">/*
+       Macro:
+           Range(r).Select
+           Selection.Columns.AutoFit
+           Cells(1,1).Select
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">set_auto_fit_range</span> <span class="p">(</span><span class="n">worksheet</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">r</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="c1">--range</span>
+      <span class="n">rang</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">colum</span>       <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">cell</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+      <span class="n">rang</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Range</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">rang</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selection</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">colum</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Columns</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">colum</span><span class="p">,</span> <span class="o">'</span><span class="s1">AutoFit</span><span class="o">'</span><span class="p">);</span>
+      <span class="c1">--now select upper (1,1) for deselection.</span>
+      <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">colum</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selection</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">rang</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">set_auto_fit_range</span><span class="p">;</span>
+
+   <span class="cm">/*
+       Macro:
+           Range(r).Select
+           Selection.Numberformat = "0.00"
+           Cells(1,1).Select
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">set_decimal_format_range</span> <span class="p">(</span>
+      <span class="n">worksheet</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">r</span>           <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="c1">--range</span>
+      <span class="n">rang</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="c1">--colum Client_OLE2.Obj_Type;</span>
+      <span class="n">cell</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">r</span><span class="p">);</span>
+      <span class="n">rang</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Range</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">rang</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selection</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="c1">--colum:= Client_OLE2.invoke_obj(selection, 'Columns');</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">set_property</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Numberformat</span><span class="o">'</span><span class="p">,</span> <span class="o">'</span><span class="s1">#.##0,00</span><span class="o">'</span><span class="p">);</span>
+      <span class="c1">--Client_OLE2.invoke(colum, 'AutoFit');</span>
+      <span class="c1">--now select upper (1,1) for deselection.</span>
+      <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+      <span class="c1">--Client_OLE2.release_obj(colum);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selection</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">rang</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">set_decimal_format_range</span><span class="p">;</span>
+
+   <span class="cm">/*
+       Macro:Cells.Select
+           Selection.Columns.AutoFit
+           Cells(1,1).Select
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">set_auto_fit</span> <span class="p">(</span><span class="n">worksheet</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">args</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">cell</span>        <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">colum</span>       <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selection</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">colum</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Columns</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">colum</span><span class="p">,</span> <span class="o">'</span><span class="s1">AutoFit</span><span class="o">'</span><span class="p">);</span>
+      <span class="c1">--now select upper (1,1) for deselection.</span>
+      <span class="n">args</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">cell</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">get_obj_property</span> <span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cells</span><span class="o">'</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">args</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">colum</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selection</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">cell</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">set_auto_fit</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">run_macro_on_document</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">macro</span>      <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">macro</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">excel</span><span class="p">.</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Run</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+   <span class="k">END</span><span class="p">;</span>
+
+   <span class="k">FUNCTION</span> <span class="n">download_file</span> <span class="p">(</span>
+      <span class="n">file_name</span>         <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">table_name</span>        <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">column_name</span>       <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">where_condition</span>   <span class="ow">IN</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+      <span class="k">RETURN</span> <span class="kt">VARCHAR2</span>
+   <span class="kr">IS</span>
+      <span class="n">l_ok</span>          <span class="kt">BOOLEAN</span><span class="p">;</span>
+      <span class="n">c_file_name</span>   <span class="kt">VARCHAR2</span> <span class="p">(</span><span class="mi">512</span><span class="p">);</span>
+      <span class="n">c_path</span>        <span class="kt">VARCHAR2</span> <span class="p">(</span><span class="mi">255</span><span class="p">);</span>
+   <span class="k">BEGIN</span>
+      <span class="n">SYNCHRONIZE</span><span class="p">;</span>
+      <span class="n">c_path</span> <span class="o">:=</span> <span class="n">client_win_api_environment</span><span class="p">.</span><span class="n">get_temp_directory</span> <span class="p">(</span><span class="k">FALSE</span><span class="p">);</span>
+
+      <span class="k">IF</span> <span class="n">c_path</span> <span class="ow">IS</span> <span class="ow">NULL</span>
+      <span class="kr">THEN</span>
+         <span class="n">c_path</span> <span class="o">:=</span> <span class="o">'</span><span class="s1">C:</span><span class="se">\'</span><span class="s1">;
+      ELSE
+         c_path := c_path || </span><span class="o">'</span><span class="err">\</span><span class="o">'</span><span class="s1">;
+      END IF;
+
+      c_file_name := c_path || file_name;
+      l_ok :=
+         webutil_file_transfer.db_to_client_with_progress
+                                                   (c_file_name,
+                                                    table_name,
+                                                    column_name,
+                                                    where_condition,
+                                                    </span><span class="o">'</span><span class="n">Transfer</span> <span class="kr">on</span> <span class="k">file</span> <span class="k">system</span><span class="o">'</span><span class="s1">,
+                                                    </span><span class="o">'</span><span class="n">Progress</span><span class="o">'</span><span class="s1">
+                                                   );
+      SYNCHRONIZE;
+
+      IF NOT l_ok
+      THEN
+         msg_popup (</span><span class="o">'</span><span class="k">File</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">in</span> <span class="k">database</span><span class="o">'</span><span class="s1">, </span><span class="o">'</span><span class="n">E</span><span class="o">'</span><span class="s1">, TRUE);
+      END IF;
+
+      RETURN c_path || file_name;
+   END download_file;
+END;
+</span></code></pre></div></div> <h2 id="word-package">Word Package</h2> <h3 id="package-specification-1">Package Specification</h3> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">PACKAGE</span> <span class="n">word</span>
+<span class="kr">IS</span>
+   <span class="cm">/*
+    Global Word.Application Object --&gt; Represents the Word Application object.
+   */</span>
+   <span class="n">appl_id</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Open a file to act as a template. Parameters are:
+    _application_ -- The global Word application parameter initialized at the
+                     beginning.
+    _file_ -- The file name to open (can be from a database or filesystem).
+   */</span>
+   <span class="k">FUNCTION</span> <span class="n">file_open</span> <span class="p">(</span><span class="k">application</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Close the current file.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">file_close</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">);</span>
+
+   <span class="cm">/*
+    Saves the current file (useful for saving the current file with a different name).
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">file_save_as</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">);</span>
+
+   <span class="cm">/*
+    (Core functionality of this package) Inserts a value into a specific Word bookmark.
+    _document_ -- The Word document object.
+    _bookmark_ -- Name of the bookmark defined in the Word template.
+    _content_ -- Content to insert into the bookmark.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insertafter_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    InsertAfter_Bookmark inserts text after a bookmark and then deletes the bookmark. This is not
+    ideal when iterating through values, so this procedure does not delete the bookmark after insertion.
+    Same parameters as the previous one.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">replace_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Same as the previous procedure, but handles the next line for you.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insertafter_bookmark_next</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    After inserting a value, this procedure moves the selection to the next row in the table (meaning the cell directly below).
+    This is essential for iterating through a Word table, one row at a time.
+    A new row must be manually created if it does not exist.!!!
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insertafter_bookmark_down</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Deletes a bookmark.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">delete_bookmark</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">bookmark</span> <span class="kt">VARCHAR2</span><span class="p">);</span>
+
+   <span class="cm">/*
+    Creates a new table row.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">insert_new_table_row</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    Moves a bookmark (ONLY within a table) left, right, up, or down.
+    _direction_ can have the following values: 'UP', 'DOWN', 'LEFT', 'RIGHT'.
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">move_table_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>    <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">direction</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="cm">/*
+    File download.
+    _file_name_  -- The client-side file name.
+    _table_name_ -- The table containing the BLOB column.
+    _column_name_ -- The BLOB column name holding the Word template.
+    _where_condition_ -- The WHERE clause filter.
+   */</span>
+   <span class="k">FUNCTION</span> <span class="n">download_file</span> <span class="p">(</span>
+      <span class="n">file_name</span>         <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">table_name</span>        <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">column_name</span>       <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">where_condition</span>   <span class="ow">IN</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+      <span class="k">RETURN</span> <span class="kt">VARCHAR2</span><span class="p">;</span>
+
+   <span class="cm">/*
+    Calls macros on bookmarks (primarily for testing).
+   */</span>
+   <span class="k">PROCEDURE</span> <span class="n">run_macro_on_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">macro</span>      <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">run_macro_on_document</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">macro</span>      <span class="kt">VARCHAR2</span>
+   <span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+</code></pre></div></div> <h3 id="package-body-1">Package Body</h3> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">PACKAGE</span> <span class="k">BODY</span> <span class="n">word</span>
+<span class="kr">IS</span>
+   <span class="k">FUNCTION</span> <span class="n">file_open</span> <span class="p">(</span><span class="k">application</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+      <span class="k">RETURN</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="k">document</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">documents</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">documents</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">application</span><span class="p">,</span> <span class="o">'</span><span class="s1">documents</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">FILE</span><span class="p">);</span>
+      <span class="k">document</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">documents</span><span class="p">,</span> <span class="o">'</span><span class="s1">Open</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">documents</span><span class="p">);</span>
+      <span class="k">RETURN</span> <span class="k">document</span><span class="p">;</span>
+   <span class="k">END</span> <span class="n">file_open</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">file_close</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">)</span>
+   <span class="kr">IS</span>
+   <span class="k">BEGIN</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Close</span><span class="o">'</span><span class="p">);</span>
+   <span class="c1">--CLIENT_OLE2.RELEASE_OBJ(document);</span>
+   <span class="k">END</span> <span class="n">file_close</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">file_save_as</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="k">FILE</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">FILE</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">SaveAs</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+   <span class="c1">--CLIENT_OLE2.RELEASE_OBJ(document);</span>
+   <span class="k">END</span> <span class="n">file_save_as</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">replace_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">content</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Delete</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">InsertAfter</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">replace_bookmark</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">insertafter_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">content</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">InsertAfter</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">insertafter_bookmark</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">insertafter_bookmark_next</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">content</span> <span class="o">||</span> <span class="nf">CHR</span> <span class="p">(</span><span class="mi">13</span><span class="p">));</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">InsertAfter</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">insertafter_bookmark_next</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">insertafter_bookmark_down</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="k">content</span>    <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">content</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">InsertAfter</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cut</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">SelectCell</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">MoveDown</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Paste</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">insertafter_bookmark_down</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">delete_bookmark</span> <span class="p">(</span><span class="k">document</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">bookmark</span> <span class="kt">VARCHAR2</span><span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Delete</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">delete_bookmark</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">run_macro_on_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">macro</span>      <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">macro</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Run</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">run_macro_on_document</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">macro</span>      <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="c1">--bookmarkCollection := CLIENT_OLE2.INVOKE_OBJ(document, 'Bookmarks', arg_list);</span>
+      <span class="c1">--arg_list := CLIENT_OLE2.CREATE_ARGLIST;</span>
+      <span class="c1">--CLIENT_OLE2.ADD_ARG(arg_list, bookmark);</span>
+      <span class="c1">--bookmarkObj := CLIENT_OLE2.INVOKE_OBJ(bookmarkCollection, 'Item',arg_list);</span>
+      <span class="c1">--CLIENT_OLE2.DESTROY_ARGLIST(arg_list);</span>
+
+      <span class="c1">--CLIENT_OLE2.INVOKE(bookmarkObj, 'Select');</span>
+      <span class="c1">--selectionObj := CLIENT_OLE2.INVOKE_OBJ(appl_id, 'Selection');</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">macro</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Run</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+   <span class="c1">--CLIENT_OLE2.RELEASE_OBJ(selectionObj);</span>
+   <span class="c1">--CLIENT_OLE2.RELEASE_OBJ(bookmarkObj);</span>
+   <span class="c1">--CLIENT_OLE2.RELEASE_OBJ(bookmarkCollection);</span>
+   <span class="k">END</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">insert_new_table_row</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">InsertRowsBelow</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">insert_new_table_row</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">move_down_table_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cut</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">SelectCell</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">MoveDown</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Paste</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">move_down_table_bookmark</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">move_up_table_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cut</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">SelectCell</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">MoveUp</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Paste</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">move_up_table_bookmark</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">move_left_table_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cut</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">SelectCell</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">MoveUp</span><span class="o">'</span><span class="p">);</span> <span class="c1">-- This might be a copy-paste error and should be MoveLeft</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Paste</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">move_left_table_bookmark</span><span class="p">;</span>
+
+   <span class="k">PROCEDURE</span> <span class="n">move_table_bookmark</span> <span class="p">(</span>
+      <span class="k">document</span>    <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">,</span>
+      <span class="n">bookmark</span>    <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">direction</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+   <span class="kr">IS</span>
+      <span class="n">arg_list</span>             <span class="n">client_ole2</span><span class="p">.</span><span class="n">list_type</span><span class="p">;</span>
+      <span class="n">bookmarkcollection</span>   <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">bookmarkobj</span>          <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+      <span class="n">selectionobj</span>         <span class="n">client_ole2</span><span class="p">.</span><span class="n">obj_type</span><span class="p">;</span>
+   <span class="k">BEGIN</span>
+      <span class="n">bookmarkcollection</span> <span class="o">:=</span>
+                     <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="k">document</span><span class="p">,</span> <span class="o">'</span><span class="s1">Bookmarks</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">arg_list</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">create_arglist</span><span class="p">;</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">add_arg</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">bookmark</span><span class="p">);</span>
+      <span class="n">bookmarkobj</span> <span class="o">:=</span>
+                <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">,</span> <span class="o">'</span><span class="s1">Item</span><span class="o">'</span><span class="p">,</span> <span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">destroy_arglist</span> <span class="p">(</span><span class="n">arg_list</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Select</span><span class="o">'</span><span class="p">);</span>
+      <span class="n">selectionobj</span> <span class="o">:=</span> <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke_obj</span> <span class="p">(</span><span class="n">appl_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">Selection</span><span class="o">'</span><span class="p">);</span>
+
+      <span class="k">IF</span> <span class="nf">UPPER</span> <span class="p">(</span><span class="n">direction</span><span class="p">)</span> <span class="ow">IN</span> <span class="p">(</span><span class="o">'</span><span class="s1">UP</span><span class="o">'</span><span class="p">,</span> <span class="o">'</span><span class="s1">DOWN</span><span class="o">'</span><span class="p">,</span> <span class="o">'</span><span class="s1">LEFT</span><span class="o">'</span><span class="p">,</span> <span class="o">'</span><span class="s1">RIGHT</span><span class="o">'</span><span class="p">)</span>
+      <span class="kr">THEN</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Cut</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">SelectCell</span><span class="o">'</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Move</span><span class="o">'</span> <span class="o">||</span> <span class="n">direction</span><span class="p">);</span>
+         <span class="n">client_ole2</span><span class="p">.</span><span class="n">invoke</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">,</span> <span class="o">'</span><span class="s1">Paste</span><span class="o">'</span><span class="p">);</span>
+      <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">selectionobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkobj</span><span class="p">);</span>
+      <span class="n">client_ole2</span><span class="p">.</span><span class="n">RELEASE_OBJ</span> <span class="p">(</span><span class="n">bookmarkcollection</span><span class="p">);</span>
+   <span class="k">END</span> <span class="n">move_table_bookmark</span><span class="p">;</span>
+
+   <span class="k">FUNCTION</span> <span class="n">download_file</span> <span class="p">(</span>
+      <span class="n">file_name</span>         <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">table_name</span>        <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">column_name</span>       <span class="ow">IN</span>   <span class="kt">VARCHAR2</span><span class="p">,</span>
+      <span class="n">where_condition</span>   <span class="ow">IN</span>   <span class="kt">VARCHAR2</span>
+   <span class="p">)</span>
+      <span class="k">RETURN</span> <span class="kt">VARCHAR2</span>
+   <span class="kr">IS</span>
+      <span class="n">l_ok</span>          <span class="kt">BOOLEAN</span><span class="p">;</span>
+      <span class="n">c_file_name</span>   <span class="kt">VARCHAR2</span> <span class="p">(</span><span class="mi">512</span><span class="p">);</span>
+      <span class="n">c_path</span>        <span class="kt">VARCHAR2</span> <span class="p">(</span><span class="mi">255</span><span class="p">);</span>
+   <span class="k">BEGIN</span>
+      <span class="n">SYNCHRONIZE</span><span class="p">;</span>
+      <span class="n">c_path</span> <span class="o">:=</span> <span class="n">client_win_api_environment</span><span class="p">.</span><span class="n">get_temp_directory</span> <span class="p">(</span><span class="k">FALSE</span><span class="p">);</span>
+
+      <span class="k">IF</span> <span class="n">c_path</span> <span class="ow">IS</span> <span class="ow">NULL</span>
+      <span class="kr">THEN</span>
+         <span class="n">c_path</span> <span class="o">:=</span> <span class="o">'</span><span class="s1">C:</span><span class="se">\'</span><span class="s1">;
+      ELSE
+         c_path := c_path || </span><span class="o">'</span><span class="err">\</span><span class="o">'</span><span class="s1">;
+      END IF;
+
+      c_file_name := c_path || file_name;
+      l_ok :=
+         webutil_file_transfer.db_to_client_with_progress
+                                                   (c_file_name,
+                                                    table_name,
+                                                    column_name,
+                                                    where_condition,
+                                                    </span><span class="o">'</span><span class="n">Transfer</span> <span class="kr">on</span> <span class="k">file</span> <span class="k">system</span><span class="o">'</span><span class="s1">,
+                                                    </span><span class="o">'</span><span class="n">Progress</span><span class="o">'</span><span class="s1">
+                                                   );
+      SYNCHRONIZE;
+      RETURN c_path || file_name;
+   END download_file;
+END;
+</span></code></pre></div></div> <h2 id="simple-test-procedure">Simple Test Procedure</h2> <div class="language-plsql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">PROCEDURE</span> <span class="k">Call</span><span class="p">(</span><span class="n">c_prog</span> <span class="ow">IN</span> <span class="kt">VARCHAR2</span><span class="p">,</span><span class="n">param1</span> <span class="ow">IN</span> <span class="kt">VARCHAR2</span> <span class="kr">DEFAULT</span> <span class="kr">NULL</span><span class="p">,</span><span class="n">value1</span> <span class="ow">IN</span> <span class="kt">VARCHAR2</span> <span class="kr">DEFAULT</span> <span class="kr">NULL</span><span class="p">,</span>
+                                    <span class="n">param2</span> <span class="ow">IN</span> <span class="kt">VARCHAR2</span> <span class="kr">DEFAULT</span> <span class="kr">NULL</span><span class="p">,</span><span class="n">value2</span> <span class="ow">IN</span> <span class="kt">VARCHAR2</span> <span class="kr">DEFAULT</span> <span class="kr">NULL</span><span class="p">)</span> <span class="kr">IS</span>
+  <span class="n">list_id</span> <span class="n">Paramlist</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+   <span class="c1">-- Check if list exists.</span>
+   <span class="n">list_id</span> <span class="o">:=</span> <span class="n">Get_Parameter_List</span><span class="p">(</span><span class="o">'</span><span class="s1">param_list</span><span class="o">'</span><span class="p">);</span>
+   <span class="k">IF</span> <span class="ow">NOT</span> <span class="n">Id_Null</span><span class="p">(</span><span class="n">list_id</span><span class="p">)</span> <span class="kr">THEN</span>
+     <span class="n">Destroy_Parameter_List</span><span class="p">(</span><span class="n">list_id</span><span class="p">);</span> <span class="c1">-- If it exists, destroy it!</span>
+   <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+
+   <span class="n">list_id</span> <span class="o">:=</span> <span class="n">Create_Parameter_List</span><span class="p">(</span><span class="o">'</span><span class="s1">param_list</span><span class="o">'</span><span class="p">);</span>
+
+   <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">ps_sif</span><span class="o">'</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="p">:</span><span class="k">Global</span><span class="p">.</span><span class="n">ps_sif</span><span class="p">);</span>
+   <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">frm_sif</span><span class="o">'</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="p">:</span><span class="k">Global</span><span class="p">.</span><span class="n">frm_sif</span><span class="p">);</span>
+   <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">god_sif</span><span class="o">'</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="p">:</span><span class="k">Global</span><span class="p">.</span><span class="n">god_sif</span><span class="p">);</span>
+   <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">ana_id</span><span class="o">'</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="p">:</span><span class="k">Global</span><span class="p">.</span><span class="n">ana_id</span><span class="p">);</span>
+   <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">id_radnik</span><span class="o">'</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="p">:</span><span class="k">Global</span><span class="p">.</span><span class="n">id_radnik</span><span class="p">);</span>
+   <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="o">'</span><span class="s1">forma</span><span class="o">'</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="nf">UPPER</span><span class="p">(</span><span class="n">c_prog</span><span class="p">));</span>
+
+   <span class="k">IF</span> <span class="n">param1</span> <span class="ow">IS</span> <span class="ow">NOT</span> <span class="ow">NULL</span> <span class="kr">THEN</span>
+     <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="n">value1</span><span class="p">);</span>
+   <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+
+   <span class="k">IF</span> <span class="n">param2</span> <span class="ow">IS</span> <span class="ow">NOT</span> <span class="ow">NULL</span> <span class="kr">THEN</span>
+     <span class="n">Add_Parameter</span><span class="p">(</span><span class="n">list_id</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span><span class="n">TEXT_PARAMETER</span><span class="p">,</span> <span class="n">value2</span><span class="p">);</span>
+   <span class="k">END</span> <span class="k">IF</span><span class="p">;</span>
+
+
+   <span class="n">CALL_FORM</span><span class="p">(</span><span class="n">c_prog</span> <span class="o">||</span> <span class="o">'</span><span class="s1">.FMX</span><span class="o">'</span><span class="p">,</span> <span class="n">NO_HIDE</span><span class="p">,</span> <span class="n">DO_REPLACE</span><span class="p">,</span> <span class="n">NO_QUERY_ONLY</span><span class="p">,</span> <span class="n">list_id</span><span class="p">);</span>
+
+<span class="k">END</span><span class="p">;</span>
+</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2022-08-04-serverless-react/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2014-09-06-erasure-bridge-method/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2014-03-12-threads-java/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2014-01-18-book-improving-design/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2013-09-01-barbra-liskov/"></a> </li> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2025 Frazik Content Knitting and Lead Alchemy. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a>. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>

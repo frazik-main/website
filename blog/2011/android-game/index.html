@@ -1,0 +1,986 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Developing an Android 2D Game - Hexxagon-like | Frazik </title> <meta name="author" content="Frazik Content Knitting and Lead Alchemy"> <meta name="description" content="A tutorial on developing a 2D Android game similar to Hexxagon, covering game rules, class design, UI, and animation using Java 2D interfaces."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/data_array.svg?a67830f68c3523b294fc45d8e9b8773d"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://frazik.com/blog/2011/android-game/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Frazik </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Developing an Android 2D Game - Hexxagon-like</h1> <p class="post-meta"> Created in April 07, 2011 </p> <p class="post-tags"> <a href="/blog/2011"> <i class="fa-solid fa-calendar fa-sm"></i> 2011 </a>   ·   <a href="/blog/tag/android"> <i class="fa-solid fa-hashtag fa-sm"></i> android,</a>   <a href="/blog/tag/game"> <i class="fa-solid fa-hashtag fa-sm"></i> game</a>   <a href="/blog/tag/development"> <i class="fa-solid fa-hashtag fa-sm"></i> development,</a>   <a href="/blog/tag/java"> <i class="fa-solid fa-hashtag fa-sm"></i> java,</a>   <a href="/blog/tag/2d"> <i class="fa-solid fa-hashtag fa-sm"></i> 2d</a>   <a href="/blog/tag/game"> <i class="fa-solid fa-hashtag fa-sm"></i> game,</a>   <a href="/blog/tag/animation"> <i class="fa-solid fa-hashtag fa-sm"></i> animation,</a>   <a href="/blog/tag/hexxagon"> <i class="fa-solid fa-hashtag fa-sm"></i> hexxagon,</a>   <a href="/blog/tag/programming"> <i class="fa-solid fa-hashtag fa-sm"></i> programming</a>   ·   <a href="/blog/category/android-development"> <i class="fa-solid fa-tag fa-sm"></i> android-development,</a>   <a href="/blog/category/game-development"> <i class="fa-solid fa-tag fa-sm"></i> game-development</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="introduction">Introduction</h2> <p>When developing Android games, you can choose to use OpenGL (for 3D game development) or Java drawing interfaces for simpler 2D games. In this example, I will demonstrate how to develop an Android 2D game. This game is similar to “Hexxagon,” which I played long ago on my old DOS box (ah… memories: 386SX, 2MB RAM, Trident 512KB, 42MB HDD, BASIC, TURBO PASCAL… those were the times!).</p> <p>The main goal in this game is to have as many balls as possible at the end. The rules are as follows: You have balls, and you can either move them or copy them (only up to a distance of three places). Whether a ball performs a move or a copy depends on the distance it needs to travel. A ball is copied only if the distance is 1. You perform a move into an empty destination field. Any opponent ball around the destination empty field will be “transformed” to your ball’s color.</p> <p>Since this explanation might not be entirely clear, I’ve created a simple video example on YouTube. Please watch it to better understand the basic game logic (it’s certainly better than this written description!).</p> <p><a href="https://www.youtube.com/watch?v=KDGctcun9S8" rel="external nofollow noopener" target="_blank">Watch the game demo on YouTube</a></p> <h2 id="class-design">Class Design</h2> <p>I’ve added many comments to the code to enhance readability and usefulness. If you’re interested in the details, please refer to the source. Here, I will only explain the main class organization and design decisions. You can download the <a href="http://codingwithpassionblog.googlecode.com/files/MinMaxBalls.zip" rel="external nofollow noopener" target="_blank">full source code</a> from my Google Code repository.</p> <p>Please note that this code is far from being finished or polished. But enough with the excuses, let’s begin!</p> <p>The game’s implementation is separated into two main classes. The first class, <code class="language-plaintext highlighter-rouge">BoardView</code>, is a custom <code class="language-plaintext highlighter-rouge">View</code> responsible for animation, drawing, and handling user input (screen touches). The second class, the main <code class="language-plaintext highlighter-rouge">Activity</code>, is responsible for game flow, saving and restoring state, and initialization. This is also the only <code class="language-plaintext highlighter-rouge">Activity</code> in this game. There is also a third, less prominent class that handles the core game logic.</p> <p>A strong motivation behind this implementation was to separate the view from the game-flow controller. <code class="language-plaintext highlighter-rouge">BoardView</code> handles only aspects closely coupled with animation and drawing, while the <code class="language-plaintext highlighter-rouge">Activity</code> (<code class="language-plaintext highlighter-rouge">MinMaxBalls</code>) manages the game logic and flow.</p> <p>I must admit something: The game’s title might mislead experienced programmers into thinking that this implementation uses the Minimax algorithm to calculate the next move. In the initial iteration of the game, this algorithm was present, but it consumed too much CPU power. Furthermore, in a real-world scenario, we cannot predict that a user will always choose the best possible move, so the algorithm behaved strangely when users made illogical choices. Therefore, I decided it was best to exclude it for now. I will write another blog post about this algorithm, but in the context of a simpler game scenario (perhaps Tic-Tac-Toe or something similar).</p> <h2 id="minmaxballs-main-activity">MinMaxBalls Main Activity</h2> <p>Regardless, here is the code for the <code class="language-plaintext highlighter-rouge">MinMaxBalls</code> main activity:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.codingwithpassion.minmaxballs</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.text.DecimalFormat</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.text.NumberFormat</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.codingwithpassion.minmaxballs.BoardView.MoveStageListener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.app.Activity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.app.AlertDialog</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.app.Dialog</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.content.DialogInterface</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.content.Intent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.text.SpannableString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.text.method.LinkMovementMethod</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.text.util.Linkify</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.util.Log</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.Menu</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.MenuItem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.TextView</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.Toast</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Main activity for game. It is unnecessarily complex and
+ * needs to be refactored at some point in the future.
+ * @author jan.krizan
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MinMaxBalls</span> <span class="kd">extends</span> <span class="nc">Activity</span> <span class="o">{</span>
+
+ <span class="c1">// This is the actual location where we store the state of the board. It is here because</span>
+ <span class="c1">// of save instance state stuff and decoupling between view/controller and model.</span>
+ <span class="c1">// So this activity is something like a model.</span>
+ <span class="kd">private</span> <span class="nc">State</span><span class="o">[][]</span> <span class="n">positions</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">State</span><span class="o">[</span><span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">][</span><span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">];</span>
+
+ <span class="c1">// Game instance that is used mainly for calculating computer moves.</span>
+ <span class="kd">private</span> <span class="nc">Game</span> <span class="n">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Game</span><span class="o">();</span>
+
+ <span class="c1">// Two TextView views that we use for tracking current score.</span>
+ <span class="kd">private</span> <span class="nc">TextView</span> <span class="n">humanScore</span><span class="o">;</span>
+ <span class="kd">private</span> <span class="nc">TextView</span> <span class="n">computerScore</span><span class="o">;</span>
+
+ <span class="c1">// Dialog and menu IDs.</span>
+ <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DIALOG_RESET</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+ <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DIALOG_ABOUT</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+ <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MENU_RESET</span> <span class="o">=</span> <span class="mi">3</span><span class="o">;</span>
+ <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MENU_ABOUT</span> <span class="o">=</span> <span class="mi">4</span><span class="o">;</span>
+
+ <span class="c1">// Intent parameter ID.</span>
+ <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DIFFICULTY</span> <span class="o">=</span> <span class="s">"minmaxdifficulty"</span><span class="o">;</span>
+
+ <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isFinish</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+ <span class="kd">private</span> <span class="nc">NumberFormat</span> <span class="n">numberFormat</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DecimalFormat</span><span class="o">(</span><span class="s">"00"</span><span class="o">);</span>
+
+ <span class="c1">// Instance of our view.</span>
+ <span class="kd">private</span> <span class="nc">BoardView</span> <span class="n">boardView</span><span class="o">;</span>
+
+ <span class="cm">/*
+  * OK, main activity, nothing clever.
+  */</span>
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+
+  <span class="n">setContentView</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">main</span><span class="o">);</span>
+
+  <span class="n">boardView</span> <span class="o">=</span> <span class="o">(</span><span class="nc">BoardView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">boardView</span><span class="o">);</span>
+  <span class="n">humanScore</span> <span class="o">=</span> <span class="o">(</span><span class="nc">TextView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">humanScore</span><span class="o">);</span>
+  <span class="n">computerScore</span> <span class="o">=</span> <span class="o">(</span><span class="nc">TextView</span><span class="o">)</span> <span class="n">findViewById</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">compScore</span><span class="o">);</span>
+
+  <span class="n">boardView</span><span class="o">.</span><span class="na">setFocusable</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+  <span class="n">boardView</span><span class="o">.</span><span class="na">setFocusableInTouchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+  <span class="n">boardView</span><span class="o">.</span><span class="na">setMoveStageListener</span><span class="o">(</span><span class="k">new</span> <span class="nc">CellSelected</span><span class="o">());</span>
+
+  <span class="c1">// Initialize positions.</span>
+  <span class="nc">Game</span><span class="o">.</span><span class="na">setEmptyValues</span><span class="o">(</span><span class="n">positions</span><span class="o">);</span>
+  <span class="nc">Game</span><span class="o">.</span><span class="na">setSolidSquares</span><span class="o">(</span><span class="n">positions</span><span class="o">);</span>
+  <span class="nc">Game</span><span class="o">.</span><span class="na">initializeStartPositions</span><span class="o">(</span><span class="n">positions</span><span class="o">);</span>
+
+  <span class="c1">// Initial game difficulty.</span>
+  <span class="kt">int</span> <span class="n">difficulty</span> <span class="o">=</span> <span class="nc">Game</span><span class="o">.</span><span class="na">MEDIUM_DIFFICULTY</span><span class="o">;</span>
+
+  <span class="nc">Bundle</span> <span class="n">extras</span> <span class="o">=</span> <span class="n">getIntent</span><span class="o">().</span><span class="na">getExtras</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">extras</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">difficulty</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">extras</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="no">DIFFICULTY</span><span class="o">));</span>
+   <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="s">"difficult"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">difficulty</span><span class="o">));</span>
+  <span class="o">}</span>
+
+  <span class="c1">// We set difficulty to know what kind (which "hard-nest") of moves to perform.</span>
+  <span class="n">game</span><span class="o">.</span><span class="na">setDifficulty</span><span class="o">(</span><span class="n">difficulty</span><span class="o">);</span>
+
+  <span class="c1">// Bind positions table to View values.</span>
+  <span class="n">boardView</span><span class="o">.</span><span class="na">setPositions</span><span class="o">(</span><span class="n">positions</span><span class="o">);</span>
+
+  <span class="n">refreshScore</span><span class="o">();</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Simple but effective refresh score.
+  */</span>
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">refreshScore</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">humanScore</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">numberFormat</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">countPlayerBalls</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span>
+    <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">)));</span>
+  <span class="n">computerScore</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">numberFormat</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">countPlayerBalls</span><span class="o">(</span>
+    <span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">)));</span>
+ <span class="o">}</span>
+
+ <span class="nd">@Override</span>
+ <span class="kd">protected</span> <span class="nc">Dialog</span> <span class="nf">onCreateDialog</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">id</span> <span class="o">==</span> <span class="no">DIALOG_RESET</span><span class="o">)</span> <span class="o">{</span>
+   <span class="nc">String</span> <span class="n">easy</span> <span class="o">=</span> <span class="nc">String</span>
+     <span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getText</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">difficulty_easy</span><span class="o">));</span>
+   <span class="nc">String</span> <span class="n">hard</span> <span class="o">=</span> <span class="nc">String</span>
+     <span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getText</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">difficulty_hard</span><span class="o">));</span>
+   <span class="nc">String</span> <span class="n">medium</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="k">this</span>
+     <span class="o">.</span><span class="na">getText</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">difficulty_medium</span><span class="o">));</span>
+
+   <span class="kd">final</span> <span class="nc">CharSequence</span><span class="o">[]</span> <span class="n">items</span> <span class="o">=</span> <span class="o">{</span> <span class="n">easy</span><span class="o">,</span> <span class="n">medium</span><span class="o">,</span> <span class="n">hard</span> <span class="o">};</span>
+
+   <span class="nc">AlertDialog</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+   <span class="n">builder</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">game_difficulty</span><span class="o">);</span>
+   <span class="n">builder</span><span class="o">.</span><span class="na">setItems</span><span class="o">(</span><span class="n">items</span><span class="o">,</span> <span class="k">new</span> <span class="nc">DialogInterface</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="nc">DialogInterface</span> <span class="n">dialog</span><span class="o">,</span> <span class="kt">int</span> <span class="n">item</span><span class="o">)</span> <span class="o">{</span>
+     <span class="nc">String</span> <span class="n">difficulty</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">MEDIUM_DIFFICULTY</span><span class="o">);</span>
+     <span class="k">if</span> <span class="o">(</span><span class="n">item</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">difficulty</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">EASY_DIFFICULTY</span><span class="o">);</span>
+     <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">item</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">difficulty</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">MEDIUM_DIFFICULTY</span><span class="o">);</span>
+     <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">item</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">difficulty</span> <span class="o">=</span> <span class="nc">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">HARD_DIFFICULTY</span><span class="o">);</span>
+     <span class="o">}</span>
+     <span class="nc">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="n">getIntent</span><span class="o">();</span>
+     <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="no">DIFFICULTY</span><span class="o">,</span> <span class="n">difficulty</span><span class="o">);</span>
+     <span class="n">finish</span><span class="o">();</span>
+     <span class="n">startActivity</span><span class="o">(</span><span class="n">intent</span><span class="o">);</span>
+    <span class="o">}</span>
+   <span class="o">});</span>
+   <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">id</span> <span class="o">==</span> <span class="no">DIALOG_ABOUT</span><span class="o">)</span> <span class="o">{</span>
+   <span class="kd">final</span> <span class="nc">TextView</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TextView</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+   <span class="kd">final</span> <span class="nc">SpannableString</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SpannableString</span><span class="o">(</span>
+     <span class="k">this</span><span class="o">.</span><span class="na">getText</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">blog_link</span><span class="o">));</span>
+   <span class="nc">Linkify</span><span class="o">.</span><span class="na">addLinks</span><span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="nc">Linkify</span><span class="o">.</span><span class="na">WEB_URLS</span><span class="o">);</span>
+   <span class="n">message</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+   <span class="n">message</span><span class="o">.</span><span class="na">setMovementMethod</span><span class="o">(</span><span class="nc">LinkMovementMethod</span><span class="o">.</span><span class="na">getInstance</span><span class="o">());</span>
+   <span class="nc">AlertDialog</span><span class="o">.</span><span class="na">Builder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AlertDialog</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+   <span class="n">builder</span><span class="o">.</span><span class="na">setView</span><span class="o">(</span><span class="n">message</span><span class="o">)</span>
+     <span class="o">.</span><span class="na">setCancelable</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+     <span class="o">.</span><span class="na">setIcon</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">stat_notify_error</span><span class="o">)</span>
+     <span class="o">.</span><span class="na">setNegativeButton</span><span class="o">(</span><span class="s">"OK"</span><span class="o">,</span>
+       <span class="k">new</span> <span class="nc">DialogInterface</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="nc">DialogInterface</span> <span class="n">dialog</span><span class="o">,</span>
+          <span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+         <span class="n">dialog</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>
+        <span class="o">}</span>
+       <span class="o">});</span>
+   <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onCreateOptionsMenu</span><span class="o">(</span><span class="nc">Menu</span> <span class="n">menu</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">onCreateOptionsMenu</span><span class="o">(</span><span class="n">menu</span><span class="o">);</span>
+
+  <span class="kt">int</span> <span class="n">groupId</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+  <span class="nc">MenuItem</span> <span class="n">menuItemReset</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">groupId</span><span class="o">,</span> <span class="no">MENU_RESET</span><span class="o">,</span> <span class="nc">Menu</span><span class="o">.</span><span class="na">NONE</span><span class="o">,</span>
+    <span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">new_game</span><span class="o">);</span>
+  <span class="n">menuItemReset</span><span class="o">.</span><span class="na">setIcon</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">star_big_on</span><span class="o">);</span>
+  <span class="nc">MenuItem</span> <span class="n">menuItemAbout</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">groupId</span><span class="o">,</span> <span class="no">MENU_ABOUT</span><span class="o">,</span> <span class="nc">Menu</span><span class="o">.</span><span class="na">NONE</span><span class="o">,</span>
+    <span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">about</span><span class="o">);</span>
+  <span class="n">menuItemAbout</span><span class="o">.</span><span class="na">setIcon</span><span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">stat_notify_error</span><span class="o">);</span>
+
+  <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onOptionsItemSelected</span><span class="o">(</span><span class="nc">MenuItem</span> <span class="n">item</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">onOptionsItemSelected</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+
+  <span class="k">if</span> <span class="o">(</span><span class="n">item</span><span class="o">.</span><span class="na">getItemId</span><span class="o">()</span> <span class="o">==</span> <span class="no">MENU_RESET</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">showDialog</span><span class="o">(</span><span class="no">DIALOG_RESET</span><span class="o">);</span>
+   <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">item</span><span class="o">.</span><span class="na">getItemId</span><span class="o">()</span> <span class="o">==</span> <span class="no">MENU_ABOUT</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">showDialog</span><span class="o">(</span><span class="no">DIALOG_ABOUT</span><span class="o">);</span>
+   <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">showToast</span><span class="o">(</span><span class="kt">int</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">(),</span> <span class="n">message</span><span class="o">,</span> <span class="nc">Toast</span><span class="o">.</span><span class="na">LENGTH_LONG</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">show</span><span class="o">();</span>
+ <span class="o">}</span>
+
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSaveInstanceState</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">bundle</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">onSaveInstanceState</span><span class="o">(</span><span class="n">bundle</span><span class="o">);</span>
+
+  <span class="k">if</span> <span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">player</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(!</span><span class="n">isFinish</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">source_i</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">sourceMove</span><span class="o">.</span><span class="na">i</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">source_j</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">sourceMove</span><span class="o">.</span><span class="na">j</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">source_i</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">source_j</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+     <span class="k">if</span> <span class="o">(</span><span class="n">positions</span><span class="o">[</span><span class="n">source_i</span><span class="o">][</span><span class="n">source_j</span><span class="o">]</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">positions</span><span class="o">[</span><span class="n">source_i</span><span class="o">][</span><span class="n">source_j</span><span class="o">]</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">;</span>
+     <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">bestMove</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">);</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">player</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">;</span>
+    <span class="n">performMove</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">(),</span> <span class="kc">false</span><span class="o">);</span>
+    <span class="n">changecolors</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">(),</span> <span class="kc">false</span><span class="o">);</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">positions</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+   <span class="kt">int</span><span class="o">[]</span> <span class="n">pos</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">positions</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+   <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">positions</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">pos</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">].</span><span class="na">getValue</span><span class="o">();</span>
+   <span class="o">}</span>
+   <span class="n">bundle</span><span class="o">.</span><span class="na">putIntArray</span><span class="o">(</span><span class="s">"pos"</span> <span class="o">+</span> <span class="n">i</span><span class="o">,</span> <span class="n">pos</span><span class="o">);</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onRestoreInstanceState</span><span class="o">(</span><span class="nc">Bundle</span> <span class="n">bundle</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+   <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="nc">State</span>
+      <span class="o">.</span><span class="na">fromInt</span><span class="o">(</span><span class="n">bundle</span><span class="o">.</span><span class="na">getIntArray</span><span class="o">(</span><span class="s">"pos"</span> <span class="o">+</span> <span class="n">i</span><span class="o">)[</span><span class="n">j</span><span class="o">]);</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="n">refreshScore</span><span class="o">();</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * OK, the real meat of game-flow control. It uses semaphore-like
+  * poor design to control flow and it is crucially important to
+  * preserve the order of if-s and boolean fields checking.
+  * Very, very poor design (dragons live here kind of design!) so:
+  * TODO: Please refactor this. I get a pretty nasty poor design smell here!
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">CellSelected</span> <span class="kd">implements</span> <span class="nc">MoveStageListener</span> <span class="o">{</span>
+
+  <span class="c1">// Semaphore-like boolean fields.</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isCompMove</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isCompSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isHumanBallChange</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isCompBallsChange</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isCompVictory</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isHumanVictory</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+  <span class="cm">/*
+   * React to user click on the board. If the user clicks on their
+   * ball, then select that ball. If they select an empty field, then
+   * move the ball. Otherwise, display an error by displaying an error animation
+   * on that square.
+   */</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">userClick</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+   <span class="nc">Coordinate</span> <span class="n">humanSource</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">sourceMove</span><span class="o">;</span>
+   <span class="k">if</span> <span class="o">(!</span><span class="n">isFinish</span> <span class="o">&amp;&amp;</span> <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">player</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">;</span>
+    <span class="c1">// If we already selected a ball and now we change our mind.</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">humanSource</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">())</span> <span class="o">{</span>
+     <span class="n">positions</span><span class="o">[</span><span class="n">humanSource</span><span class="o">.</span><span class="na">i</span><span class="o">][</span><span class="n">humanSource</span><span class="o">.</span><span class="na">j</span><span class="o">]</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">;</span>
+    <span class="n">boardView</span><span class="o">.</span><span class="na">selectBall</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">);</span>
+    <span class="n">humanSource</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+    <span class="n">humanSource</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+   <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(!</span><span class="n">isFinish</span>
+     <span class="o">&amp;&amp;</span> <span class="n">humanSource</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">()</span>
+     <span class="o">&amp;&amp;</span> <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">EMPTY</span>
+     <span class="o">&amp;&amp;</span> <span class="nc">Game</span><span class="o">.</span><span class="na">isAllowedDistance</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">humanSource</span><span class="o">.</span><span class="na">i</span><span class="o">,</span>
+       <span class="n">humanSource</span><span class="o">.</span><span class="na">j</span><span class="o">,</span> <span class="mi">2</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">destinationMove</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">destinationMove</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+    <span class="n">performMove</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+    <span class="n">isHumanBallChange</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+   <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">boardView</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">);</span>
+    <span class="n">isHumanBallChange</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+   <span class="o">}</span>
+
+  <span class="o">}</span>
+
+  <span class="cm">/*
+   * If animation is complete, then it is obvious we need to do something.
+   * What will be done is decided by checking various boolean fields.
+   */</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">animationComplete</span><span class="o">()</span> <span class="o">{</span>
+   <span class="c1">// TODO: refactor:</span>
+   <span class="c1">// Excessive conditional logic, must preserve conditions order of</span>
+   <span class="c1">// conditions...bad, bad design. :(</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">isCompVictory</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">changeAllColors</span><span class="o">(</span><span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">);</span>
+    <span class="n">isCompVictory</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="c1">// stop all activity</span>
+    <span class="n">isCompSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+   <span class="o">}</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">isHumanVictory</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">changeAllColors</span><span class="o">(</span><span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">);</span>
+    <span class="n">isHumanVictory</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="c1">// stop all activity</span>
+    <span class="n">isCompSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+   <span class="o">}</span>
+
+   <span class="k">if</span> <span class="o">(</span><span class="n">isCompBallsChange</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">changecolors</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+    <span class="n">isCompBallsChange</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">refreshScore</span><span class="o">();</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">deleteMove</span><span class="o">();</span>
+    <span class="n">checkWin</span><span class="o">();</span>
+   <span class="o">}</span>
+
+   <span class="k">if</span> <span class="o">(</span><span class="n">isCompMove</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="n">performMove</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+    <span class="n">isCompMove</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">isCompBallsChange</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+   <span class="o">}</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">isCompSelected</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="c1">// Calculate move for computer.</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">bestMove</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">);</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">player</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">;</span>
+    <span class="nc">Coordinate</span> <span class="n">compSelect</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">().</span><span class="na">sourceMove</span><span class="o">;</span>
+    <span class="n">boardView</span><span class="o">.</span><span class="na">selectBall</span><span class="o">(</span><span class="n">compSelect</span><span class="o">.</span><span class="na">i</span><span class="o">,</span> <span class="n">compSelect</span><span class="o">.</span><span class="na">j</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">);</span>
+    <span class="n">positions</span><span class="o">[</span><span class="n">compSelect</span><span class="o">.</span><span class="na">i</span><span class="o">][</span><span class="n">compSelect</span><span class="o">.</span><span class="na">j</span><span class="o">]</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">;</span>
+    <span class="n">isCompSelected</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">isCompMove</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+   <span class="o">}</span>
+
+   <span class="k">if</span> <span class="o">(</span><span class="n">isHumanBallChange</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">changecolors</span><span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">getMove</span><span class="o">(),</span> <span class="kc">true</span><span class="o">);</span>
+    <span class="n">isHumanBallChange</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">isCompSelected</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="n">refreshScore</span><span class="o">();</span>
+    <span class="n">game</span><span class="o">.</span><span class="na">deleteMove</span><span class="o">();</span>
+    <span class="n">checkWin</span><span class="o">();</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">checkWin</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">isWin</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">checkWhoWin</span><span class="o">();</span>
+   <span class="o">}</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">game</span><span class="o">.</span><span class="na">isWin</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">checkWhoWin</span><span class="o">();</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">checkWhoWin</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">countPlayerBalls</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">)</span> <span class="o">&gt;=</span> <span class="nc">Game</span>
+     <span class="o">.</span><span class="na">countPlayerBalls</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">isHumanVictory</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="n">showToast</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">human_wins</span><span class="o">);</span>
+    <span class="n">isCompVictory</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">isFinish</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+   <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">isCompVictory</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="n">showToast</span><span class="o">(</span><span class="no">R</span><span class="o">.</span><span class="na">string</span><span class="o">.</span><span class="na">comp_wins</span><span class="o">);</span>
+    <span class="n">isHumanVictory</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">isFinish</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">changecolors</span><span class="o">(</span><span class="nc">Move</span> <span class="n">move</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">withAnimation</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">State</span> <span class="n">toWho</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="na">player</span><span class="o">;</span>
+  <span class="nc">State</span> <span class="n">fromWho</span> <span class="o">=</span> <span class="n">toWho</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span> <span class="o">?</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span> <span class="o">:</span> <span class="nc">State</span><span class="o">.</span><span class="na">HUMAN</span><span class="o">;</span>
+  <span class="kt">boolean</span><span class="o">[][]</span> <span class="n">changeThese</span> <span class="o">=</span> <span class="nc">Game</span><span class="o">.</span><span class="na">changeColors</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span>
+    <span class="n">move</span><span class="o">.</span><span class="na">destinationMove</span><span class="o">.</span><span class="na">i</span><span class="o">,</span> <span class="n">move</span><span class="o">.</span><span class="na">destinationMove</span><span class="o">.</span><span class="na">j</span><span class="o">,</span> <span class="n">fromWho</span><span class="o">);</span>
+
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+   <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">changeThese</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">])</span> <span class="o">{</span>
+     <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">toWho</span><span class="o">;</span>
+    <span class="o">}</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">withAnimation</span><span class="o">)</span>
+   <span class="n">boardView</span><span class="o">.</span><span class="na">changeColors</span><span class="o">(</span><span class="n">changeThese</span><span class="o">,</span> <span class="n">fromWho</span><span class="o">,</span> <span class="n">toWho</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">changeAllColors</span><span class="o">(</span><span class="nc">State</span> <span class="n">fromWho</span><span class="o">,</span> <span class="nc">State</span> <span class="n">toWho</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">boolean</span><span class="o">[][]</span> <span class="n">changeThese</span> <span class="o">=</span> <span class="nc">Game</span><span class="o">.</span><span class="na">changeAllColors</span><span class="o">(</span><span class="n">positions</span><span class="o">,</span> <span class="n">fromWho</span><span class="o">);</span>
+
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+   <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">BOARD_SIZE</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">changeThese</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">])</span> <span class="o">{</span>
+     <span class="n">positions</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">toWho</span><span class="o">;</span>
+    <span class="o">}</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="n">boardView</span><span class="o">.</span><span class="na">changeColors</span><span class="o">(</span><span class="n">changeThese</span><span class="o">,</span> <span class="n">fromWho</span><span class="o">,</span> <span class="n">toWho</span><span class="o">);</span>
+
+ <span class="o">}</span>
+
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">performMove</span><span class="o">(</span><span class="nc">Move</span> <span class="n">move</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">withAnimation</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">start_i</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="na">sourceMove</span><span class="o">.</span><span class="na">i</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">start_j</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="na">sourceMove</span><span class="o">.</span><span class="na">j</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">dest_i</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="na">destinationMove</span><span class="o">.</span><span class="na">i</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">dest_j</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="na">destinationMove</span><span class="o">.</span><span class="na">j</span><span class="o">;</span>
+
+  <span class="nc">State</span> <span class="n">who</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="na">player</span><span class="o">;</span>
+  <span class="k">if</span> <span class="o">(</span><span class="nc">Game</span><span class="o">.</span><span class="na">getDistance</span><span class="o">(</span><span class="n">start_i</span><span class="o">,</span> <span class="n">start_j</span><span class="o">,</span> <span class="n">dest_i</span><span class="o">,</span> <span class="n">dest_j</span><span class="o">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">withAnimation</span><span class="o">)</span>
+    <span class="n">boardView</span><span class="o">.</span><span class="na">moveBall</span><span class="o">(</span><span class="n">start_i</span><span class="o">,</span> <span class="n">start_j</span><span class="o">,</span> <span class="n">dest_i</span><span class="o">,</span> <span class="n">dest_j</span><span class="o">,</span> <span class="n">who</span><span class="o">);</span>
+   <span class="n">positions</span><span class="o">[</span><span class="n">start_i</span><span class="o">][</span><span class="n">start_j</span><span class="o">]</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">EMPTY</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">withAnimation</span><span class="o">)</span>
+    <span class="n">boardView</span><span class="o">.</span><span class="na">createBall</span><span class="o">(</span><span class="n">dest_i</span><span class="o">,</span> <span class="n">dest_j</span><span class="o">,</span> <span class="n">who</span><span class="o">);</span>
+   <span class="n">positions</span><span class="o">[</span><span class="n">start_i</span><span class="o">][</span><span class="n">start_j</span><span class="o">]</span> <span class="o">=</span> <span class="n">who</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="n">positions</span><span class="o">[</span><span class="n">dest_i</span><span class="o">][</span><span class="n">dest_j</span><span class="o">]</span> <span class="o">=</span> <span class="n">who</span><span class="o">;</span>
+ <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div> <p>You can see that there is one inner class named <code class="language-plaintext highlighter-rouge">CellSelected</code>. Its responsibility is to control game flow and handle “messages” from the view that are sent via method calls. It also saves instance field data and performs additional moves when necessary (e.g., when the user tilts the screen) in its <code class="language-plaintext highlighter-rouge">onSaveInstanceState</code> method.</p> <h2 id="boardview-class">BoardView Class</h2> <p>The second interesting class is <code class="language-plaintext highlighter-rouge">BoardView</code>.</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.codingwithpassion.minmaxballs</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.content.Context</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.graphics.Canvas</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.graphics.Color</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.graphics.Paint</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.graphics.Paint.Style</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Handler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Message</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Handler.Callback</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.util.AttributeSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.MotionEvent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.View</span><span class="o">;</span>
+
+<span class="cm">/**
+ * Implementation of board view/controller. It draws the board, handles user events
+ * (touch), screen rotation, and animation.
+ *
+ * @author jan.krizan
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BoardView</span> <span class="kd">extends</span> <span class="nc">View</span> <span class="o">{</span>
+
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">BOARD_MARGIN</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">BOARD_SIZE</span> <span class="o">=</span> <span class="mi">7</span><span class="o">;</span>
+ <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">GRID_SIZE</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span>
+
+ <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">MSG_ANIMATE</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+ <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Handler</span> <span class="n">animationHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Handler</span><span class="o">(</span>
+   <span class="k">new</span> <span class="nf">AnimationMessageHandler</span><span class="o">());</span>
+
+ <span class="kd">private</span> <span class="nc">MoveStageListener</span> <span class="n">moveStageListener</span><span class="o">;</span>
+
+ <span class="cm">/**
+  * Listener interface that sends messages to Activity. The Activity then handles
+  * these messages.
+  */</span>
+ <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">MoveStageListener</span> <span class="o">{</span>
+
+  <span class="c1">// Fires when user clicks somewhere on the board.</span>
+  <span class="kt">void</span> <span class="nf">userClick</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">);</span>
+
+  <span class="c1">// When animation completes, the current move stage is complete.</span>
+  <span class="kt">void</span> <span class="nf">animationComplete</span><span class="o">();</span>
+ <span class="o">}</span>
+
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMoveStageListener</span><span class="o">(</span><span class="nc">MoveStageListener</span> <span class="n">selectionListener</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">moveStageListener</span> <span class="o">=</span> <span class="n">selectionListener</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * Animation interface that controls the animation handler.
+  */</span>
+ <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Animation</span> <span class="o">{</span>
+  <span class="c1">// This is called in the onDraw method.</span>
+  <span class="kt">void</span> <span class="nf">animate</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">);</span>
+
+  <span class="c1">// Says if animation should end.</span>
+  <span class="kt">boolean</span> <span class="nf">isFinish</span><span class="o">();</span>
+
+  <span class="c1">// Controls which cells will be animated and hence should be</span>
+  <span class="c1">// ignored when we draw the grid.</span>
+  <span class="kt">boolean</span> <span class="nf">skip</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">);</span>
+
+  <span class="c1">// How many frames per second we will use for our animation.</span>
+  <span class="kt">int</span> <span class="nf">fps</span><span class="o">();</span>
+ <span class="o">}</span>
+
+ <span class="kd">private</span> <span class="nc">Animation</span> <span class="n">animation</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NullAnimation</span><span class="o">();</span>
+
+ <span class="c1">// Here we store the animation board state with all players and intermediate</span>
+ <span class="c1">// states for cells.</span>
+ <span class="kd">private</span> <span class="nc">State</span><span class="o">[][]</span> <span class="n">positions</span><span class="o">;</span>
+
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setPositions</span><span class="o">(</span><span class="nc">State</span><span class="o">[][]</span> <span class="n">positions</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">positions</span> <span class="o">=</span> <span class="n">positions</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="c1">// Paint for board table line. It is here because onPaint is</span>
+ <span class="c1">// using it several times per frame.</span>
+ <span class="kd">private</span> <span class="nc">Paint</span> <span class="n">boardLinePaint</span><span class="o">;</span>
+
+ <span class="c1">// Width of board is also calculated dynamically when screen</span>
+ <span class="c1">// size changes.</span>
+ <span class="kd">private</span> <span class="kt">float</span> <span class="n">boardWidth</span><span class="o">;</span>
+
+ <span class="c1">// Maximum radius of ball - calculated dynamically also...</span>
+ <span class="kd">private</span> <span class="kt">float</span> <span class="n">maxRadius</span><span class="o">;</span>
+
+ <span class="c1">// Can freely be here because it is calculated every time screen size</span>
+ <span class="c1">// changes.</span>
+ <span class="kd">private</span> <span class="kt">float</span> <span class="n">cellSize</span><span class="o">;</span>
+
+ <span class="kd">public</span> <span class="nf">BoardView</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">,</span> <span class="nc">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">);</span>
+  <span class="n">requestFocus</span><span class="o">();</span>
+  <span class="n">boardLinePaint</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Paint</span><span class="o">();</span>
+  <span class="n">boardLinePaint</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="mh">0xFFFFFFFF</span><span class="o">);</span>
+  <span class="n">boardLinePaint</span><span class="o">.</span><span class="na">setStrokeWidth</span><span class="o">(</span><span class="no">GRID_SIZE</span><span class="o">);</span>
+  <span class="n">boardLinePaint</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="nc">Style</span><span class="o">.</span><span class="na">STROKE</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Classic onDraw. It paints table and ball states. When we need to animate
+  * stuff, we call it to refresh the canvas state (easy as in classic Java 2D
+  * graphics animation).
+  */</span>
+ <span class="nd">@Override</span>
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onDraw</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+  <span class="kt">float</span> <span class="n">offsetBoardWidth</span> <span class="o">=</span> <span class="n">boardWidth</span> <span class="o">-</span> <span class="no">BOARD_MARGIN</span><span class="o">;</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="na">drawRect</span><span class="o">(</span><span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">offsetBoardWidth</span><span class="o">,</span>
+    <span class="n">offsetBoardWidth</span><span class="o">,</span> <span class="n">boardLinePaint</span><span class="o">);</span>
+
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+   <span class="kt">float</span> <span class="n">cellStep</span> <span class="o">=</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">cellSize</span><span class="o">);</span>
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawLine</span><span class="o">(</span><span class="n">cellStep</span><span class="o">,</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">cellStep</span><span class="o">,</span> <span class="n">offsetBoardWidth</span><span class="o">,</span>
+     <span class="n">boardLinePaint</span><span class="o">);</span>
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawLine</span><span class="o">(</span><span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">cellStep</span><span class="o">,</span> <span class="n">offsetBoardWidth</span><span class="o">,</span> <span class="n">cellStep</span><span class="o">,</span>
+     <span class="n">boardLinePaint</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="n">setValuesFromDatas</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+
+  <span class="n">animation</span><span class="o">.</span><span class="na">animate</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Set values from board state structure and skip animated items.
+  */</span>
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">setValuesFromDatas</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+   <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+    <span class="c1">// If these are currently animated squares, do not</span>
+    <span class="c1">// draw them!</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">animation</span><span class="o">.</span><span class="na">skip</span><span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">))</span>
+     <span class="n">drawBall</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">positions</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">],</span> <span class="n">maxRadius</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span>
+       <span class="mi">255</span><span class="o">);</span>
+    <span class="n">drawSolidSquare</span><span class="o">(</span><span class="n">canvas</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">positions</span><span class="o">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]);</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Method for drawing a filled square (when the user touches an inappropriate section
+  * of the table). It is stupid to create a Paint object every time, but it is here
+  * for readability and encapsulation reasons.
+  */</span>
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">drawWhiteSquare</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="kt">int</span> <span class="n">alpha</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Paint</span> <span class="n">paint</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Paint</span><span class="o">();</span>
+  <span class="n">paint</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="nc">Color</span><span class="o">.</span><span class="na">WHITE</span><span class="o">);</span>
+  <span class="n">paint</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="nc">Style</span><span class="o">.</span><span class="na">FILL</span><span class="o">);</span>
+  <span class="n">paint</span><span class="o">.</span><span class="na">setAlpha</span><span class="o">(</span><span class="n">alpha</span><span class="o">);</span>
+  <span class="n">drawCustomRect</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="n">paint</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">drawCustomRect</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">,</span> <span class="nc">Paint</span> <span class="n">paint</span><span class="o">,</span>
+   <span class="kt">float</span> <span class="n">shrink</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="na">drawRect</span><span class="o">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">j</span>
+    <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="n">shrink</span><span class="o">,</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">*</span> <span class="n">cellSize</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">-</span> <span class="n">shrink</span><span class="o">,</span> <span class="o">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">-</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">paint</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Draw fancy "disabled" and solid square. Same story here for Paint object
+  * as in drawWhiteSquare method.
+  */</span>
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">drawSolidSquare</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="nc">State</span> <span class="n">who</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">who</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">BLOCK</span><span class="o">)</span> <span class="o">{</span>
+
+   <span class="nc">Paint</span> <span class="n">paintBigger</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Paint</span><span class="o">();</span>
+   <span class="n">paintBigger</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="mh">0xFFA800A8</span><span class="o">);</span>
+   <span class="n">paintBigger</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="nc">Style</span><span class="o">.</span><span class="na">FILL</span><span class="o">);</span>
+
+   <span class="n">drawCustomRect</span><span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="n">paintBigger</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+
+   <span class="nc">Paint</span> <span class="n">paintSmaller</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Paint</span><span class="o">();</span>
+   <span class="n">paintSmaller</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="mh">0xFFFC54FC</span><span class="o">);</span>
+   <span class="n">paintSmaller</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="nc">Style</span><span class="o">.</span><span class="na">FILL</span><span class="o">);</span>
+
+   <span class="kt">float</span> <span class="n">shrink</span> <span class="o">=</span> <span class="n">cellSize</span> <span class="o">*</span> <span class="mf">0.15f</span><span class="o">;</span>
+
+   <span class="n">drawCustomRect</span><span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="n">paintSmaller</span><span class="o">,</span> <span class="n">shrink</span><span class="o">);</span>
+
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawLine</span><span class="o">((</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span>
+     <span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+       <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="n">shrink</span><span class="o">,</span>
+     <span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="n">shrink</span><span class="o">,</span>
+     <span class="n">paintSmaller</span><span class="o">);</span>
+
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawLine</span><span class="o">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span>
+     <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">cellSize</span>
+     <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">-</span> <span class="n">shrink</span><span class="o">,</span> <span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">cellSize</span>
+     <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">paintSmaller</span><span class="o">);</span>
+
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawLine</span><span class="o">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">j</span>
+     <span class="o">*</span> <span class="n">cellSize</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">cellSize</span>
+     <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">-</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">j</span> <span class="o">*</span> <span class="n">cellSize</span>
+     <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">-</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">paintSmaller</span><span class="o">);</span>
+
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawLine</span><span class="o">((</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">cellSize</span> <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="n">j</span>
+     <span class="o">*</span> <span class="n">cellSize</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">,</span> <span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">cellSize</span>
+     <span class="o">+</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">+</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">j</span> <span class="o">*</span> <span class="n">cellSize</span>
+     <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span> <span class="o">-</span> <span class="n">shrink</span><span class="o">,</span> <span class="n">paintSmaller</span><span class="o">);</span>
+  <span class="o">}</span>
+
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Draw custom balls. We can change balls alpha and radius in animation.
+  */</span>
+ <span class="kd">private</span> <span class="kt">void</span> <span class="nf">drawBall</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="nc">State</span> <span class="n">who</span><span class="o">,</span> <span class="kt">float</span> <span class="n">radius</span><span class="o">,</span> <span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">,</span>
+   <span class="kt">int</span> <span class="n">alpha</span><span class="o">)</span> <span class="o">{</span>
+
+  <span class="c1">// Calculate where we will put ball in our grid based on coordinates in</span>
+  <span class="c1">// grid.</span>
+  <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">cellSize</span> <span class="o">*</span> <span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">cellSize</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">;</span>
+  <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cellSize</span> <span class="o">*</span> <span class="o">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">cellSize</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="no">BOARD_MARGIN</span><span class="o">;</span>
+  <span class="c1">// Skip empty every time.</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">who</span> <span class="o">!=</span> <span class="nc">State</span><span class="o">.</span><span class="na">EMPTY</span> <span class="o">&amp;&amp;</span> <span class="n">who</span> <span class="o">!=</span> <span class="nc">State</span><span class="o">.</span><span class="na">BLOCK</span><span class="o">)</span> <span class="o">{</span>
+   <span class="nc">Paint</span> <span class="n">smallBall</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Paint</span><span class="o">();</span>
+
+   <span class="kt">int</span> <span class="n">color</span> <span class="o">=</span> <span class="nc">Color</span><span class="o">.</span><span class="na">RED</span><span class="o">;</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">who</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="nc">Color</span><span class="o">.</span><span class="na">BLACK</span><span class="o">;</span>
+   <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">who</span> <span class="o">==</span> <span class="nc">State</span><span class="o">.</span><span class="na">COMP</span><span class="o">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="nc">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">;</span>
+   <span class="n">smallBall</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="n">color</span><span class="o">);</span>
+   <span class="n">smallBall</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="nc">Style</span><span class="o">.</span><span class="na">FILL</span><span class="o">);</span>
+   <span class="n">smallBall</span><span class="o">.</span><span class="na">setAlpha</span><span class="o">(</span><span class="n">alpha</span><span class="o">);</span>
+
+   <span class="nc">Paint</span> <span class="n">bigBall</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Paint</span><span class="o">();</span>
+   <span class="n">bigBall</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="nc">Color</span><span class="o">.</span><span class="na">WHITE</span><span class="o">);</span>
+   <span class="n">bigBall</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="nc">Style</span><span class="o">.</span><span class="na">FILL</span><span class="o">);</span>
+   <span class="n">bigBall</span><span class="o">.</span><span class="na">setAlpha</span><span class="o">(</span><span class="n">alpha</span><span class="o">);</span>
+
+   <span class="c1">// Smaller ball is 15% smaller than bigger.</span>
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawCircle</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">radius</span> <span class="o">*</span> <span class="mf">1.15f</span><span class="o">,</span> <span class="n">bigBall</span><span class="o">);</span>
+
+   <span class="n">canvas</span><span class="o">.</span><span class="na">drawCircle</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">radius</span><span class="o">,</span> <span class="n">smallBall</span><span class="o">);</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Select ball action operation (ball becomes black).
+  */</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">selectBall</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="nc">State</span> <span class="n">who</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">animation</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PutBall</span><span class="o">();</span>
+  <span class="nc">PutBall</span> <span class="n">putBall</span> <span class="o">=</span> <span class="o">(</span><span class="nc">PutBall</span><span class="o">)</span> <span class="n">animation</span><span class="o">;</span>
+  <span class="n">putBall</span><span class="o">.</span><span class="na">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="n">putBall</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+  <span class="n">putBall</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+  <span class="n">putBall</span><span class="o">.</span><span class="na">who</span> <span class="o">=</span> <span class="nc">State</span><span class="o">.</span><span class="na">SELECTED</span><span class="o">;</span>
+
+  <span class="n">animationHandler</span><span class="o">.</span><span class="na">sendEmptyMessage</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Create new ball operation (on an empty square in the grid).
+  */</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createBall</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">,</span> <span class="nc">State</span> <span class="n">who</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">animation</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CreateBallAnimation</span><span class="o">();</span>
+  <span class="nc">CreateBallAnimation</span> <span class="n">createBallAnimation</span> <span class="o">=</span> <span class="o">(</span><span class="nc">CreateBallAnimation</span><span class="o">)</span> <span class="n">animation</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">radius</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">who</span> <span class="o">=</span> <span class="n">who</span><span class="o">;</span>
+
+  <span class="n">animationHandler</span><span class="o">.</span><span class="na">sendEmptyMessage</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Paint square in white block operation (along with alpha animation) when
+  * user performs an illegal move.
+  */</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">error</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">animation</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FillSquareAnimation</span><span class="o">();</span>
+  <span class="nc">FillSquareAnimation</span> <span class="n">fillSquareAnimation</span> <span class="o">=</span> <span class="o">(</span><span class="nc">FillSquareAnimation</span><span class="o">)</span> <span class="n">animation</span><span class="o">;</span>
+  <span class="n">fillSquareAnimation</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+  <span class="n">fillSquareAnimation</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+  <span class="n">fillSquareAnimation</span><span class="o">.</span><span class="na">alpha</span> <span class="o">=</span> <span class="mi">255</span><span class="o">;</span>
+
+  <span class="n">animationHandler</span><span class="o">.</span><span class="na">sendEmptyMessage</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Move ball from one place to another operation (with animation also).
+  */</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">moveBall</span><span class="o">(</span><span class="kt">int</span> <span class="n">i1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j1</span><span class="o">,</span> <span class="kt">int</span> <span class="n">i2</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j2</span><span class="o">,</span> <span class="nc">State</span> <span class="n">who</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">animation</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MoveBallsAnimation</span><span class="o">();</span>
+  <span class="nc">MoveBallsAnimation</span> <span class="n">createBallAnimation</span> <span class="o">=</span> <span class="o">(</span><span class="nc">MoveBallsAnimation</span><span class="o">)</span> <span class="n">animation</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">radius</span> <span class="o">=</span> <span class="n">maxRadius</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">moveFrom</span><span class="o">[</span><span class="n">i1</span><span class="o">][</span><span class="n">j1</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">moveTo</span><span class="o">[</span><span class="n">i2</span><span class="o">][</span><span class="n">j2</span><span class="o">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">whoFrom</span> <span class="o">=</span> <span class="n">who</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">whoTo</span> <span class="o">=</span> <span class="n">who</span><span class="o">;</span>
+
+  <span class="n">animationHandler</span><span class="o">.</span><span class="na">sendEmptyMessage</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Change colors for all balls operation that have same coordinates as true
+  * values in "changeThem" matrix. Animation is same as for move operation.
+  */</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">changeColors</span><span class="o">(</span><span class="kt">boolean</span><span class="o">[][]</span> <span class="n">changeThem</span><span class="o">,</span> <span class="nc">State</span> <span class="n">whoFrom</span><span class="o">,</span> <span class="nc">State</span> <span class="n">whoTo</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">animation</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MoveBallsAnimation</span><span class="o">();</span>
+  <span class="nc">MoveBallsAnimation</span> <span class="n">createBallAnimation</span> <span class="o">=</span> <span class="o">(</span><span class="nc">MoveBallsAnimation</span><span class="o">)</span> <span class="n">animation</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">radius</span> <span class="o">=</span> <span class="n">maxRadius</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">moveFrom</span> <span class="o">=</span> <span class="n">changeThem</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">moveTo</span> <span class="o">=</span> <span class="n">changeThem</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">whoFrom</span> <span class="o">=</span> <span class="n">whoFrom</span><span class="o">;</span>
+  <span class="n">createBallAnimation</span><span class="o">.</span><span class="na">whoTo</span> <span class="o">=</span> <span class="n">whoTo</span><span class="o">;</span>
+
+  <span class="n">animationHandler</span><span class="o">.</span><span class="na">sendEmptyMessage</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onTouchEvent</span><span class="o">(</span><span class="nc">MotionEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">animation</span><span class="o">.</span><span class="na">isFinish</span><span class="o">())</span> <span class="o">{</span>
+   <span class="kt">int</span> <span class="n">action</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getAction</span><span class="o">();</span>
+
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">((</span><span class="n">event</span><span class="o">.</span><span class="na">getX</span><span class="o">()</span> <span class="o">-</span> <span class="no">BOARD_MARGIN</span><span class="o">)</span> <span class="o">/</span> <span class="n">cellSize</span><span class="o">);</span>
+   <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">((</span><span class="n">event</span><span class="o">.</span><span class="na">getY</span><span class="o">()</span> <span class="o">-</span> <span class="no">BOARD_MARGIN</span><span class="o">)</span> <span class="o">/</span> <span class="n">cellSize</span><span class="o">);</span>
+
+   <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="o">(</span><span class="no">BOARD_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+     <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="o">(</span><span class="no">BOARD_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+
+    <span class="c1">// If user just clicks, then we will show a painted square.</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">action</span> <span class="o">==</span> <span class="nc">MotionEvent</span><span class="o">.</span><span class="na">ACTION_DOWN</span><span class="o">)</span> <span class="o">{</span>
+     <span class="n">moveStageListener</span><span class="o">.</span><span class="na">userClick</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">);</span>
+     <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Recalculate fields based on current screen size.
+  */</span>
+ <span class="nd">@Override</span>
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onSizeChanged</span><span class="o">(</span><span class="kt">int</span> <span class="n">w</span><span class="o">,</span> <span class="kt">int</span> <span class="n">h</span><span class="o">,</span> <span class="kt">int</span> <span class="n">oldw</span><span class="o">,</span> <span class="kt">int</span> <span class="n">oldh</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">onSizeChanged</span><span class="o">(</span><span class="n">w</span><span class="o">,</span> <span class="n">h</span><span class="o">,</span> <span class="n">oldw</span><span class="o">,</span> <span class="n">oldh</span><span class="o">);</span>
+  <span class="n">boardWidth</span> <span class="o">=</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="o">?</span> <span class="n">w</span> <span class="o">:</span> <span class="n">h</span><span class="o">;</span>
+  <span class="n">cellSize</span> <span class="o">=</span> <span class="o">(</span><span class="n">boardWidth</span> <span class="o">-</span> <span class="no">GRID_SIZE</span> <span class="o">*</span> <span class="no">BOARD_MARGIN</span><span class="o">)</span> <span class="o">/</span> <span class="no">BOARD_SIZE</span><span class="o">;</span>
+
+  <span class="n">maxRadius</span> <span class="o">=</span> <span class="n">cellSize</span> <span class="o">*</span> <span class="mf">0.68f</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
+ <span class="o">}</span>
+
+ <span class="cm">/*
+  * Set dimension of current view.
+  */</span>
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onMeasure</span><span class="o">(</span><span class="kt">int</span> <span class="n">widthMeasureSpec</span><span class="o">,</span> <span class="kt">int</span> <span class="n">heightMeasureSpec</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="nc">MeasureSpec</span><span class="o">.</span><span class="na">getSize</span><span class="o">(</span><span class="n">widthMeasureSpec</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="nc">MeasureSpec</span><span class="o">.</span><span class="na">getSize</span><span class="o">(</span><span class="n">heightMeasureSpec</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">w</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">h</span> <span class="o">:</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">w</span> <span class="o">:</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">h</span> <span class="o">?</span> <span class="n">w</span> <span class="o">:</span> <span class="n">h</span><span class="o">;</span>
+  <span class="n">setMeasuredDimension</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="n">d</span><span class="o">);</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * Inner animation handler. This handler calls itself several times during
+  * animation and in every pass invalidates the current view (calls the onDraw method
+  * of View). It is controlled by the Animation interface and hence a concrete
+  * implementation of the Animation interface. This implementation "tells" it
+  * when to stop.
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">AnimationMessageHandler</span> <span class="kd">implements</span> <span class="nc">Callback</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">handleMessage</span><span class="o">(</span><span class="nc">Message</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">what</span> <span class="o">==</span> <span class="no">MSG_ANIMATE</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">BoardView</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">invalidate</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">animationHandler</span><span class="o">.</span><span class="na">hasMessages</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">))</span> <span class="o">{</span>
+     <span class="k">if</span> <span class="o">(</span><span class="n">animation</span><span class="o">.</span><span class="na">isFinish</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">animationHandler</span><span class="o">.</span><span class="na">removeMessages</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">);</span>
+      <span class="n">moveStageListener</span><span class="o">.</span><span class="na">animationComplete</span><span class="o">();</span>
+     <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">animationHandler</span><span class="o">.</span><span class="na">sendEmptyMessageDelayed</span><span class="o">(</span><span class="no">MSG_ANIMATE</span><span class="o">,</span>
+        <span class="n">animation</span><span class="o">.</span><span class="na">fps</span><span class="o">());</span>
+     <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+   <span class="o">}</span>
+   <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * This animation doesn't do anything - null animation.
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">NullAnimation</span> <span class="kd">implements</span> <span class="nc">Animation</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">animate</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+   <span class="c1">// do nothing</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isFinish</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">skip</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fps</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * Create ball animation (balls pops-up up in empty square).
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">CreateBallAnimation</span> <span class="kd">implements</span> <span class="nc">Animation</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">j</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nc">State</span> <span class="n">who</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">float</span> <span class="n">radius</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">animate</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">drawBall</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">who</span><span class="o">,</span> <span class="n">radius</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="mi">255</span><span class="o">);</span>
+   <span class="n">radius</span> <span class="o">+=</span> <span class="mi">8</span><span class="o">;</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">maxRadius</span><span class="o">)</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">maxRadius</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isFinish</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="n">radius</span> <span class="o">&gt;=</span> <span class="nc">BoardView</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">maxRadius</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">skip</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">i</span> <span class="o">==</span> <span class="n">i</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">j</span> <span class="o">==</span> <span class="n">j</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fps</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">16</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * Move ball animation that moves the current ball from one square to another
+  * altogether with a popping-up effect. :) It can be used for one ball or a ball
+  * set (represented by a coordinate matrix).
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">MoveBallsAnimation</span> <span class="kd">implements</span> <span class="nc">Animation</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">boolean</span><span class="o">[][]</span> <span class="n">moveFrom</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="no">BOARD_SIZE</span><span class="o">][</span><span class="no">BOARD_SIZE</span><span class="o">];</span>
+  <span class="kd">public</span> <span class="kt">boolean</span><span class="o">[][]</span> <span class="n">moveTo</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">boolean</span><span class="o">[</span><span class="no">BOARD_SIZE</span><span class="o">][</span><span class="no">BOARD_SIZE</span><span class="o">];</span>
+  <span class="kd">public</span> <span class="nc">State</span> <span class="n">whoFrom</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nc">State</span> <span class="n">whoTo</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">float</span> <span class="n">radius</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">firstPahseFinish</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">secondPhaseFinish</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">animate</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">if</span> <span class="o">(!</span><span class="n">firstPahseFinish</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+     <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">moveFrom</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">])</span>
+       <span class="n">drawBall</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">whoFrom</span><span class="o">,</span> <span class="n">radius</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="mi">255</span><span class="o">);</span>
+     <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="n">radius</span> <span class="o">-=</span> <span class="mi">8</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+     <span class="n">radius</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+     <span class="n">firstPahseFinish</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+   <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+     <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="no">BOARD_SIZE</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">moveTo</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">])</span>
+       <span class="n">drawBall</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">whoTo</span><span class="o">,</span> <span class="n">radius</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="mi">255</span><span class="o">);</span>
+     <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="n">radius</span> <span class="o">+=</span> <span class="mi">8</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">radius</span> <span class="o">&gt;=</span> <span class="n">maxRadius</span><span class="o">)</span> <span class="o">{</span>
+     <span class="n">radius</span> <span class="o">=</span> <span class="n">maxRadius</span><span class="o">;</span>
+     <span class="n">secondPhaseFinish</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+   <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isFinish</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="n">firstPahseFinish</span> <span class="o">&amp;&amp;</span> <span class="n">secondPhaseFinish</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">skip</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="n">moveFrom</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">||</span> <span class="n">moveTo</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">];</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fps</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">16</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * Paint square with a gradually disappearing white inner square.
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">FillSquareAnimation</span> <span class="kd">implements</span> <span class="nc">Animation</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">j</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">alpha</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">animate</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">drawWhiteSquare</span><span class="o">(</span><span class="n">canvas</span><span class="o">,</span> <span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">,</span> <span class="n">alpha</span><span class="o">);</span>
+   <span class="n">alpha</span> <span class="o">-=</span> <span class="mi">75</span><span class="o">;</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isFinish</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">skip</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fps</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">16</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="cm">/**
+  * And last but not least, an animation that gradually changes the ball
+  * color.
+  */</span>
+ <span class="kd">private</span> <span class="kd">class</span> <span class="nc">PutBall</span> <span class="kd">implements</span> <span class="nc">Animation</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">j</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="nc">State</span> <span class="n">who</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="n">alpha</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">animate</span><span class="o">(</span><span class="nc">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">drawBall</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">who</span><span class="o">,</span> <span class="n">maxRadius</span><span class="o">,</span> <span class="n">canvas</span><span class="o">,</span> <span class="n">alpha</span><span class="o">);</span>
+   <span class="n">alpha</span> <span class="o">+=</span> <span class="mi">100</span><span class="o">;</span>
+   <span class="k">if</span> <span class="o">(</span><span class="n">alpha</span> <span class="o">&gt;=</span> <span class="mi">255</span><span class="o">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">255</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isFinish</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="n">alpha</span> <span class="o">&gt;=</span> <span class="mi">255</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">skip</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">i</span> <span class="o">==</span> <span class="n">i</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">j</span> <span class="o">==</span> <span class="n">j</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fps</span><span class="o">()</span> <span class="o">{</span>
+   <span class="k">return</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">16</span><span class="o">;</span>
+  <span class="o">}</span>
+ <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p>This class extends <code class="language-plaintext highlighter-rouge">View</code> and overrides the <code class="language-plaintext highlighter-rouge">onDraw</code> method. This is a rudimentary animation implementation in Android that uses Java 2D interfaces, meaning it’s almost identical to Core Java 2D animation.</p> <p>It defines two interfaces. The <code class="language-plaintext highlighter-rouge">MoveStageListener</code> interface is used for sending messages to the <code class="language-plaintext highlighter-rouge">Activity</code> (<code class="language-plaintext highlighter-rouge">MinMaxBalls</code>) class. The second interface, <code class="language-plaintext highlighter-rouge">Animation</code>, is used to send messages to the <code class="language-plaintext highlighter-rouge">Message Handler</code>. The <code class="language-plaintext highlighter-rouge">Message Handler</code> is used to perform the animation loop and to invalidate the view (thereby calling the <code class="language-plaintext highlighter-rouge">onDraw</code> method). This could also be achieved using another thread, but this approach results in slightly cleaner code.</p> <p>The <code class="language-plaintext highlighter-rouge">Animation</code> interfaces “tell” the <code class="language-plaintext highlighter-rouge">Message Handler</code> when to stop, what FPS to use, and other such details. We have several implementations of these <code class="language-plaintext highlighter-rouge">Animation</code> interfaces, and all perform simple animations.</p> <p>And that’s it. Please feel free to leave comments if you have any questions or suggestions. I will do my best to notice them (it’s hard to spot blog comments, as Blogger doesn’t send email notifications when someone posts one—they should!). And yes, I will also try to answer them.</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2022-08-04-serverless-react/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2014-09-06-erasure-bridge-method/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2014-03-12-threads-java/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2014-01-18-book-improving-design/"></a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/2013-09-01-barbra-liskov/"></a> </li> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2025 Frazik Content Knitting and Lead Alchemy. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a>. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
