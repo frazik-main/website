@@ -369,5 +369,3 @@ protected Object callStoredFunction(int sqlReturnType, String stmt,
     }
 }
 ```
-
-The complete code for this example can be downloaded from: [CustomViewObject.zip](http://codingwithpassionblog.googlecode.com/files/CustomViewObject.zip)
