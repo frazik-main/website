@@ -16,7 +16,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "post-dynamically-changing-sql-where-clause-in-adf-view-objects",
+        },{id: "post-java-passing-arrays-and-collections-as-method-arguments",
+      
+        title: "Java - Passing Arrays and Collections as Method Arguments",
+      
+      description: "A guide on how to pass array instances directly to methods in Java, and a technique using anonymous inner classes with instance initialization for collections.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2014/add-element-single-line/";
+        
+      },
+    },{id: "post-dynamically-changing-sql-where-clause-in-adf-view-objects",
       
         title: "Dynamically Changing SQL WHERE Clause in ADF View Objects",
       
