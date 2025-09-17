@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Exporting React Components to PDF

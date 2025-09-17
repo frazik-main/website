@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Introduction to Java 8 Stream API

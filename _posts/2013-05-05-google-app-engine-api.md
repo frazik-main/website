@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Google App Engine Push Technology with Long Polling

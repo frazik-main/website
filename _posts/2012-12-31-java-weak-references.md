@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Java Reference Types - Strong, Weak, and Soft References

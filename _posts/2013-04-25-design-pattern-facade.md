@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Facade Pattern and Session Facade

@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Interviews with IT Pioneers: Ward Cunningham and Barbara Liskov

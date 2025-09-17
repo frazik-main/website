@@ -1,4 +1,3 @@
-```markdown
 ---
 layout: post
 title: ADF Faces Generator - Automating ADF View Creation

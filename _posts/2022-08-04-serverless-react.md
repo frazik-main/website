@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Terraform Example: Serverless React App with AWS API Gateway and Lambda

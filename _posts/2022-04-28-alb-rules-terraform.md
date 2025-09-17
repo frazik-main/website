@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Application Load Balancer - Host- and Path-Based Routing for Multiple ECS Services

@@ -1,4 +1,3 @@
-```markdown
 ---
 layout: post
 title: Object-Oriented Design Patterns in Java - Template Method

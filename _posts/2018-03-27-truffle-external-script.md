@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Truffle Contract Execution Errors and Solutions

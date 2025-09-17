@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Reflections on Clean Code and Professionalism

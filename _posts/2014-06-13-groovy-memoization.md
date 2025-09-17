@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Groovy Memoization with .memoize()

@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Understanding ThreadLocal in Java

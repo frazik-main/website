@@ -1,4 +1,3 @@
-```
 ---
 layout: post
 title: Resolving 'Cannot Read Property 'apply' of undefined' in Truffle External Scripts
