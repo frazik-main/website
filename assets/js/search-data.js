@@ -24,7 +24,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/2014-03-12-threads-java/";
+          window.location.href = "/blog/2025/2022-08-04-serverless-react/";
         
       },
     },{id: "post-",
@@ -35,7 +35,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/2014-01-18-book-improving-design/";
+          window.location.href = "/blog/2025/2012-04-10-faces-generator-1.0/";
         
       },
     },{id: "post-",
@@ -46,7 +46,7 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/2013-09-01-barbra-liskov/";
+          window.location.href = "/blog/2025/2012-03-29-testing-grail/";
         
       },
     },{id: "post-",
@@ -57,7 +57,106 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/2012-11-21-unmerge-svn/";
+          window.location.href = "/blog/2025/2011-10-14-book-clean-code/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-10-04-java-strategy-design-pattern/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-29-javascript-jquery-trigger/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-28-dynamic-typing-plsql/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-14-plsq-cut-down-round-trips/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-07-javascript-concepts-part4/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-06-plsql-collections-as-columns/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-06-javascript-concepts-part3/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-03-caching-data-plsql/";
+        
+      },
+    },{id: "post-",
+      
+        title: "",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/2010-09-02-plsq-collections/";
         
       },
     },{id: "post-optimizing-large-language-models-a-look-at-key-techniques",
@@ -80,17 +179,6 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2022/kibana-reverse-proxy/";
-        
-      },
-    },{id: "post-terraform-example-serverless-react-app-with-aws-api-gateway-and-lambda",
-      
-        title: "Terraform Example: Serverless React App with AWS API Gateway and Lambda",
-      
-      description: "A Terraform example demonstrating how to create a serverless React application using AWS API Gateway to invoke an AWS Lambda function, including CORS configuration.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2022/serverless-react/";
         
       },
     },{id: "post-application-load-balancer-host-and-path-based-routing-for-multiple-ecs-services",
@@ -236,9 +324,9 @@ ninja.data = [{
           window.location.href = "/blog/2014/transform-if-polym/";
         
       },
-    },{id: "post-java-generics-understanding-type-erasure-and-bridge-methods",
+    },{id: "post-erasure-bridge-method",
       
-        title: "Java Generics: Understanding Type Erasure and Bridge Methods",
+        title: "Erasure Bridge Method",
       
       description: "An in-depth look at how Java implements generics through type erasure, including the steps involved, its compile-time nature, and the role of synthetic bridge methods in preserving polymorphism, illustrated with code examples.",
       section: "Posts",
@@ -324,6 +412,39 @@ ninja.data = [{
           window.location.href = "/blog/2014/add-element-single-line/";
         
       },
+    },{id: "post-how-to-create-threads-in-java",
+      
+        title: "How to Create Threads in Java",
+      
+      description: "Explore two common methods for creating new threads in Java: implementing the Runnable interface or extending the Thread class and overriding its run() method.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2014/threads-java/";
+        
+      },
+    },{id: "post-book-improving-design",
+      
+        title: "Book Improving Design",
+      
+      description: "A recommendation for the book &#39;Refactoring: Improving the Design of Existing Code&#39;, highlighting its value for developers looking to enhance their coding skills.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2014/book-improving-design/";
+        
+      },
+    },{id: "post-interviews-with-it-pioneers-ward-cunningham-and-barbara-liskov",
+      
+        title: "Interviews with IT Pioneers: Ward Cunningham and Barbara Liskov",
+      
+      description: "Insights from computing pioneers Ward Cunningham on Agile and knowledge sharing, and Barbara Liskov on the Liskov substitution principle and distributed systems, through their QCon interviews.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2013/barbra-liskov/";
+        
+      },
     },{id: "post-effective-java-the-builder-pattern",
       
         title: "Effective Java - The Builder Pattern",
@@ -401,6 +522,17 @@ ninja.data = [{
           window.location.href = "/blog/2012/design-pattern-command/";
         
       },
+    },{id: "post-svn-revert-to-a-previous-revision-using-reverse-merge",
+      
+        title: "SVN: Revert to a Previous Revision Using Reverse Merge",
+      
+      description: "Learn how to revert a Subversion (SVN) repository to a previous revision or undo specific changes using the reverse merge command.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2012/unmerge-svn/";
+        
+      },
     },{id: "post-fetching-rss-feeds-with-the-rome-library-in-java",
       
         title: "Fetching RSS Feeds with the ROME Library in Java",
@@ -456,39 +588,6 @@ ninja.data = [{
           window.location.href = "/blog/2012/apache-nutch-solr/";
         
       },
-    },{id: "post-adf-faces-generator-automating-adf-view-creation",
-      
-        title: "ADF Faces Generator - Automating ADF View Creation",
-      
-      description: "An alpha version of a JDeveloper extension that automatically generates the view part of an ADF Fusion Web Application from its model, including installation instructions and usage examples.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2012/faces-generator-1.0/";
-        
-      },
-    },{id: "post-grails-controller-unit-testing",
-      
-        title: "Grails Controller Unit Testing",
-      
-      description: "This post details how to perform unit testing for controllers in Grails using ControllerUnitTestCase, including examples for mocking services.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2012/testing-grail/";
-        
-      },
-    },{id: "post-reflections-on-clean-code-and-professionalism",
-      
-        title: "Reflections on Clean Code and Professionalism",
-      
-      description: "A reflection on the importance of clean code, inspired by &#39;Clean Code - A Handbook of Agile Software Craftsmanship&#39;, emphasizing clarity and professionalism in programming.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2011/book-clean-code/";
-        
-      },
     },{id: "post-groovy-and-java-closures-and-dynamic-programming",
       
         title: "Groovy and Java - Closures and Dynamic Programming",
@@ -511,9 +610,9 @@ ninja.data = [{
           window.location.href = "/blog/2011/upload-with-grail/";
         
       },
-    },{id: "post-groovy-an-introduction-to-its-core-concepts",
+    },{id: "post-groovy-diff-java-1",
       
-        title: "Groovy: An Introduction to its Core Concepts",
+        title: "Groovy Diff Java 1",
       
       description: "An introduction to the Groovy programming language, covering its core concepts, fundamental differences from Java, productivity features, operators, data types, collections, and regular expression support.",
       section: "Posts",
@@ -753,9 +852,9 @@ ninja.data = [{
           window.location.href = "/blog/2010/niklaus-wirth/";
         
       },
-    },{id: "post-design-patterns-creational-factory-method-and-abstract-factory",
+    },{id: "post-design-pattern-template",
       
-        title: "Design Patterns - Creational: Factory Method and Abstract Factory",
+        title: "Design Pattern Template",
       
       description: "An introduction to creational design patterns, focusing on the Factory Method and Abstract Factory patterns, with Java examples and a comparison of their usage.",
       section: "Posts",
@@ -819,83 +918,6 @@ ninja.data = [{
           window.location.href = "/blog/2010/java-template-method-pattern/";
         
       },
-    },{id: "post-strategy-pattern-in-java",
-      
-        title: "Strategy Pattern in Java",
-      
-      description: "A comparison of the Strategy pattern with the Template Method pattern in Java, showing differences and providing a code example.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/java-strategy-design-pattern/";
-        
-      },
-    },{id: "post-custom-events-in-jquery-a-powerful-technique",
-      
-        title: "Custom Events in jQuery - A Powerful Technique",
-      
-      description: "Learn how to create and use custom events in jQuery to simulate the observer pattern and build dynamic web applications.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/javascript-jquery-trigger/";
-        
-      },
-    },{id: "post-using-pl-sql-39-s-any-types-for-dynamic-typing",
-      
-        title: "Using PL/SQL&#39;s ANY Types for Dynamic Typing",
-      
-      description: "Exploring PL/SQL&#39;s ANY types for handling data of unknown type at runtime.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/dynamic-typing-plsql/";
-        
-      },
-    },{id: "post-using-pl-sql-collections-to-optimize-data-retrieval",
-      
-        title: "Using PL/SQL Collections to Optimize Data Retrieval",
-      
-      description: "Learn how to use PL/SQL collections to combine master and detail tables in a single SELECT statement, reducing database round trips and improving performance.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/plsq-cut-down-round-trips/";
-        
-      },
-    },{id: "post-javascript-closures-a-deep-dive",
-      
-        title: "JavaScript Closures - A Deep Dive",
-      
-      description: "Understanding closures in JavaScript, a powerful concept for handling asynchronous callbacks.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/javascript-concepts-part4/";
-        
-      },
-    },{id: "post-storing-collections-in-database-columns",
-      
-        title: "Storing Collections in Database Columns",
-      
-      description: "Demonstrates how to store collections in database columns using Oracle&#39;s VARRAY.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/plsql-collections-as-columns/";
-        
-      },
-    },{id: "post-javascript-concepts-callbacks-and-function-context",
-      
-        title: "JavaScript Concepts - Callbacks and Function Context",
-      
-      description: "A deep dive into JavaScript callbacks and function context, exploring how `this` works and how to manage function contexts using `call()`",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/javascript-concepts-part3/";
-        
-      },
     },{id: "post-javascript-functions-a-deep-dive",
       
         title: "JavaScript Functions - A Deep Dive",
@@ -916,28 +938,6 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2010/javascript-concepts-part1/";
-        
-      },
-    },{id: "post-caching-static-data-in-pl-sql-for-performance-improvement",
-      
-        title: "Caching Static Data in PL/SQL for Performance Improvement",
-      
-      description: "Optimize PL/SQL performance by caching static data in a collection stored in the session&#39;s PGA.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/caching-data-plsql/";
-        
-      },
-    },{id: "post-pl-sql-collections-a-comprehensive-guide",
-      
-        title: "PL/SQL Collections A Comprehensive Guide",
-      
-      description: "A detailed explanation of associative arrays, nested tables, and VARRAYs in PL/SQL, including examples and best practices.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2010/plsq-collections/";
         
       },
     },{id: "news-a-simple-inline-announcement",

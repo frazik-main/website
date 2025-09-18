@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"> <html><body> <p>It’s surprising how few database programmers truly understand and utilize collections in PL/SQL. They often favor a more SQL-like approach, overlooking potential performance gains and improvements in code readability.</p> <p>With collections, you can significantly enhance performance by caching frequently accessed data within a single program. Data processing can also be sped up, eliminating the need for relational tables or global temporary tables.</p> <p>While PL/SQL collections might seem cumbersome and confusing (especially compared to collections in languages like Java), they offer powerful capabilities. There are three main types:</p> <p><strong>Associative Arrays</strong></p> <p>These are single-dimensional, unbounded, and sparse collections of homogeneous elements. They don’t need to be filled sequentially. The following example demonstrates declaration, population, and iteration:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SET</span> <span class="n">SERVEROUTPUT</span> <span class="k">ON</span>
+
+<span class="k">DECLARE</span>
+    <span class="k">TYPE</span> <span class="n">names_list_t</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+        <span class="k">INDEX</span> <span class="k">BY</span> <span class="n">PLS_INTEGER</span><span class="p">;</span>
+    <span class="n">people</span> <span class="n">names_list_t</span><span class="p">;</span>
+
+    <span class="n">l_row</span> <span class="n">PLS_INTEGER</span><span class="p">;</span> <span class="c1">-- Same type as index.</span>
+
+<span class="k">BEGIN</span>
+
+    <span class="n">people</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>         <span class="p">:</span><span class="o">=</span> <span class="s1">'Bob'</span><span class="p">;</span>
+    <span class="n">people</span><span class="p">(</span><span class="mi">33</span><span class="p">)</span>        <span class="p">:</span><span class="o">=</span> <span class="s1">'Bruce'</span><span class="p">;</span>
+    <span class="n">people</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>        <span class="p">:</span><span class="o">=</span> <span class="s1">'Rocky'</span><span class="p">;</span>
+    <span class="n">people</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">)</span>        <span class="p">:</span><span class="o">=</span> <span class="s1">'Grozni'</span><span class="p">;</span>
+    <span class="n">people</span><span class="p">(</span><span class="mi">1555555</span><span class="p">)</span>   <span class="p">:</span><span class="o">=</span> <span class="s1">'Ivan'</span><span class="p">;</span>
+
+    <span class="n">l_row</span> <span class="p">:</span><span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="k">FIRST</span><span class="p">;</span>
+
+    <span class="n">WHILE</span> <span class="p">(</span><span class="n">l_row</span> <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">)</span>
+    <span class="n">LOOP</span>
+        <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="n">people</span><span class="p">(</span><span class="n">l_row</span><span class="p">));</span>
+        <span class="n">l_row</span> <span class="p">:</span><span class="o">=</span> <span class="n">people</span><span class="p">.</span><span class="k">NEXT</span><span class="p">(</span><span class="n">l_row</span><span class="p">);</span>
+    <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div></div> <p>Associative arrays are the most efficient type. However, they cannot be stored directly in database tables (use nested tables or VARRAYs for that). They are the only practical choice for sparse collections or when negative index subscripts are required.</p> <p><strong>Nested Tables</strong></p> <p>These are also single-dimensional and unbounded collections of homogeneous elements. They start dense but can become sparse through deletions. Nested tables are <em>multisets</em>, meaning element order isn’t inherent. This can be problematic if order needs to be preserved (use VARRAYs for that). While you can use keys and indexes, VARRAYs provide a more straightforward solution for maintaining order.</p> <p>The following example shows how to declare a nested table type at the schema level, declare nested tables based on that type, create their union, and display the result:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">TYPE</span> <span class="n">car_names_list_t</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+
+<span class="k">DECLARE</span>
+    <span class="n">great_cars</span>          <span class="n">car_names_list_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">car_names_list_t</span><span class="p">();</span>
+    <span class="n">not_so_great_cars</span>   <span class="n">car_names_list_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">car_names_list_t</span><span class="p">();</span>
+
+    <span class="n">all_this_cars</span>       <span class="n">car_names_list_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">car_names_list_t</span><span class="p">();</span>
+
+<span class="k">BEGIN</span>
+    <span class="n">great_cars</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">great_cars</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Golf'</span><span class="p">;</span>
+    <span class="n">great_cars</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Impreza'</span><span class="p">;</span>
+    <span class="n">great_cars</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Focus'</span><span class="p">;</span>
+
+    <span class="n">not_so_great_cars</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">not_so_great_cars</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Zastava'</span><span class="p">;</span>
+    <span class="n">not_so_great_cars</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Dacia'</span><span class="p">;</span>
+
+    <span class="n">all_this_cars</span> <span class="p">:</span><span class="o">=</span> <span class="n">great_cars</span> <span class="n">MULTISET</span> <span class="k">UNION</span> <span class="n">not_so_great_cars</span><span class="p">;</span>
+
+    <span class="k">FOR</span> <span class="n">l_row</span> <span class="k">IN</span> <span class="n">all_this_cars</span><span class="p">.</span><span class="k">FIRST</span> <span class="p">..</span> <span class="n">all_this_cars</span><span class="p">.</span><span class="k">LAST</span>
+    <span class="n">LOOP</span>
+        <span class="n">DBMS_OUTPUT</span><span class="p">.</span><span class="n">put_line</span><span class="p">(</span><span class="n">all_this_cars</span><span class="p">(</span><span class="n">l_row</span><span class="p">));</span>
+    <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
+
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">EXTEND</code> is used to increase the size of nested tables. <code class="language-plaintext highlighter-rouge">MULTISET UNION</code> (and others like <code class="language-plaintext highlighter-rouge">MULTISET EXCEPT</code>) are used for high-level set operations. In such cases, <code class="language-plaintext highlighter-rouge">EXTEND</code> is often unnecessary.</p> <p>Nested tables are beneficial for high-level set operations, especially in older Oracle databases (&lt;= 10g). They are also the only option for storing large amounts of persistent data in a collection column because the database creates an underlying table.</p> <p><strong>VARRAYs (Variable-Size Arrays)</strong></p> <p>Similar to the other two, VARRAYs are single-dimensional collections of homogeneous elements. However, they are always bounded (have a maximum size) and never sparse. When declaring a VARRAY type, you must specify the maximum number of elements. A key difference from nested tables is that VARRAYs preserve element order when stored as database columns.</p> <p>This example demonstrates basic VARRAY usage:</p> <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SET</span> <span class="n">SERVEROUTPUT</span> <span class="k">ON</span>
+
+<span class="k">DECLARE</span>
+    <span class="k">TYPE</span> <span class="n">anime_movies_t</span> <span class="k">IS</span> <span class="n">VARRAY</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+
+    <span class="n">anime_movies</span> <span class="n">anime_movies_t</span> <span class="p">:</span><span class="o">=</span> <span class="n">anime_movies_t</span><span class="p">();</span>
+
+<span class="k">BEGIN</span>
+    <span class="c1">-- Extend to accommodate the first element</span>
+    <span class="n">anime_movies</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">anime_movies</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Akira'</span><span class="p">;</span>
+    <span class="c1">-- Extend to the full length</span>
+    <span class="n">anime_movies</span><span class="p">.</span><span class="n">EXTEND</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">anime_movies</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'Castle in the sky'</span><span class="p">;</span>
+    <span class="n">anime_movies</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span><span class="o">=</span> <span class="s1">'My neighbour Totoro'</span><span class="p">;</span>
+
+    <span class="c1">-- Loop or perform other operations here</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</code></pre></div></div> <p>Remember to use <code class="language-plaintext highlighter-rouge">EXTEND</code> to make room for elements.</p> <p>Use VARRAYs when you need to preserve element order in a database column, have a relatively small amount of data, don’t need to worry about deletions in the middle, have an intrinsic upper bound, or need to retrieve the entire collection at once.</p> <p>As a final tip, when working with PL/SQL collections, consider creating a package of procedures and functions to encapsulate collection management. This might even hide the underlying collection type, but that’s not always necessary or beneficial.</p> </body></html>

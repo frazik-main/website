@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"> <html><body> <h1 id="strategy-pattern-in-java">Strategy Pattern in Java</h1> <p>The <strong>Strategy</strong> pattern offers an alternative to the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html" rel="external nofollow noopener" target="_blank">Template Method</a> pattern. Unlike the Template Method pattern which uses an abstract class, the Strategy pattern utilizes an interface. For a deeper understanding of encapsulating logic, refer to the post on the <a href="http://codingwithpassion.blogspot.com/2010/10/template-method-design-pattern.html" rel="external nofollow noopener" target="_blank">Template Method</a> pattern. This example highlights the key differences.</p> <p>You can download an example of this Java code from <a href="https://code.google.com/p/codingwithpassionblog/source/browse/trunk/src/org/codingwithpassion/patterns/strategyMethod/DecorateData.java" rel="external nofollow noopener" target="_blank">this Google Code repository</a>. <em>(Note: Google Code is archived; this link may not be functional.)</em></p> <h2 id="example">Example</h2> <p>In this case, the class containing the algorithm isn’t an abstract superclass but a concrete class using a helper that implements an interface defining individual steps. This pattern is useful when concrete inheritance is needed for other purposes (since Java doesn’t support multiple inheritance) or if you prefer this approach over inheriting from an abstract class. Here’s an example:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Concrete Object implementation.
+ * Here we implement workflow.
+ */</span>
+<span class="kd">class</span> <span class="nc">CreateObject</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">datas</span> <span class="o">=</span> <span class="o">{</span><span class="s">"Kimmi"</span><span class="o">,</span> <span class="s">"Zuco"</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">21</span><span class="o">};</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setData</span><span class="o">(</span><span class="nc">Object</span><span class="o">[]</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CreateObject</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">datas</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Algorithm that controls flow (IOC - Inversion of Control).
+     * @return Object String representation.
+     */</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">decorate</span><span class="o">(</span><span class="nc">DecoratorHelper</span> <span class="n">helper</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">();</span>
+        <span class="n">helper</span><span class="o">.</span><span class="na">objectStart</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">datas</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Object</span> <span class="n">data</span> <span class="o">=</span> <span class="n">datas</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="k">instanceof</span> <span class="nc">String</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">helper</span><span class="o">.</span><span class="na">stringValue</span><span class="o">(</span><span class="n">sb</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="k">instanceof</span> <span class="nc">Integer</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">helper</span><span class="o">.</span><span class="na">numberValue</span><span class="o">(</span><span class="n">sb</span><span class="o">,</span> <span class="n">data</span><span class="o">,</span> <span class="n">i</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">helper</span><span class="o">.</span><span class="na">objectEnd</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Helper interface to which we defer individual steps.
+ */</span>
+<span class="kd">interface</span> <span class="nc">DecoratorHelper</span> <span class="o">{</span>
+
+    <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Object creation for JSON objects.
+ */</span>
+<span class="kd">class</span> <span class="nc">JSONObject</span> <span class="kd">implements</span> <span class="nc">DecoratorHelper</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\"Object\":"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\n{"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n}"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\":"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\","</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\":"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">","</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Object creation for XML objects.
+ */</span>
+<span class="kd">class</span> <span class="nc">XmlObject</span> <span class="kd">implements</span> <span class="nc">DecoratorHelper</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectStart</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;Object&gt;"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">objectEnd</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/Object&gt;"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stringValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;property&gt;&lt;key&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/key&gt;&lt;string&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/string&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/property&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">numberValue</span><span class="o">(</span><span class="nc">StringBuilder</span> <span class="n">sb</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">value</span><span class="o">,</span> <span class="kt">int</span> <span class="n">indx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;property&gt;&lt;key&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"prop"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">indx</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/key&gt;&lt;number&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">value</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/number&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&lt;/property&gt;"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**
+ * Testing...
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DecorateData</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">CreateObject</span> <span class="n">xml</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CreateObject</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">xml</span><span class="o">.</span><span class="na">decorate</span><span class="o">(</span><span class="k">new</span> <span class="nc">XmlObject</span><span class="o">()));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div> <p><strong>Explanation:</strong></p> <ul> <li> <strong>Lines 37-46:</strong> The template methods are moved into an interface. The definition remains similar to the previous example.</li> <li> <strong>Lines 52-76, 82-114:</strong> In the interface implementation, subclassing is no longer necessary. Note that the access modifier of the methods must be <code class="language-plaintext highlighter-rouge">public</code> because they are accessed from outside the class hierarchy.</li> <li> <strong>Line 17:</strong> The interface type must be provided to the template method. This type will be substituted with a concrete class instance at runtime (polymorphism). The method remains the same as in the Template Method example.</li> </ul> <h2 id="which-to-choose">Which to Choose?</h2> <p>The Strategy pattern, while more complex, offers greater flexibility. It represents a trade-off between concrete inheritance and delegation to an interface. The choice depends on factors such as whether the class implementing the steps needs its own inheritance hierarchy, the number of steps involved, and the number of different implementations required.</p> </body></html>
