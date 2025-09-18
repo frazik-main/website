@@ -60,28 +60,6 @@ ninja.data = [{
           window.location.href = "/blog/2025/2012-11-21-unmerge-svn/";
         
       },
-    },{id: "post-",
-      
-        title: "",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2025/2011-09-25-groovy-diff-java-1/";
-        
-      },
-    },{id: "post-",
-      
-        title: "",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2025/2010-11-04-design-pattern-template/";
-        
-      },
     },{id: "post-optimizing-large-language-models-a-look-at-key-techniques",
       
         title: "Optimizing Large Language Models A Look at Key Techniques",
@@ -533,6 +511,17 @@ ninja.data = [{
           window.location.href = "/blog/2011/upload-with-grail/";
         
       },
+    },{id: "post-groovy-an-introduction-to-its-core-concepts",
+      
+        title: "Groovy: An Introduction to its Core Concepts",
+      
+      description: "An introduction to the Groovy programming language, covering its core concepts, fundamental differences from Java, productivity features, operators, data types, collections, and regular expression support.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2011/groovy-diff-java-1/";
+        
+      },
     },{id: "post-why-learn-scheme-understanding-functional-programming-for-javascript",
       
         title: "Why Learn Scheme? Understanding Functional Programming for JavaScript",
@@ -762,6 +751,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2010/niklaus-wirth/";
+        
+      },
+    },{id: "post-design-patterns-creational-factory-method-and-abstract-factory",
+      
+        title: "Design Patterns - Creational: Factory Method and Abstract Factory",
+      
+      description: "An introduction to creational design patterns, focusing on the Factory Method and Abstract Factory patterns, with Java examples and a comparison of their usage.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2010/design-pattern-template/";
         
       },
     },{id: "post-spring-framework-essentials-wiring-and-instantiating-java-pojo-beans",
