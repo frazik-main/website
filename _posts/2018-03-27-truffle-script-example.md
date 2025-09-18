@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Resolving 'Cannot Read Property 'apply' of undefined' in Truffle External Scripts
+title: "Resolving 'Cannot Read Property 'apply' of undefined' in Truffle External Scripts"
 date: 2018-03-27 08:33:00
-description: A guide to troubleshoot and resolve common TypeError issues, specifically 'Cannot read property 'apply' of undefined', when executing external scripts with Truffle.
+description: "A guide to troubleshoot and resolve common TypeError issues, specifically 'Cannot read property 'apply' of undefined', when executing external scripts with Truffle."
 tags: truffle, blockchain, javascript, errors, debugging, programming
 categories: blockchain, javascript
 ---

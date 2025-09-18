@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Spring Framework Essentials - Wiring and Instantiating Java POJO Beans
+title: "Spring Framework Essentials - Wiring and Instantiating Java POJO Beans"
 date: 2010-10-31 17:06:00
-description: An introduction to the core concepts of the Spring framework, focusing on how to wire and instantiate Java POJO (Plain Old Java Object) beans using XML configuration, demonstrated with a practical Employee-Department system example.
+description: "An introduction to the core concepts of the Spring framework, focusing on how to wire and instantiate Java POJO (Plain Old Java Object) beans using XML configuration, demonstrated with a practical Employee-Department system example."
 tags: spring, java, beans, dependency-injection, ioc, xml-configuration, programming
 categories: spring-framework, java-programming
 ---

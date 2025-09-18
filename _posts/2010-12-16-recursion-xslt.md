@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Recursion in XSLT
+title: "Recursion in XSLT"
 date: 2010-12-16 14:43:00
-description: A guide to using recursion in XSLT for XML document processing, covering templates, XPath, and an example of transforming F1 season data.
+description: "A guide to using recursion in XSLT for XML document processing, covering templates, XPath, and an example of transforming F1 season data."
 tags: xslt, recursion, xml, xpath, functional-programming, templates
 categories: xslt-concepts, programming-techniques
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Speed up JDeveloper
+title: "Speed up JDeveloper"
 date: 2011-03-03 11:57:00
-description: Tips to improve JDeveloper performance, focusing on memory management, component binding, and page complexity.
+description: "Tips to improve JDeveloper performance, focusing on memory management, component binding, and page complexity."
 tags: jdeveloper, performance, memory, optimisation, development
 categories: jdeveloper-tips
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Introduction to SOLID Principles in Object-Oriented Design
+title: "Introduction to SOLID Principles in Object-Oriented Design"
 date: 2014-09-15 21:14:00
-description: An introduction to the SOLID principles of object-oriented design, outlining what the acronym stands for and common pitfalls to avoid.
+description: "An introduction to the SOLID principles of object-oriented design, outlining what the acronym stands for and common pitfalls to avoid."
 tags: solid, object-oriented-design, oop, design-principles
 categories: design-principles
 ---

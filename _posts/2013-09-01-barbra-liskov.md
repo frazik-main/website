@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Interviews with IT Pioneers: Ward Cunningham and Barbara Liskov
+title: "Interviews with IT Pioneers: Ward Cunningham and Barbara Liskov"
 date: 2013-09-01 13:47:00
-description: Insights from computing pioneers Ward Cunningham on Agile and knowledge sharing, and Barbara Liskov on the Liskov substitution principle and distributed systems, through their QCon interviews.
+description: "Insights from computing pioneers Ward Cunningham on Agile and knowledge sharing, and Barbara Liskov on the Liskov substitution principle and distributed systems, through their QCon interviews."
 tags: agile, ward cunningham, barbara liskov, liskov substitution principle, distributed systems, programming, interviews, qcon
 categories: software-development, interviews
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Douglas Crockford and JavaScript's Expanding Role
+title: "Douglas Crockford and JavaScript's Expanding Role"
 date: 2012-09-23 20:59:00
-description: An exploration of Douglas Crockford's influence on the JavaScript community, the language's unexpected rise beyond browser confines, and his insights on functional programming and avoiding classical methodologies.
+description: "An exploration of Douglas Crockford's influence on the JavaScript community, the language's unexpected rise beyond browser confines, and his insights on functional programming and avoiding classical methodologies."
 tags: javascript, douglas crockford, programming, web-development, nodejs, functional-programming
 categories: javascript-insights
 ---

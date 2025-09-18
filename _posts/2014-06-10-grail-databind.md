@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Using Grails dataBind Outside a Controller
+title: "Using Grails dataBind Outside a Controller"
 date: 2014-06-10 10:55:00
-description: A quick tip demonstrating how to use the Grails `dataBind` command outside of a Grails controller, for instance, in a service layer.
+description: "A quick tip demonstrating how to use the Grails `dataBind` command outside of a Grails controller, for instance, in a service layer."
 tags: grails, databinding, groovy, programming
 categories: grails-tips
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Implementing AJAX with jQuery's load() Method
+title: "Implementing AJAX with jQuery's load() Method"
 date: 2010-12-13 22:13:00
-description: A comprehensive guide to AJAX, comparing plain JavaScript with jQuery, and demonstrating how to use jQuery's powerful load() method for dynamic content updates. Includes cross-browser XMLHttpRequest handling, jQuery load() examples, and best practices for GET vs. POST requests.
+description: "A comprehensive guide to AJAX, comparing plain JavaScript with jQuery, and demonstrating how to use jQuery's powerful load() method for dynamic content updates. Includes cross-browser XMLHttpRequest handling, jQuery load() examples, and best practices for GET vs. POST requests."
 tags: ajax, jquery, javascript, web-development, front-end, programming
 categories: javascript, web-development
 ---

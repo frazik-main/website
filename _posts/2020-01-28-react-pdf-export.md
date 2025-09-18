@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Exporting React Components to PDF
+title: "Exporting React Components to PDF"
 date: 2020-01-28 15:21:00
-description: A guide on exporting React.js components to PDF using html2canvas to create canvas objects and pdfMake to generate the PDF document.
+description: "A guide on exporting React.js components to PDF using html2canvas to create canvas objects and pdfMake to generate the PDF document."
 tags: react, pdf, html2canvas, pdfmake, javascript, export, frontend
 categories: react-js, how-to
 ---

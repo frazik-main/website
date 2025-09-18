@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Streamlining Google Analytics Integration in Android with Activity Lifecycle Callbacks
+title: "Streamlining Google Analytics Integration in Android with Activity Lifecycle Callbacks"
 date: 2014-05-28 12:30:00
-description: Learn how to integrate Google Analytics into your Android application more cleanly using ActivityLifecycleCallbacks instead of manual onStart and onStop calls in every Activity.
+description: "Learn how to integrate Google Analytics into your Android application more cleanly using ActivityLifecycleCallbacks instead of manual onStart and onStop calls in every Activity."
 tags: android, google-analytics, activity-lifecycle, programming, java, mobile-development
 categories: android-development
 ---

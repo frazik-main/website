@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Google App Engine Push Technology with Long Polling
+title: "Google App Engine Push Technology with Long Polling"
 date: 2013-05-05 22:15:00
-description: An explanation of Google App Engine's push technology using long polling, detailing client-server communication channels, an example application, and code snippets for client-side JavaScript and server-side Java implementation.
+description: "An explanation of Google App Engine's push technology using long polling, detailing client-server communication channels, an example application, and code snippets for client-side JavaScript and server-side Java implementation."
 tags: google app engine, gae, long polling, push technology, javascript, java, web development
 categories: google-app-engine, web-development
 ---

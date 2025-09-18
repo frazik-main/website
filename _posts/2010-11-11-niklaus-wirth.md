@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Niklaus Wirth on Programming Languages and Verification
+title: "Niklaus Wirth on Programming Languages and Verification"
 date: 2010-11-11 00:45:00
-description: Exploring Niklaus Wirth's profound insights on programming languages, the hardware-software gap, program verification, and his critiques of modern software development practices.
+description: "Exploring Niklaus Wirth's profound insights on programming languages, the hardware-software gap, program verification, and his critiques of modern software development practices."
 tags: niklaus wirth, programming languages, modula-2, pascal, oberon, program verification, software engineering, compilers, computer science
 categories: programming-philosophy, software-engineering
 ---

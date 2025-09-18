@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Command Pattern
+title: "Command Pattern"
 date: 2012-12-31 00:34:00
-description: An introduction to the Command pattern, including its definition, use cases, and an example demonstrating complete decoupling between sender and receiver.
+description: "An introduction to the Command pattern, including its definition, use cases, and an example demonstrating complete decoupling between sender and receiver."
 tags: design-patterns, command-pattern, programming, java
 categories: design-patterns
 ---

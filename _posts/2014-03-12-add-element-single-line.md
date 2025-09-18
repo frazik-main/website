@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Java - Passing Arrays and Collections as Method Arguments
+title: "Java - Passing Arrays and Collections as Method Arguments"
 date: 2014-03-12 16:21:00
-description: A guide on how to pass array instances directly to methods in Java, and a technique using anonymous inner classes with instance initialization for collections.
+description: "A guide on how to pass array instances directly to methods in Java, and a technique using anonymous inner classes with instance initialization for collections."
 tags: java, arrays, collections, programming, anonymous-classes
 categories: java-concepts
 ---

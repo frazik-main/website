@@ -1,8 +1,8 @@
 ---
 layout: post
-title: jQuery and Animation
+title: "jQuery and Animation"
 date: 2010-12-31 21:55:00
-description: This tutorial covers jQuery animation methods, from basic show/hide effects to complex custom animations using the animate() method, including practical examples and code snippets.
+description: "This tutorial covers jQuery animation methods, from basic show/hide effects to complex custom animations using the animate() method, including practical examples and code snippets."
 tags: jquery, animation, javascript, front-end
 categories: jquery-tutorials
 ---

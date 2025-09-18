@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Nginx Reverse Proxy for Amazon OpenSearch Kibana with Ansible
+title: "Nginx Reverse Proxy for Amazon OpenSearch Kibana with Ansible"
 date: 2022-10-19 14:34:00
-description: A guide on how to set up access to Amazon OpenSearch Service Kibana using an Nginx reverse proxy, provisioned with Ansible. This includes defining inventory, creating a main playbook, and configuring Nginx for basic proxying.
+description: "A guide on how to set up access to Amazon OpenSearch Service Kibana using an Nginx reverse proxy, provisioned with Ansible. This includes defining inventory, creating a main playbook, and configuring Nginx for basic proxying."
 tags: ansible, nginx, opensearch, kibana, reverse-proxy, aws, automation, devops
 categories: devops, aws
 ---

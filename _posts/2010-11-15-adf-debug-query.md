@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Tracking SQL Queries in ADF Applications
+title: "Tracking SQL Queries in ADF Applications"
 date: 2010-11-15 12:46:00
-description: Learn how to track and monitor SQL queries executed by View Objects in ADF applications by overriding the executeQueryForCollection method and extracting parameter values.
+description: "Learn how to track and monitor SQL queries executed by View Objects in ADF applications by overriding the executeQueryForCollection method and extracting parameter values."
 tags: adf, sql, performance, jdeveloper, java, viewobject, debugging, programming
 categories: adf, programming, performance-tuning
 ---

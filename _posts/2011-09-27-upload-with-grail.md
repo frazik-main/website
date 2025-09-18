@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Grails File Upload Example
+title: "Grails File Upload Example"
 date: 2011-09-27 18:07:00
-description: A working snippet for uploading files in Grails, including controller logic and GSP form example.
+description: "A working snippet for uploading files in Grails, including controller logic and GSP form example."
 tags: grails, file-upload, groovy, gsp, web
 categories: grails-development
 ---

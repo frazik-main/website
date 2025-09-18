@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Optimizing Large Language Models A Look at Key Techniques
+title: "Optimizing Large Language Models A Look at Key Techniques"
 date: 2024-03-13 21:59:00
-description: An introduction to key techniques for optimizing Large Language Models (LLMs), including Retrieval-Augmented Generation (RAG), Chaining Transformers, Prompt Engineering, and Transfer Learning and Fine-tuning.
+description: "An introduction to key techniques for optimizing Large Language Models (LLMs), including Retrieval-Augmented Generation (RAG), Chaining Transformers, Prompt Engineering, and Transfer Learning and Fine-tuning."
 tags: LLMs, AI, machine learning, NLP, RAG, prompt engineering, transfer learning, optimization
 categories: artificial-intelligence, large-language-models
 ---

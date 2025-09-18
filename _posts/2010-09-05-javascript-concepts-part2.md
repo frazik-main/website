@@ -1,8 +1,8 @@
 ---
 layout: post
-title: JavaScript Functions - A Deep Dive
+title: "JavaScript Functions - A Deep Dive"
 date: 2010-09-05
-description: Exploring the deeper concepts of JavaScript functions, including their object nature and first-class status.
+description: "Exploring the deeper concepts of JavaScript functions, including their object nature and first-class status."
 tags: javascript, functions, programming
 categories: javascript-concepts
 ---

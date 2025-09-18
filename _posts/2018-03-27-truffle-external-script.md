@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Truffle Contract Execution Errors and Solutions
+title: "Truffle Contract Execution Errors and Solutions"
 date: 2018-03-27 21:26:00
-description: Common errors encountered when executing contract functions from Truffle scripts and how to resolve them.
+description: "Common errors encountered when executing contract functions from Truffle scripts and how to resolve them."
 tags: truffle, ethereum, smart-contracts, errors, javascript
 categories: ethereum-development
 ---

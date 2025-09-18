@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Java Generics: Understanding Type Erasure and Bridge Methods"
+title:" "Java Generics: Understanding Type Erasure and Bridge Methods""
 date: 2014-09-06 21:20:00
-description: An in-depth look at how Java implements generics through type erasure, including the steps involved, its compile-time nature, and the role of synthetic bridge methods in preserving polymorphism, illustrated with code examples.
+description: "An in-depth look at how Java implements generics through type erasure, including the steps involved, its compile-time nature, and the role of synthetic bridge methods in preserving polymorphism, illustrated with code examples."
 tags: java, generics, type-erasure, bridge-methods, programming, compiler
 categories: java-concepts
 ---

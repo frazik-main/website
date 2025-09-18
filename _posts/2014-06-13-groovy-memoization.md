@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Groovy Memoization with .memoize()
+title: "Groovy Memoization with .memoize()"
 date: 2014-06-13 16:50:00
-description: An explanation and example of Groovy's memoize() method for caching closure results to improve performance, particularly in computationally intensive or recursive scenarios.
+description: "An explanation and example of Groovy's memoize() method for caching closure results to improve performance, particularly in computationally intensive or recursive scenarios."
 tags: groovy, memoization, performance, caching, closures, programming
 categories: groovy, programming
 ---

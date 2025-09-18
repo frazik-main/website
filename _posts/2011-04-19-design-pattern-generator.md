@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Java Design Patterns - Decorator (Wrapper)
+title: "Java Design Patterns - Decorator (Wrapper)"
 date: 2011-04-19 19:00:00
-description: An explanation of the Decorator design pattern in Java, including its definition, implementation examples, and a demonstration of how it adds functionality to objects dynamically.
+description: "An explanation of the Decorator design pattern in Java, including its definition, implementation examples, and a demonstration of how it adds functionality to objects dynamically."
 tags: java, design-patterns, decorator, wrapper, programming, oo
 categories: java-design-patterns
 ---

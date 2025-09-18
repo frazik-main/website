@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Reflections on Clean Code and Professionalism"
+title:" "Reflections on Clean Code and Professionalism""
 date: 2011-10-14 21:43:00
-description: "A reflection on the importance of clean code, inspired by 'Clean Code - A Handbook of Agile Software Craftsmanship', emphasizing clarity and professionalism in programming."
+description:" "A reflection on the importance of clean code, inspired by 'Clean Code - A Handbook of Agile Software Craftsmanship', emphasizing clarity and professionalism in programming.""
 tags: clean code, programming, professionalism, software craftsmanship, agile
 categories: software-development, best-practices
 ---

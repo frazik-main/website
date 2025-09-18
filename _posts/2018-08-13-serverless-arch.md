@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Serverless Architectures
+title: "Serverless Architectures"
 date: 2018-08-13 12:21:00
-description: An overview of Serverless Architectures, a modern approach to application design. This post covers what serverless is, its key characteristics, and a balanced look at its upsides and downsides.
+description: "An overview of Serverless Architectures, a modern approach to application design. This post covers what serverless is, its key characteristics, and a balanced look at its upsides and downsides."
 tags: serverless, architecture, cloud, aws-lambda, azure-functions, faas, cloud-computing
 categories: cloud-computing, software-architecture
 ---

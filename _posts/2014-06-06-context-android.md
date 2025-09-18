@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Simplifying Android Context Access Globally
+title: "Simplifying Android Context Access Globally"
 date: 2014-06-06 16:25:00
-description: Learn how to store and access your Android application context globally using a static field in your custom Application class, reducing the need to pass it around.
+description: "Learn how to store and access your Android application context globally using a static field in your custom Application class, reducing the need to pass it around."
 tags: android, context, application, java, programming
 categories: android-development
 ---

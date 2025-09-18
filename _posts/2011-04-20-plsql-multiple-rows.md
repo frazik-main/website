@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Passing Structured Data to Oracle PL/SQL Stored Procedures with Java
+title: "Passing Structured Data to Oracle PL/SQL Stored Procedures with Java"
 date: 2011-04-20 22:38:00
-description: Learn how to pass structured data, including multiple rows and columns, from Java to Oracle PL/SQL stored procedures using Oracle-specific ARRAY and STRUCT objects.
+description: "Learn how to pass structured data, including multiple rows and columns, from Java to Oracle PL/SQL stored procedures using Oracle-specific ARRAY and STRUCT objects."
 tags: java, oracle, plsql, stored-procedure, jdbc, adf, array, struct, database
 categories: java, database, oracle
 ---

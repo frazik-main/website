@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Why Learn Scheme? Understanding Functional Programming for JavaScript
+title: "Why Learn Scheme? Understanding Functional Programming for JavaScript"
 date: 2011-07-30 23:08:00
-description: An introduction to Scheme, highlighting its benefits for understanding JavaScript, its core functional programming concepts, and basic syntax with illustrative examples.
+description: "An introduction to Scheme, highlighting its benefits for understanding JavaScript, its core functional programming concepts, and basic syntax with illustrative examples."
 tags: scheme, lisp, functional-programming, javascript, sicp, programming, education
 categories: functional-programming-concepts
 ---

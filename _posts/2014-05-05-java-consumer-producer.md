@@ -1,8 +1,8 @@
 ---
 layout: post
-title: A Custom Blocking Queue Implementation in Java
+title: "A Custom Blocking Queue Implementation in Java"
 date: 2014-05-05 17:14:00
-description: Explore a custom implementation of a blocking queue in Java, complete with worker threads and the 'poison pill' termination technique. This article demonstrates fundamental concurrency concepts and serves as a learning exercise compared to using Java's built-in `BlockingQueue`.
+description: "Explore a custom implementation of a blocking queue in Java, complete with worker threads and the 'poison pill' termination technique. This article demonstrates fundamental concurrency concepts and serves as a learning exercise compared to using Java's built-in `BlockingQueue`."
 tags: java, concurrency, blocking-queue, multithreading, custom-implementation, programming, tutorial
 categories: java-programming
 ---

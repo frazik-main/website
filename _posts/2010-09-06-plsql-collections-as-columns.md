@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Storing Collections in Database Columns
+title:" "Storing Collections in Database Columns""
 date: 2010-09-06 10:00:00
-description: Demonstrates how to store collections in database columns using Oracle's VARRAY.
+description:" "Demonstrates how to store collections in database columns using Oracle's VARRAY.""
 tags: oracle, plsql, database, collections, varray, nested table
 categories: database-design
 ---

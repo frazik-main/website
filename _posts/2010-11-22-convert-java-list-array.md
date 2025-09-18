@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Java Collections - Converting to Arrays
+title: "Java Collections - Converting to Arrays"
 date: 2010-11-22 14:34:00
-description: This post explains how to convert Java Collections to typed arrays using the Collection.toArray(T[] a) method, avoiding explicit casting.
+description: "This post explains how to convert Java Collections to typed arrays using the Collection.toArray(T[] a) method, avoiding explicit casting."
 tags: java, collections, arrays, programming
 categories: java-concepts
 ---

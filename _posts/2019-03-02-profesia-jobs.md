@@ -1,8 +1,8 @@
 ---
 layout: post
-title: What Programming Language Pays the Most in Slovakia?
+title: "What Programming Language Pays the Most in Slovakia?"
 date: 2019-03-02 17:53:00
-description: An analysis using web crawling and NLP techniques on Slovak job ads to determine the most in-demand and highest-paying programming languages in the local job market.
+description: "An analysis using web crawling and NLP techniques on Slovak job ads to determine the most in-demand and highest-paying programming languages in the local job market."
 tags: slovakia, job market, programming languages, python, nlp, web crawling, salary analysis, career advice
 categories: market-analysis, career-advice
 ---

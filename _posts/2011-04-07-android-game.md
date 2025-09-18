@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Developing an Android 2D Game - Hexxagon-like
+title: "Developing an Android 2D Game - Hexxagon-like"
 date: 2011-04-07 09:41:00
-description: A tutorial on developing a 2D Android game similar to Hexxagon, covering game rules, class design, UI, and animation using Java 2D interfaces.
+description: "A tutorial on developing a 2D Android game similar to Hexxagon, covering game rules, class design, UI, and animation using Java 2D interfaces."
 tags: android, game development, java, 2d game, animation, hexxagon, programming
 categories: android-development, game-development
 ---

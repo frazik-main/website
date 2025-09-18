@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Dynamically Loading JavaScript Files with jQuery.getScript()
+title: "Dynamically Loading JavaScript Files with jQuery.getScript()"
 date: 2010-11-20 21:21:00
-description: Learn how to dynamically load JavaScript files using jQuery's $.getScript() function, including practical examples.
+description: "Learn how to dynamically load JavaScript files using jQuery's $.getScript() function, including practical examples."
 tags: javascript, jquery, dynamic-loading, ajax
 categories: javascript-concepts
 ---

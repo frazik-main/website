@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Dynamically Changing SQL WHERE Clause in ADF View Objects
+title: "Dynamically Changing SQL WHERE Clause in ADF View Objects"
 date: 2010-10-15 12:12:00
-description: This post describes how to dynamically modify the SQL WHERE clause in an ADF View Object by overriding the `buildWhereClause` method, which is particularly useful for optimizing queries without creating new database indexes.
+description: "This post describes how to dynamically modify the SQL WHERE clause in an ADF View Object by overriding the `buildWhereClause` method, which is particularly useful for optimizing queries without creating new database indexes."
 tags: adf, view-object, sql, where-clause, dynamic-sql, java, override
 categories: adf-development
 ---

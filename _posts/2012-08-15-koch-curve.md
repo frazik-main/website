@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Koch Snowflake Animation with HTML5 Canvas
+title: "Koch Snowflake Animation with HTML5 Canvas"
 date: 2012-08-15 22:45:00
-description: An exploration of the Koch snowflake fractal, demonstrating its recursive implementation through an animation using HTML5 Canvas and JavaScript.
+description: "An exploration of the Koch snowflake fractal, demonstrating its recursive implementation through an animation using HTML5 Canvas and JavaScript."
 tags: javascript, canvas, fractal, recursion, koch-snowflake, animation, html5
 categories: javascript-concepts, html5
 ---

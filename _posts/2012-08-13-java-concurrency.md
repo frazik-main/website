@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Java Concurrency Strategies
+title: "Java Concurrency Strategies"
 date: 2012-08-13 16:26:00
-description: Exploring various concurrent programming strategies in Java, including single-threaded, simple multi-threaded, thread pooling, and the Future and Callable mechanisms, along with a performance comparison.
+description: "Exploring various concurrent programming strategies in Java, including single-threaded, simple multi-threaded, thread pooling, and the Future and Callable mechanisms, along with a performance comparison."
 tags: java, concurrency, multithreading, threads, programming
 categories: java-concepts, programming
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: PL/SQL Cursors - Implicit vs. Explicit
+title: "PL/SQL Cursors - Implicit vs. Explicit"
 date: 2011-02-01 11:58:00
-description: An introduction to PL/SQL cursors, differentiating between implicit and explicit cursors, their usage, and best practices with code examples.
+description: "An introduction to PL/SQL cursors, differentiating between implicit and explicit cursors, their usage, and best practices with code examples."
 tags: plsql, oracle, cursors, database, programming, sql
 categories: oracle-plsql
 ---

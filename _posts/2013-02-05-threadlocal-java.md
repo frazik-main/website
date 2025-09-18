@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Understanding ThreadLocal in Java
+title: "Understanding ThreadLocal in Java"
 date: 2013-02-05 13:33:00
-description: Explore the concept of ThreadLocal in Java, its unique scope, global access within a thread, and common use cases in web applications and as an alternative to object pools.
+description: "Explore the concept of ThreadLocal in Java, its unique scope, global access within a thread, and common use cases in web applications and as an alternative to object pools."
 tags: java, concurrency, multithreading, threadlocal, servlets, web-development, programming
 categories: java-concepts, concurrency
 ---

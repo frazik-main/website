@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Refactoring Conditional Logic with Polymorphism
+title: "Refactoring Conditional Logic with Polymorphism"
 date: 2014-09-12 23:31:00
-description: This post explores refactoring complex conditional statements (like switch or if-else ladders) into a more maintainable and object-oriented polymorphic design, demonstrating how it enhances code readability and extensibility.
+description: "This post explores refactoring complex conditional statements (like switch or if-else ladders) into a more maintainable and object-oriented polymorphic design, demonstrating how it enhances code readability and extensibility."
 tags: polymorphism, refactoring, java, conditional-logic, object-oriented-programming, design-patterns
 categories: programming, java-programming
 ---

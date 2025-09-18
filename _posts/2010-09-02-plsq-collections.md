@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "PL/SQL Collections A Comprehensive Guide"
+title:" "PL/SQL Collections A Comprehensive Guide""
 date: 2010-09-03 10:00:00
-description: "A detailed explanation of associative arrays, nested tables, and VARRAYs in PL/SQL, including examples and best practices."
+description:" "A detailed explanation of associative arrays, nested tables, and VARRAYs in PL/SQL, including examples and best practices.""
 tags: PL/SQL, collections, associative arrays, nested tables, VARRAY, Oracle
 categories: Database, Programming
 ---

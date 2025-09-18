@@ -1,8 +1,8 @@
 ---
 layout: post
-title: JavaScript Promises - An Introduction
+title: "JavaScript Promises - An Introduction"
 date: 2015-07-21 16:04:00
-description: An introduction to JavaScript Promises, explaining their purpose in handling asynchronous operations, addressing callback hell, and demonstrating a basic implementation.
+description: "An introduction to JavaScript Promises, explaining their purpose in handling asynchronous operations, addressing callback hell, and demonstrating a basic implementation."
 tags: javascript, promises, asynchronous, callbacks, programming
 categories: javascript-concepts
 ---

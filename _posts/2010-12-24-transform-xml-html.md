@@ -1,8 +1,8 @@
 ---
 layout: post
-title: XSLT Tutorial - Transforming XML to HTML
+title: "XSLT Tutorial - Transforming XML to HTML"
 date: 2010-12-24 15:39:00
-description: An introduction to XSLT for XML document transformation, covering core concepts, functional programming influences, and a practical example of transforming weather XML into HTML.
+description: "An introduction to XSLT for XML document transformation, covering core concepts, functional programming influences, and a practical example of transforming weather XML into HTML."
 tags: xslt, xml, html, transformation, xpath, programming, functional-programming
 categories: xslt-tutorials
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: jQuery Plugin Development Guidelines
+title: "jQuery Plugin Development Guidelines"
 date: 2010-12-24 22:48:00
-description: This article provides a simple guide for writing jQuery plugins, covering best practices such as naming conventions, handling the $ alias, complex parameter lists, and wrapper methods.
+description: "This article provides a simple guide for writing jQuery plugins, covering best practices such as naming conventions, handling the $ alias, complex parameter lists, and wrapper methods."
 tags: jquery, plugins, javascript, development, best-practices
 categories: jquery-development
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Java Profiling - Built-in Tools
+title: "Java Profiling - Built-in Tools"
 date: 2014-09-14 15:15:00
-description: An introduction to Java profiling, covering common performance issues and essential built-in JDK tools like jmap, jstack, jconsole, and VisualVM, along with mentions of specialized profilers.
+description: "An introduction to Java profiling, covering common performance issues and essential built-in JDK tools like jmap, jstack, jconsole, and VisualVM, along with mentions of specialized profilers."
 tags: java, profiling, jvm, performance, debugging, jmap, jstack, jconsole, visualvm, memory-leaks, deadlocks
 categories: java-performance, programming-tools
 ---

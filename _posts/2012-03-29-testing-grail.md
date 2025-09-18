@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Grails Controller Unit Testing"
+title:" "Grails Controller Unit Testing""
 date: 2012-03-29 16:30:00
-description: "This post details how to perform unit testing for controllers in Grails using ControllerUnitTestCase, including examples for mocking services."
+description:" "This post details how to perform unit testing for controllers in Grails using ControllerUnitTestCase, including examples for mocking services.""
 tags: grails, testing, unit-testing, controllers, groovy
 categories: grails
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: SVN: Revert to a Previous Revision Using Reverse Merge
+title: "SVN: Revert to a Previous Revision Using Reverse Merge"
 date: 2012-11-21 14:24:00
-description: Learn how to revert a Subversion (SVN) repository to a previous revision or undo specific changes using the reverse merge command.
+description: "Learn how to revert a Subversion (SVN) repository to a previous revision or undo specific changes using the reverse merge command."
 tags: svn, version-control, reverse-merge, revision, revert
 categories: version-control
 ---

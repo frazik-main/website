@@ -1,8 +1,8 @@
 ---
 layout: post
-title: What Are Smart Contracts?
+title: "What Are Smart Contracts?"
 date: 2018-03-22 23:28:00
-description: An introduction to smart contracts, their history, how they work, and their execution on the Ethereum blockchain using Solidity and Web3.
+description: "An introduction to smart contracts, their history, how they work, and their execution on the Ethereum blockchain using Solidity and Web3."
 tags: smart-contracts, blockchain, ethereum, solidity, web3, decentralized-web, programming
 categories: blockchain-concepts
 ---

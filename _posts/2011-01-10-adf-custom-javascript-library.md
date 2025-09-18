@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Why jQuery and ADF Faces?
+title: "Why jQuery and ADF Faces?"
 date: 2011-01-10 14:15:00
-description: This post explores how to integrate the jQuery JavaScript library with Oracle ADF Faces applications, providing steps for including jQuery globally or on specific pages, and tips for locating ADF components.
+description: "This post explores how to integrate the jQuery JavaScript library with Oracle ADF Faces applications, providing steps for including jQuery globally or on specific pages, and tips for locating ADF components."
 tags: jquery, adf-faces, jsf, javascript, oracle
 categories: web-development, javascript, oracle-adf
 ---

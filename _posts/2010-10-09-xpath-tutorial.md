@@ -1,8 +1,8 @@
 ---
 layout: post
-title: XPath - Navigating and Querying XML Documents
+title: "XPath - Navigating and Querying XML Documents"
 date: 2010-10-09 19:54:00
-description: An introduction to XPath, explaining how to navigate and query XML documents using path expressions, predicates, and relative node selections.
+description: "An introduction to XPath, explaining how to navigate and query XML documents using path expressions, predicates, and relative node selections."
 tags: xpath, xml, navigation, querying, programming
 categories: xml-concepts
 ---

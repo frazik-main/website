@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Facade Pattern and Session Facade
+title: "Facade Pattern and Session Facade"
 date: 2013-04-25 20:31:00
-description: An explanation of the Facade Pattern, a structural design pattern that simplifies complexity and decouples code, along with a detailed look at the Session Facade, which encapsulates client-server interactions.
+description: "An explanation of the Facade Pattern, a structural design pattern that simplifies complexity and decouples code, along with a detailed look at the Session Facade, which encapsulates client-server interactions."
 tags: design patterns, facade pattern, session facade, architecture
 categories: design-patterns
 ---

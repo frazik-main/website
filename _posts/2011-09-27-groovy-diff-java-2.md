@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Groovy and Java - Closures and Dynamic Programming
+title: "Groovy and Java - Closures and Dynamic Programming"
 date: 2011-09-27 22:16:00
-description: This post explores key differences between Groovy and Java, focusing on Groovy's closures and its dynamic programming capabilities, with practical code examples.
+description: "This post explores key differences between Groovy and Java, focusing on Groovy's closures and its dynamic programming capabilities, with practical code examples."
 tags: groovy, java, closures, dynamic-programming, programming
 categories: groovy-concepts
 ---

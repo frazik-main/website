@@ -1,8 +1,8 @@
 ---
 layout: post
-title: How to Create Threads in Java
+title: "How to Create Threads in Java"
 date: 2014-03-12 09:08:00
-description: Explore two common methods for creating new threads in Java: implementing the Runnable interface or extending the Thread class and overriding its run() method.
+description: "Explore two common methods for creating new threads in Java: implementing the Runnable interface or extending the Thread class and overriding its run() method."
 tags: java, threads, concurrency, programming
 categories: java-programming
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Custom View Object with Oracle Ref Cursor in ADF
+title: "Custom View Object with Oracle Ref Cursor in ADF"
 date: 2010-10-14 15:31:00
-description: This post demonstrates how to create a custom read-only view object in Oracle ADF JDeveloper, leveraging an Oracle REF CURSOR as an alternative data source. It covers initial JDeveloper setup, database package creation, and customizing the View Object implementation class.
+description: "This post demonstrates how to create a custom read-only view object in Oracle ADF JDeveloper, leveraging an Oracle REF CURSOR as an alternative data source. It covers initial JDeveloper setup, database package creation, and customizing the View Object implementation class."
 tags: adf, jdeveloper, view object, ref cursor, oracle, plsql, java, custom data source
 categories: oracle-adf
 ---

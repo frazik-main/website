@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Simple Saxon XSLT Transformation Example using Java
+title: "Simple Saxon XSLT Transformation Example using Java"
 date: 2011-03-15 11:39:00
-description: A simple and descriptive example of performing Saxon XSLT transformations using Java, including a code snippet and setup instructions.
+description: "A simple and descriptive example of performing Saxon XSLT transformations using Java, including a code snippet and setup instructions."
 tags: java, xslt, saxon, xml, transformation, programming
 categories: java, xml-transformation
 ---

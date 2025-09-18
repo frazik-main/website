@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Using XPath in Java
+title: "Using XPath in Java"
 date: 2011-03-24 12:38:00
-description: A guide to using XPath for XML document parsing and querying in Java, with practical code examples.
+description: "A guide to using XPath for XML document parsing and querying in Java, with practical code examples."
 tags: java, xpath, xml, dom, programming
 categories: java, xml
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Understanding Java Memory Leaks
+title: "Understanding Java Memory Leaks"
 date: 2015-12-09 14:39:00
-description: This post delves into Java memory management, common types of OutOfMemoryError, and demonstrates how to create various memory leaks like byte, list, map key, and class leaks with practical examples.
+description: "This post delves into Java memory management, common types of OutOfMemoryError, and demonstrates how to create various memory leaks like byte, list, map key, and class leaks with practical examples."
 tags: java, memory-management, memory-leak, outofmemoryerror, garbage-collection, permgen, heap-space, code-interview, programming
 categories: java, memory
 ---

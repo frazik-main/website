@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Simple Remote Logger for Android
+title: "Simple Remote Logger for Android"
 date: 2014-06-06 16:39:00
-description: A guide to implementing a basic remote logger for Android applications, allowing logs to be sent from the device to a backend server for centralized monitoring.
+description: "A guide to implementing a basic remote logger for Android applications, allowing logs to be sent from the device to a backend server for centralized monitoring."
 tags: android, java, logging, remote, backend, development
 categories: android-development
 ---

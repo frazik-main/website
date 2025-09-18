@@ -1,8 +1,8 @@
 ---
 layout: post
-title: PL/SQL Packages for Excel and Word Automation in Oracle Forms (WEBUTIL, OLE2)
+title: "PL/SQL Packages for Excel and Word Automation in Oracle Forms (WEBUTIL, OLE2)"
 date: 2011-02-01 11:03:00
-description: PL/SQL packages for automating Excel and Word document creation and manipulation within Oracle Forms 10g applications using WEBUTIL and OLE2.
+description: "PL/SQL packages for automating Excel and Word document creation and manipulation within Oracle Forms 10g applications using WEBUTIL and OLE2."
 tags: plsql, oracle forms, excel, word, webutil, ole2, automation, programming
 categories: oracle-forms, plsql
 ---

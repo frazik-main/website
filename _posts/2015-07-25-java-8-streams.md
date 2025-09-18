@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Introduction to Java 8 Stream API
+title: "Introduction to Java 8 Stream API"
 date: 2015-07-25 15:16:00
-description: An overview of the Java 8 Stream API, covering its definition, core characteristics like pipelining and internal iteration, and the distinction between intermediate and terminal operations, alongside its benefits for collection processing.
+description: "An overview of the Java 8 Stream API, covering its definition, core characteristics like pipelining and internal iteration, and the distinction between intermediate and terminal operations, alongside its benefits for collection processing."
 tags: java, java8, streams, api, functionalprogramming, collections
 categories: java-concepts
 ---

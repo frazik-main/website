@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "JavaScript Closures - A Deep Dive"
+title:" "JavaScript Closures - A Deep Dive""
 date: 2010-09-07 10:00:00
-description: "Understanding closures in JavaScript, a powerful concept for handling asynchronous callbacks."
+description:" "Understanding closures in JavaScript, a powerful concept for handling asynchronous callbacks.""
 tags: javascript, closures, asynchronous, programming
 categories: javascript-concepts
 ---

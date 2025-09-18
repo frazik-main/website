@@ -1,8 +1,8 @@
 ---
 layout: post
-title: MVC Concept
+title: "MVC Concept"
 date: 2011-01-16 20:51:00
-description: An in-depth look at the Model-View-Controller (MVC) architectural pattern, its core components, application in web development, particularly with JSP and Servlets, and a discussion on related frameworks.
+description: "An in-depth look at the Model-View-Controller (MVC) architectural pattern, its core components, application in web development, particularly with JSP and Servlets, and a discussion on related frameworks."
 tags: mvc, java, jsp, servlets, web-development, design-patterns, programming, java-ee
 categories: java-ee, design-patterns
 ---

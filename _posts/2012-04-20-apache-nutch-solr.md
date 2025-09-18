@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Apache Solr and Apache Nutch Integration Tutorial
+title: "Apache Solr and Apache Nutch Integration Tutorial"
 date: 2012-04-20 18:07:00
-description: A quick guide to finding a useful tutorial on integrating Apache Solr with Apache Nutch, pointing to the official Nutch wiki.
+description: "A quick guide to finding a useful tutorial on integrating Apache Solr with Apache Nutch, pointing to the official Nutch wiki."
 tags: apache, solr, nutch, integration, tutorial
 categories: apache-solr, apache-nutch
 ---

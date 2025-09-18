@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Object-Oriented Design Patterns in Java - Template Method
+title: "Object-Oriented Design Patterns in Java - Template Method"
 date: 2010-10-04 23:32:00
-description: An introduction to the Template Method design pattern in Java, illustrating its use for controlling algorithm flow with abstract superclasses and concrete subclasses, including an example for JSON and XML object creation.
+description: "An introduction to the Template Method design pattern in Java, illustrating its use for controlling algorithm flow with abstract superclasses and concrete subclasses, including an example for JSON and XML object creation."
 tags: java, design-patterns, template-method, oop, inversion-of-control
 categories: design-patterns
 ---

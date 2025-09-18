@@ -1,8 +1,8 @@
 ---
 layout: post
-title: JavaScript Concepts - Objects
+title: "JavaScript Concepts - Objects"
 date: 2010-09-04 10:00:00
-description: An introduction to objects in JavaScript, including object creation, properties, JSON notation, and the window object.
+description: "An introduction to objects in JavaScript, including object creation, properties, JSON notation, and the window object."
 tags: javascript, objects, json, programming
 categories: javascript-concepts
 ---

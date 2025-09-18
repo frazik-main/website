@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Java Reference Types - Strong, Weak, and Soft References
+title: "Java Reference Types - Strong, Weak, and Soft References"
 date: 2012-12-31 16:06:00
-description: An overview of different reference types in Java, including strong, weak, and soft references, explaining their behavior with the garbage collector and common use cases like caching.
+description: "An overview of different reference types in Java, including strong, weak, and soft references, explaining their behavior with the garbage collector and common use cases like caching."
 tags: java, references, garbage-collection, jvm, programming
 categories: java-concepts
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: JavaScript Concepts - Callbacks and Function Context
+title:" "JavaScript Concepts - Callbacks and Function Context""
 date: 2010-09-06 10:00:00
-description: A deep dive into JavaScript callbacks and function context, exploring how `this` works and how to manage function contexts using `call()`
+description:" "A deep dive into JavaScript callbacks and function context, exploring how `this` works and how to manage function contexts using `call()`""
 tags: javascript, callbacks, function-context, this
 categories: javascript-concepts
 ---

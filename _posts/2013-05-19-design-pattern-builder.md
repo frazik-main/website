@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Effective Java - The Builder Pattern
+title: "Effective Java - The Builder Pattern"
 date: 2013-05-19 10:38:00
-description: Explore the Builder Pattern as an elegant solution for handling a large number of optional parameters in constructors, addressing limitations of telescopic constructors and JavaBeans.
+description: "Explore the Builder Pattern as an elegant solution for handling a large number of optional parameters in constructors, addressing limitations of telescopic constructors and JavaBeans."
 tags: java, builder-pattern, design-patterns, effective-java, programming
 categories: java-programming, design-patterns
 ---

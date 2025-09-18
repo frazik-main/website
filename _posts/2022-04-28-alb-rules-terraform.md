@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Application Load Balancer - Host- and Path-Based Routing for Multiple ECS Services
+title: "Application Load Balancer - Host- and Path-Based Routing for Multiple ECS Services"
 date: 2022-04-28 22:58:00
-description: This post explains how to leverage a single AWS Application Load Balancer for multiple Amazon ECS services using a combination of host- and path-based routing rules, enhancing efficiency and reducing costs.
+description: "This post explains how to leverage a single AWS Application Load Balancer for multiple Amazon ECS services using a combination of host- and path-based routing rules, enhancing efficiency and reducing costs."
 tags: aws, alb, ecs, fargate, load-balancing, routing, cloud
 categories: aws-cloud
 ---

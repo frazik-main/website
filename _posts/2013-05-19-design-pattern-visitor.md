@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Visitor Design Pattern
+title: "Visitor Design Pattern"
 date: 2013-05-19 00:37:00
-description: An explanation of the Visitor design pattern, demonstrating how to define new operations on objects without modifying their classes, using a Java example with vehicle fuel efficiency calculations.
+description: "An explanation of the Visitor design pattern, demonstrating how to define new operations on objects without modifying their classes, using a Java example with vehicle fuel efficiency calculations."
 tags: design-patterns, visitor, java, programming, object-oriented
 categories: design-patterns
 ---
