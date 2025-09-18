@@ -34,9 +34,9 @@
 
     <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Copy default Nginx configuration for Kibana proxy</span>
       <span class="na">ansible.builtin.template</span><span class="pi">:</span>
-        <span class="na">src</span><span class="pi">:</span> <span class="s">default.conf.j2</span>  <span class="c1"># This file needs to be in your files/templates directory</span>
+        <span class="na">src</span><span class="pi">:</span> <span class="s">default.conf.j2</span> <span class="c1"># This file needs to be in your files/templates directory</span>
         <span class="na">dest</span><span class="pi">:</span> <span class="s">/etc/nginx/sites-available/default</span>
-        <span class="na">mode</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0644'</span>
+        <span class="na">mode</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0644"</span>
       <span class="na">notify</span><span class="pi">:</span> <span class="s">Reload Nginx</span>
 
     <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Enable site by symlinking</span>
