@@ -23,14 +23,14 @@ The recommendation is simple: prefix the filename with `jQuery`, then follow tha
 
 We named our plugin "details" (because it shows details about a programming language, I know it's a simple name!) and named the file `jquery.cwp.details.js`. Here, we added a unique plugin name for ourselves (`cwp` stands for "coding with passion"), which helps limit name conflict problems.
 
-Similar considerations need to be taken with the *names* we give to our functions. In our case, we did not bother with that because there is a 100% chance that this plugin will be used only by me, and I probably will never use it again (outside of this example)... so there you go.
+Similar considerations need to be taken with the _names_ we give to our functions. In our case, we did not bother with that because there is a 100% chance that this plugin will be used only by me, and I probably will never use it again (outside of this example)... so there you go.
 
 ## 2. Handle $ Alias Properly
 
-We have no way of knowing *whether* a web developer (using *our* plugin) will use the `$.noConflict()` function to allow `$` to be used by another library. Therefore, we need to guard against such situations. We can use the following trick:
+We have no way of knowing _whether_ a web developer (using _our_ plugin) will use the `$.noConflict()` function to allow `$` to be used by another library. Therefore, we need to guard against such situations. We can use the following trick:
 
 ```javascript
-(function($) {
+(function ($) {
   // plugin implementation
 })(jQuery);
 ```
@@ -45,11 +45,14 @@ We can use the handy `$.extend` function to merge default parameters with option
 
 ```javascript
 function complex(p1, options) {
-  var settings = $.extend({
-    option1: defaultVal1,
-    option2: defaultVal2,
-    option3: defaultVal3
-  }, options || {});
+  var settings = $.extend(
+    {
+      option1: defaultVal1,
+      option2: defaultVal2,
+      option3: defaultVal3,
+    },
+    options || {}
+  );
   // "meat" of the function.
 }
 ```
@@ -63,7 +66,7 @@ By merging the values passed by the web developer in the `options` parameter wit
 The true power of `jQuery` lies in its ability to easily and quickly select and operate on DOM elements. Luckily, we can extend that power by adding our own wrapper methods. The general pattern for doing so is:
 
 ```javascript
-$.fn.functionName = function(params) {
+$.fn.functionName = function (params) {
   // function implementation
 };
 ```
@@ -71,33 +74,32 @@ $.fn.functionName = function(params) {
 That's almost it; just remember to **always** return `this` for chaining support. With that said, here is our function in all its glory:
 
 ```javascript
-(function($) {
-    $.fn.details = function(url, options) {
-        var settings = $.extend({
-            customClass: null,
-            paramName: 'language',
-            url: url
-        }, options || {});
+(function ($) {
+  $.fn.details = function (url, options) {
+    var settings = $.extend(
+      {
+        customClass: null,
+        paramName: "language",
+        url: url,
+      },
+      options || {}
+    );
 
-        this.click(function(event) {
-            $('div.details').remove();
-            // Substitute '<' with appropriate start tag and '>' with end tag...
-            $('<div/>')
-                .addClass('details' +
-                    (settings.customClass ? (' ') + settings.customClass : ''))
-                .css({
-                    display: 'none'
-                })
-                .appendTo('body')
-                .load(settings.url,
-                    encodeURIComponent(settings.paramName) + '=' +
-                    encodeURIComponent($(event.target).text()),
-                    function() {
-                        $(this).closest('.details').fadeIn('slow');
-                    });
-            });
-        this.addClass('details');
-        return this;
-    };
+    this.click(function (event) {
+      $("div.details").remove();
+      // Substitute '<' with appropriate start tag and '>' with end tag...
+      $("<div/>")
+        .addClass("details" + (settings.customClass ? " " + settings.customClass : ""))
+        .css({
+          display: "none",
+        })
+        .appendTo("body")
+        .load(settings.url, encodeURIComponent(settings.paramName) + "=" + encodeURIComponent($(event.target).text()), function () {
+          $(this).closest(".details").fadeIn("slow");
+        });
+    });
+    this.addClass("details");
+    return this;
+  };
 })(jQuery);
 ```

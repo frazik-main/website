@@ -9,7 +9,7 @@ categories: xml-concepts
 
 ## Introduction
 
-As the W3C standard states: *XPath is a language for addressing parts of an XML document*. That's simple enough. XPath is basically a means to traverse an XML document and perform searches on it. We can use the structure of the XML document (semantics of the data) or the data itself to perform these searches. XPath can be used in XML transformations (XSLT) and in SOA (BPEL language). jQuery also uses similar logic for its selector search operations.
+As the W3C standard states: _XPath is a language for addressing parts of an XML document_. That's simple enough. XPath is basically a means to traverse an XML document and perform searches on it. We can use the structure of the XML document (semantics of the data) or the data itself to perform these searches. XPath can be used in XML transformations (XSLT) and in SOA (BPEL language). jQuery also uses similar logic for its selector search operations.
 
 ## XML Document
 
@@ -83,4 +83,7 @@ We can also use the XML tree structure (children, parents, etc.) to find specifi
 For example, we can rewrite the previous example as follows: `/game-systems/system/emulator[@usable='true']/ancestor::system/name`.
 
 This expression is somewhat longer, but it achieves the same result. Here, we are using the `ancestor` axis, which returns the ancestors of the current element (`system` in this case). You can also search for children, attributes, descendants, and perform similar searches (in most cases) using basic node selectors and predicates.
+
+```
+
 ```

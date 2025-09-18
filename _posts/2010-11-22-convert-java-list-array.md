@@ -20,4 +20,4 @@ List<String> list = new ArrayList<String>();
 String[] stringList = (String[]) list.toArray(new String[list.size()]);
 ```
 
-Please see more details in the [Java API documentation](http://download.oracle.com/javase/1.5.0/docs/api/java/util/Collection.html#toArray(T[])) for `Collection.toArray(T[] a)`.
+Please see more details in the [Java API documentation](<http://download.oracle.com/javase/1.5.0/docs/api/java/util/Collection.html#toArray(T[])>) for `Collection.toArray(T[] a)`.

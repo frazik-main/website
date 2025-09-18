@@ -12,6 +12,7 @@ Static factories and constructors share a limitation: they do not scale well to 
 Consider the case of a computer configuration builder. Some parts are essential in this build, while others are optional.
 
 There are a number of ways that developers usually try to approach this problem. The first is **telescopic constructors**, where you need to create a constructor for each set of optional parameters. This approach has obvious disadvantages (ugly code, a lot of work). The second approach is to use **JavaBeans**, in which you call a parameterless constructor to create the object and then call setter methods to set each required and optional parameter. There are two problems with this approach:
+
 1.  A JavaBean may be in an inconsistent state partway through its construction.
 2.  This pattern precludes the possibility of making a class immutable.
 

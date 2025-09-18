@@ -164,11 +164,11 @@ public class DecorateData {
 
 There's a lot going on here, but don't worry. The main things to understand are as follows:
 
-*   **The `CreateObject` abstract class (lines 1-46):** This section declares the abstract class that encapsulates the workflow for creating string representations of objects.
-*   **The `decorate()` method (lines 19-36):** This method implements the algorithm's workflow. It utilizes abstract methods (lines 39-46) that must be implemented by subclasses, demonstrating the Inversion of Control paradigm.
-*   **The `JSONObject` implementation (lines 50-78):** This section provides the first concrete implementation, creating a JSON string representation.
-*   **The `XmlObject` implementation (lines 84-118):** This section does the same, but for an XML object representation.
-*   **Testing (lines 124-135):** The `main` method shows how to test both implementations.
+- **The `CreateObject` abstract class (lines 1-46):** This section declares the abstract class that encapsulates the workflow for creating string representations of objects.
+- **The `decorate()` method (lines 19-36):** This method implements the algorithm's workflow. It utilizes abstract methods (lines 39-46) that must be implemented by subclasses, demonstrating the Inversion of Control paradigm.
+- **The `JSONObject` implementation (lines 50-78):** This section provides the first concrete implementation, creating a JSON string representation.
+- **The `XmlObject` implementation (lines 84-118):** This section does the same, but for an XML object representation.
+- **Testing (lines 124-135):** The `main` method shows how to test both implementations.
 
 ## Conclusion
 
@@ -177,4 +177,7 @@ Patterns like the Template Method offer a good paradigm for **separation of conc
 It is useful to use the **Template Method pattern** to capture an algorithm in one place, deferring the implementation of simpler, varying steps to subclasses. This approach has the potential to avoid bugs by ensuring tricky operations are handled correctly once in the superclass, thereby simplifying user code in the subclasses.
 
 Please check the [post about the Strategy design pattern](http://codingwithpassion.blogspot.com/2010/10/object-oriented-design-patterns-in-java.html), which is very similar to Template, but uses an interface instead of an abstract class.
+
+```
+
 ```

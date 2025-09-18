@@ -9,7 +9,7 @@ categories: java-design-patterns
 
 ## Introduction
 
-As "The holy grail of Java OO design book" (GoF - *Elements of Reusable OO Software*) says: "**Decorator** design pattern is intended to add additional responsibility to an object dynamically. This design pattern is also known as **Wrapper**."
+As "The holy grail of Java OO design book" (GoF - _Elements of Reusable OO Software_) says: "**Decorator** design pattern is intended to add additional responsibility to an object dynamically. This design pattern is also known as **Wrapper**."
 
 In other words, this design pattern enables object inheritance at runtime. It achieves this by using interface inheritance and class composition.
 
@@ -124,7 +124,7 @@ public class UpgradePhoneDecorator implements IPhoneDecorator {
 }
 ```
 
-Now, let's observe what our basic "default" object can do *before* and *after* it has been decorated. Notice how we provide the `Phone` instance to the decorator's constructor, and by leveraging polymorphism (dynamic binding), we delegate basic tasks back to our "default" object.
+Now, let's observe what our basic "default" object can do _before_ and _after_ it has been decorated. Notice how we provide the `Phone` instance to the decorator's constructor, and by leveraging polymorphism (dynamic binding), we delegate basic tasks back to our "default" object.
 
 ```java
 public static void main(String[] args) {

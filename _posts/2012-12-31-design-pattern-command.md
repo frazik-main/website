@@ -7,7 +7,7 @@ tags: design-patterns, command-pattern, programming, java
 categories: design-patterns
 ---
 
-A **Command pattern** is an object behavioral pattern that allows us to achieve complete decoupling between the sender and the receiver. A *sender* is an object that invokes an operation, and a *receiver* is an object that receives the request to execute a certain operation.
+A **Command pattern** is an object behavioral pattern that allows us to achieve complete decoupling between the sender and the receiver. A _sender_ is an object that invokes an operation, and a _receiver_ is an object that receives the request to execute a certain operation.
 
 This pattern allows the **requester** of a particular **action** to be decoupled from the object that performs the action.
 

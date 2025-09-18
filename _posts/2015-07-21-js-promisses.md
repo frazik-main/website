@@ -20,15 +20,15 @@ I think this all started with Node.js, and callback hell got a bad rap from the 
 When you need to perform a number of actions in a specific sequence in JavaScript, you must use nested functions, something like this:
 
 ```javascript
-asyncCall(function(err, data1){
-    if(err) return callback(err);
-    anotherAsyncCall(function(err2, data2){
-        if(err2) return callback(err2);
-        oneMoreAsyncCall(function(err3, data3){
-            if(err3) return callback(err3);
-            // are we done yet?
-        });
+asyncCall(function (err, data1) {
+  if (err) return callback(err);
+  anotherAsyncCall(function (err2, data2) {
+    if (err2) return callback(err2);
+    oneMoreAsyncCall(function (err3, data3) {
+      if (err3) return callback(err3);
+      // are we done yet?
     });
+  });
 });
 ```
 
@@ -36,21 +36,21 @@ You can use promises to make this code prettier:
 
 ```javascript
 asyncCall()
-.then(function(data1){
+  .then(function (data1) {
     // do something...
     return anotherAsyncCall();
-})
-.then(function(data2){
+  })
+  .then(function (data2) {
     // do something...
     return oneMoreAsyncCall();
-})
-.then(function(data3){
-   // the third and final async response
-})
-.fail(function(err) {
-   // handle any error resulting from any of the above calls
-})
-.done();
+  })
+  .then(function (data3) {
+    // the third and final async response
+  })
+  .fail(function (err) {
+    // handle any error resulting from any of the above calls
+  })
+  .done();
 ```
 
 A lot nicer, isn't it?
@@ -67,7 +67,7 @@ Promises have arrived natively in JavaScript, but to conclude, I want to provide
 
 ```javascript
 function Promise(fn) {
-  var state = 'pending';
+  var state = "pending";
   var value;
   var deferred;
 
@@ -76,15 +76,15 @@ function Promise(fn) {
   // If 'then' is called after 'resolve', then the value is read from the internal state.
   function resolve(newValue) {
     value = newValue;
-    state = 'resolved';
+    state = "resolved";
 
-    if(deferred) {
+    if (deferred) {
       handle(deferred);
     }
   }
 
   function handle(onResolved) {
-    if(state === 'pending') {
+    if (state === "pending") {
       deferred = onResolved;
       return;
     }
@@ -93,7 +93,7 @@ function Promise(fn) {
   }
 
   // This will be invoked when the client calls it.
-  this.then = function(onResolved) {
+  this.then = function (onResolved) {
     handle(onResolved);
   };
 
@@ -103,13 +103,13 @@ function Promise(fn) {
 }
 
 function testPromise() {
-    return new Promise(function(resolve) {
-        var value = readFromDatabase();
-        resolve(value);
-    });
+  return new Promise(function (resolve) {
+    var value = readFromDatabase();
+    resolve(value);
+  });
 }
 
-testPromise().then(function(databaseValue) {
-    log(databaseValue);
+testPromise().then(function (databaseValue) {
+  log(databaseValue);
 });
 ```

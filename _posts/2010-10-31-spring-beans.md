@@ -15,11 +15,11 @@ The Spring framework's appeal lies in its simplicity, small footprint, and abili
 
 In this article, we will become familiar with the framework's essential concepts: wiring and instantiating Java POJO classes (Beans).
 
-The source code for the following examples can be downloaded from my [Google Code repository](http://code.google.com/p/codingwithpassionblog/downloads/detail?name=SpringBeans.zip&amp;can=2&amp;q=#makechanges).
+The source code for the following examples can be downloaded from my [Google Code repository](http://code.google.com/p/codingwithpassionblog/downloads/detail?name=SpringBeans.zip&can=2&q=#makechanges).
 
 ## Spring Wiring
 
-In Spring, components (mainly Java classes—nothing fancy like CORBA or DCOM, don't worry) are not responsible for managing their associations with other components; instead, references are passed through the container. Controlling associations between components (passing references from one place to another) is known as **wiring**. And this is at the heart of Spring's philosophy. These components are called **beans**, and they share similarities with Java Beans. This philosophy originated from one of the greatest books in the Java ecosystem: *Expert One-on-One J2EE Design and Development*.
+In Spring, components (mainly Java classes—nothing fancy like CORBA or DCOM, don't worry) are not responsible for managing their associations with other components; instead, references are passed through the container. Controlling associations between components (passing references from one place to another) is known as **wiring**. And this is at the heart of Spring's philosophy. These components are called **beans**, and they share similarities with Java Beans. This philosophy originated from one of the greatest books in the Java ecosystem: _Expert One-on-One J2EE Design and Development_.
 
 Spring also acts as a bean factory (see my blog post about the factory pattern [here](http://codingwithpassion.blogspot.com/2010/11/object-oriented-design-patterns-in-java.html)). But unlike many implementations of the factory pattern, which often create only a single type of object, the Spring bean factory can create many different types of beans (e.g., lists, data sources, as you will see).
 
@@ -203,6 +203,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 }
 ```
+
 There isn't much complexity in these services; as you can see, much of the responsibility is delegated to the underlying DAO (Data Access Object) bean. Data Access Object beans handle interactions with the database (or other types of data storage, such as flat files or vintage databases) to read and write employee and department information.
 
 The implementations of these DAO beans are not crucial for understanding Spring basics, so I will omit them here (you can find the full implementation in the downloadable example if you're curious). Suffice it to say that the implementation of these DAO beans in this example is very simple, using only `java.util.List` to hold data. You will see how we initially populate this list using Spring; no persistence logic is implemented.
@@ -227,6 +228,7 @@ So, to define a `DepartmentService` bean (the `EmployeeService` bean is defined 
     </property>
 </bean>
 ```
+
 In this simple XML bean wiring, we define a bean with the ID `departmentService` and specify its fully qualified class name (this class is the concrete implementation, not the interface). At this point, we've added (registered) a bean into the Spring container, and now we can use this bean as needed.
 
 Beans can have properties. These properties are essentially Java properties. We map these bean properties to their corresponding Java properties using XML.
@@ -262,6 +264,7 @@ So, to populate a bean property with a list of departments, this list is defined
     </property>
 </bean>
 ```
+
 In this way, we initially populate a collection that is a list of Departments.
 
 ## Spring Test
@@ -275,8 +278,12 @@ EmployeeService employeeService = (EmployeeService)context.getBean("employeeServ
 
 DepartmentService departmentService = (DepartmentService)context.getBean("departmentService");
 ```
+
 First, get an instance of the `ApplicationContext` and read the bean definitions from the XML file named `simpleappcontext.xml`.
 Then, simply retrieve beans by their names and use them.
 
 Refer to my example for detailed insight.
+
+```
+
 ```

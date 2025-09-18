@@ -14,9 +14,9 @@ Generic programming concepts are nothing new. Java did not introduce them to the
 
 Java introduced Generics in 2004 with Java 5 and implemented them as **type erasure**. Type erasure consists of the following steps:
 
-*   Replace all type parameters in generic types with their bounds, or `Object` if the type parameters are unbounded. The produced bytecode, therefore, contains only ordinary classes, interfaces, and methods.
-*   Insert type casts if necessary to preserve type safety.
-*   Generate bridge methods to preserve polymorphism in extended generic types.
+- Replace all type parameters in generic types with their bounds, or `Object` if the type parameters are unbounded. The produced bytecode, therefore, contains only ordinary classes, interfaces, and methods.
+- Insert type casts if necessary to preserve type safety.
+- Generate bridge methods to preserve polymorphism in extended generic types.
 
 From this, you can conclude that generics in Java are purely a compile-time feature. Because of this, generics in Java incur no run-time overhead, which is an important point. It is suspected that they implemented generics as a compile-time correctness feature because of a focus on backward compatibility.
 

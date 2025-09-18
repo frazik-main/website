@@ -27,11 +27,9 @@ Let me provide some quick insight into what you need to do to simply get an inst
 var xhr;
 if (window.ActiveXObject) {
   xhr = new ActiveXObject("Microsoft.XMLHTTP");
-}
-else if (window.XMLHttpRequest) {
+} else if (window.XMLHttpRequest) {
   xhr = new XMLHttpRequest();
-}
-else {
+} else {
   throw new Error("This browser is not AJAX enabled.");
 }
 ```
@@ -41,7 +39,7 @@ There are a couple of other things you need to consider when you handle AJAX usi
 Now, the jQuery code for an AJAX request and getting a response is as follows:
 
 ```javascript
-$('#driverSelectionControl').load('/AjaxExampleCWP/actions/driversList.jsp');
+$("#driverSelectionControl").load("/AjaxExampleCWP/actions/driversList.jsp");
 ```
 
 I think we have a winner! So, we will be using jQuery from now on and leveraging its great capabilities.
@@ -61,14 +59,12 @@ Code for initial page DOM:
 Now I will show you the code for the AJAX functionality and explain it afterwards.
 
 ```javascript
-$(function() {
-  $('#driverSelectionControl').load('/AjaxExampleCWP/actions/driversList.jsp');
+$(function () {
+  $("#driverSelectionControl").load("/AjaxExampleCWP/actions/driversList.jsp");
 
-    $('#driverSelectionControl').change(function(event) {
-      $('#driverDetailPanel').
-        load('/AjaxExampleCWP/actions/driversDetails.jsp',
-             {driverId : $(event.target).val()});
-    });
+  $("#driverSelectionControl").change(function (event) {
+    $("#driverDetailPanel").load("/AjaxExampleCWP/actions/driversDetails.jsp", { driverId: $(event.target).val() });
+  });
 });
 ```
 
@@ -92,37 +88,55 @@ Here's what the JSP page looks like:
 ```html
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:usebean class="java.util.HashMap" id="item">
-<c:choose>
+  <c:choose>
     <c:when test="${param.driverId == '001'}">
-        <c:set property="name" target="${item}" value="Lewis Hamilton"></c:set>
-        <c:set property="team" target="${item}" value="McLaren"></c:set>
-        <c:set property="podiums" target="${item}" value="36"></c:set>
-        <c:set property="points" target="${item}" value="496"></c:set>
-        <c:set property="birth" target="${item}" value="07/01/1985"></c:set>
+      <c:set property="name" target="${item}" value="Lewis Hamilton"></c:set>
+      <c:set property="team" target="${item}" value="McLaren"></c:set>
+      <c:set property="podiums" target="${item}" value="36"></c:set>
+      <c:set property="points" target="${item}" value="496"></c:set>
+      <c:set property="birth" target="${item}" value="07/01/1985"></c:set>
     </c:when>
     <c:when test="${param.driverId == '002'}">
-        <c:set property="name" target="${item}" value="Fernando Alonso"></c:set>
-        <c:set property="team" target="${item}" value="Ferrari"></c:set>
-        <c:set property="podiums" target="${item}" value="63"></c:set>
-        <c:set property="points" target="${item}" value="829"></c:set>
-        <c:set property="birth" target="${item}" value="29/07/1981"></c:set>
+      <c:set property="name" target="${item}" value="Fernando Alonso"></c:set>
+      <c:set property="team" target="${item}" value="Ferrari"></c:set>
+      <c:set property="podiums" target="${item}" value="63"></c:set>
+      <c:set property="points" target="${item}" value="829"></c:set>
+      <c:set property="birth" target="${item}" value="29/07/1981"></c:set>
     </c:when>
     <c:when test="${param.driverId == '003'}">
-        <c:set property="name" target="${item}" value="Michael Schumacher"></c:set>
-        <c:set property="team" target="${item}" value="Mercedes GP"></c:set>
-        <c:set property="podiums" target="${item}" value="154"></c:set>
-        <c:set property="points" target="${item}" value="1441"></c:set>
-        <c:set property="birth" target="${item}" value="03/01/1969"></c:set>
+      <c:set property="name" target="${item}" value="Michael Schumacher"></c:set>
+      <c:set property="team" target="${item}" value="Mercedes GP"></c:set>
+      <c:set property="podiums" target="${item}" value="154"></c:set>
+      <c:set property="points" target="${item}" value="1441"></c:set>
+      <c:set property="birth" target="${item}" value="03/01/1969"></c:set>
     </c:when>
-</c:choose>
-<c:if test="${param.driverId != ''}">
-<table><tbody>
-<tr>         <th>Driver name</th>         <td>${item.name}</td>     </tr>
-<tr>         <th>Team name</th>         <td>${item.team}</td>     </tr>
-<tr>         <th>Podiums</th>         <td>${item.podiums}</td>     </tr>
-<tr>         <th>Points</th>         <td>${item.points}</td>     </tr>
-<tr>         <th>Date of Birth</th>         <td>${item.birth}</td>     </tr>
-</tbody></table></c:if>
+  </c:choose>
+  <c:if test="${param.driverId != ''}">
+    <table>
+      <tbody>
+        <tr>
+          <th>Driver name</th>
+          <td>${item.name}</td>
+        </tr>
+        <tr>
+          <th>Team name</th>
+          <td>${item.team}</td>
+        </tr>
+        <tr>
+          <th>Podiums</th>
+          <td>${item.podiums}</td>
+        </tr>
+        <tr>
+          <th>Points</th>
+          <td>${item.points}</td>
+        </tr>
+        <tr>
+          <th>Date of Birth</th>
+          <td>${item.birth}</td>
+        </tr>
+      </tbody>
+    </table></c:if
+  >
 </jsp:usebean>
 ```
 
@@ -131,11 +145,14 @@ You can use POST (the default) or GET HTTP request methods with the `load()` met
 If you are wondering when to use POST and when to use GET, then follow these recommendations:
 
 Use a GET request when the operation, even if performed multiple times, makes no change to the state of the server (for example, when you are simply pulling data from the server). This means that our example contradicts this recommendation!
-Use a POST request when the operation your request is initiating is *non-idempotent* (as opposed to *idempotent*, like in GET requests). This means you should use POST when you change some state on the server (e.g., changing or updating data).
+Use a POST request when the operation your request is initiating is _non-idempotent_ (as opposed to _idempotent_, like in GET requests). This means you should use POST when you change some state on the server (e.g., changing or updating data).
 
 ## Other jQuery AJAX methods
 
 jQuery includes other methods for AJAX functionality, such as `$.get()` and `$.post()` for explicit GET or POST request operations.
 
 jQuery also provides a general utility function for making AJAX requests, named `$.ajax()`. Under the hood, all other jQuery AJAX features use this function. It is quite powerful, but also complex. Feel free to [investigate](http://api.jquery.com/jQuery.ajax/) this function if you are interested.
+
+```
+
 ```

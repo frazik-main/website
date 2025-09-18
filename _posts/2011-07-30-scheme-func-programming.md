@@ -9,11 +9,11 @@ categories: functional-programming-concepts
 
 ## Why Learn Scheme?
 
-The main goal of learning functional programming is to better understand JavaScript and to have fun! We will be using **Scheme** (a dialect of **LISP**) as a tool to aid this learning process. Scheme is not as popular a programming language as JavaScript. It is mainly well known within university circles, where it is typically used for research in artificial intelligence. It is a pure functional language, which JavaScript, of course, is not, but it *can* be. That is the beauty of the JavaScript language. It can behave similarly to an object-oriented language with code reuse patterns like inheritance and composition, and at the same time, also as a functional language. If you truly want to master JavaScript, then prior knowledge of a functional language cannot hurt!
+The main goal of learning functional programming is to better understand JavaScript and to have fun! We will be using **Scheme** (a dialect of **LISP**) as a tool to aid this learning process. Scheme is not as popular a programming language as JavaScript. It is mainly well known within university circles, where it is typically used for research in artificial intelligence. It is a pure functional language, which JavaScript, of course, is not, but it _can_ be. That is the beauty of the JavaScript language. It can behave similarly to an object-oriented language with code reuse patterns like inheritance and composition, and at the same time, also as a functional language. If you truly want to master JavaScript, then prior knowledge of a functional language cannot hurt!
 
 So, anyway, I'm starting to read [Structure and Interpretation of Computer Programs](http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-4.html#%_toc_start). This is one of the "must-read" books for programmers. So, let's see what this masterpiece has to offer.
 
-And right in the foreword to this book, I found a great comparison: "Pascal is for building pyramids—imposing, breathtaking, static structures built by armies pushing heavy blocks into place. Lisp is for building organisms—imposing, breathtaking, dynamic structures built by squads fitting fluctuating myriads of simpler organisms into place." Wow! Now I *must* read this book!
+And right in the foreword to this book, I found a great comparison: "Pascal is for building pyramids—imposing, breathtaking, static structures built by armies pushing heavy blocks into place. Lisp is for building organisms—imposing, breathtaking, dynamic structures built by squads fitting fluctuating myriads of simpler organisms into place." Wow! Now I _must_ read this book!
 
 I did use Scheme at my university, but as years passed, I could only remember basic concepts. This will be a great opportunity to refresh some of my knowledge.
 
@@ -66,9 +66,9 @@ For a simple form of abstraction, we use the `define` keyword. It provides a mea
 ; Output: 78.5
 ```
 
-You can see that `define` also enables us to identify procedures (**procedural definitions**), which is a powerful form of abstraction by which a compound operation can be given a name. We refer to this kind of abstraction as *procedural abstraction*, and it helps us suppress the details of procedure implementation, allowing us to view a procedure as a **black box**.
+You can see that `define` also enables us to identify procedures (**procedural definitions**), which is a powerful form of abstraction by which a compound operation can be given a name. We refer to this kind of abstraction as _procedural abstraction_, and it helps us suppress the details of procedure implementation, allowing us to view a procedure as a **black box**.
 
-You can see that a procedure has parameters (these are *formal parameters*), and we say that the procedure **binds** these formal parameters. In a *procedure definition*, the variables declared as formal parameters of the procedure have the body of the procedure as their scope. This means that the names of formal parameters are "understood" only inside the procedure and are not defined outside its body.
+You can see that a procedure has parameters (these are _formal parameters_), and we say that the procedure **binds** these formal parameters. In a _procedure definition_, the variables declared as formal parameters of the procedure have the body of the procedure as their scope. This means that the names of formal parameters are "understood" only inside the procedure and are not defined outside its body.
 
 However, not all variables are bound (i.e., bound to a concrete procedure and meaningless outside that procedure). There can also be **free variables**. Free variables are not bound (e.g., `+`, `-`, `*`, `/`, `pi`, or our defined `PI`, and so on). If we use free variable names as our procedure's formal parameters, we will then **capture** the free variable name (binding it to the current procedure we are defining), and by doing so, we will introduce unexpected behavior and errors.
 

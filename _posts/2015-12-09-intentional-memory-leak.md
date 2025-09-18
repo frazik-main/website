@@ -23,14 +23,14 @@ There are many types of `OutOfMemoryError`s. For more detailed descriptions, ref
 
 In practice, you will most often encounter these three types:
 
-*   `java.lang.OutOfMemoryError: Java heap space`
-    *   The Java heap space is exhausted.
-*   `java.lang.OutOfMemoryError: PermGen space`
-    *   The Permanent Generation space is full.
-*   `java.lang.OutOfMemoryError: GC Overhead limit exceeded`
-    *   The Garbage Collector is spending too much time collecting with little to no avail.
+- `java.lang.OutOfMemoryError: Java heap space`
+  - The Java heap space is exhausted.
+- `java.lang.OutOfMemoryError: PermGen space`
+  - The Permanent Generation space is full.
+- `java.lang.OutOfMemoryError: GC Overhead limit exceeded`
+  - The Garbage Collector is spending too much time collecting with little to no avail.
 
-In this blog post, I've decided to demonstrate how easy it is to create memory leaks. These examples can be handy for code interviews or serve as good illustrations of what *not* to do.
+In this blog post, I've decided to demonstrate how easy it is to create memory leaks. These examples can be handy for code interviews or serve as good illustrations of what _not_ to do.
 
 All examples are runnable. You simply need to clone the [`codingwithpassion/leaks` repository](https://github.com/spookysleeper/codingwithpassion/tree/master/leaks) and execute the Gradle script.
 

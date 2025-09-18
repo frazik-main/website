@@ -18,8 +18,9 @@ svn merge -r1001:1000 .
 ```
 
 In this command:
-*   `1001` is the newer revision you want to undo or remove.
-*   `1000` is the older, previous revision you want the merge to calculate changes from (i.e., the state you want to revert to).
+
+- `1001` is the newer revision you want to undo or remove.
+- `1000` is the older, previous revision you want the merge to calculate changes from (i.e., the state you want to revert to).
 
 After executing the merge command, you'll need to commit the changes:
 

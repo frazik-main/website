@@ -63,9 +63,9 @@ Next, we define the main Ansible playbook, which is quite straightforward. For i
 
     - name: Copy default Nginx configuration for Kibana proxy
       ansible.builtin.template:
-        src: default.conf.j2  # This file needs to be in your files/templates directory
+        src: default.conf.j2 # This file needs to be in your files/templates directory
         dest: /etc/nginx/sites-available/default
-        mode: '0644'
+        mode: "0644"
       notify: Reload Nginx
 
     - name: Enable site by symlinking

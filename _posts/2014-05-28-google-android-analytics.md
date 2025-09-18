@@ -9,7 +9,7 @@ categories: android-development
 
 I was working on integrating Google Analytics (GA) into an existing Android application.
 
-If you want to track activities in GA, the conventional approach requires you to initiate and stop reports within your activities' `onStart` and `onStop` lifecycle events. This manual process must be repeated in *every* activity.
+If you want to track activities in GA, the conventional approach requires you to initiate and stop reports within your activities' `onStart` and `onStop` lifecycle events. This manual process must be repeated in _every_ activity.
 
 I dislike this approach, as it leads to repetitive boilerplate code, which I always try to avoid.
 

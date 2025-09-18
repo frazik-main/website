@@ -9,38 +9,38 @@ categories: java-ee, design-patterns
 
 ## MVC Concept
 
-The MVC pattern is a simple and highly useful pattern for context representation. Representation can be of any kind, from text-based consoles (e.g., [OBERON OS](http://en.wikipedia.org/wiki/Oberon_(operating_system))) to modern GWT-based applications.
+The MVC pattern is a simple and highly useful pattern for context representation. Representation can be of any kind, from text-based consoles (e.g., [OBERON OS](<http://en.wikipedia.org/wiki/Oberon_(operating_system)>)) to modern GWT-based applications.
 
 You can download sample code from [my Google Code repository](http://codingwithpassionblog.googlecode.com/files/MVCPatternCWP.zip).
 
 The MVC approach divides components into three kinds:
 
-*   **Model**: This holds the data we wish to represent and encapsulates the business logic of an application. It bundles business rules into components (e.g., JavaBeans in JSP/Servlets MVC applications).
-*   **View**: This presents data on the screen (renders the model). The model is rendered in a way that enables interaction with its data and operations.
-*   **Controller**: This reacts to user input. Based on the selected input, it makes decisions for invoking specific calls on model components (e.g., updating the model) and selecting the appropriate view for displaying updated or existing data.
+- **Model**: This holds the data we wish to represent and encapsulates the business logic of an application. It bundles business rules into components (e.g., JavaBeans in JSP/Servlets MVC applications).
+- **View**: This presents data on the screen (renders the model). The model is rendered in a way that enables interaction with its data and operations.
+- **Controller**: This reacts to user input. Based on the selected input, it makes decisions for invoking specific calls on model components (e.g., updating the model) and selecting the appropriate view for displaying updated or existing data.
 
 Due to the limitations of web architecture (pages are refreshed only when users request them), we cannot fully utilize the **push** model of MVC. With this model, data would have the "power" to update views. For example, if you have two simultaneous users accessing the same web page and data, and one of them updates part of the data, that update would ideally be available immediately to the other user. We all know this doesn't happen by default, but there are some techniques (please see [this Oracle description](http://download.oracle.com/docs/cd/E15523_01/web.1111/b31974/adv_ads.htm) for methods that enable this, such as long polling).
 
-So, what can we do to achieve a fully functional MVC design in our JEE application? We can (as many frameworks do) use the **pull** model design concept. With this model, the **view** *pulls* data from the model as the user initiates a request. Alternatively, we can wait for WebSockets to be properly implemented by all browser vendors, complying with the HTML5 specification. As we know, all browsers are beautifully aligned with W3C specs, so no problem there! :)
+So, what can we do to achieve a fully functional MVC design in our JEE application? We can (as many frameworks do) use the **pull** model design concept. With this model, the **view** _pulls_ data from the model as the user initiates a request. Alternatively, we can wait for WebSockets to be properly implemented by all browser vendors, complying with the HTML5 specification. As we know, all browsers are beautifully aligned with W3C specs, so no problem there! :)
 
 Note: If you still want to use some cutting-edge HTML5 features, please use libraries (like jQuery, Prototype) right away. This way, when the HTML5 spec changes (and it will!), you just need to upgrade your library. :) I will also do some tutorials later on jQuery (maybe jQuery Mobile?) and full-fat client JavaScript applications that can leverage HTML5 features.
 
 Whatever strategy we use, MVC architecture still delivers its key benefits. These are:
 
-*   Each component has clear responsibility.
-*   Models contain no view-specific code.
-*   Views contain no control code or data-access code and concentrate on data display.
-*   Controllers create and update models; they do not depend on particular view implementations.
+- Each component has clear responsibility.
+- Models contain no view-specific code.
+- Views contain no control code or data-access code and concentrate on data display.
+- Controllers create and update models; they do not depend on particular view implementations.
 
 ## MVC Using JSP and Servlets
 
-Servlets are good at data *processing* (reading data, communicating with databases, invoking business services). JSPs, on the other hand, are good at *presentation* of data (building HTML to present the results of a request). So, it is natural to combine these two Java EE core concepts for MVC implementation.
+Servlets are good at data _processing_ (reading data, communicating with databases, invoking business services). JSPs, on the other hand, are good at _presentation_ of data (building HTML to present the results of a request). So, it is natural to combine these two Java EE core concepts for MVC implementation.
 
-The original request is handled by a servlet. The servlet invokes the business services (we could use Spring for initializing business service objects, but it would be overkill for this example) components, which perform data access and create beans to represent the result (this is the *model*). Then, the servlet decides which JSP page is appropriate to present those particular results and forwards the request there (this is where JSP pages play their part - the *view*). The servlet decides what business logic code applies and which JSP page should present it (so the servlet is the *controller*).
+The original request is handled by a servlet. The servlet invokes the business services (we could use Spring for initializing business service objects, but it would be overkill for this example) components, which perform data access and create beans to represent the result (this is the _model_). Then, the servlet decides which JSP page is appropriate to present those particular results and forwards the request there (this is where JSP pages play their part - the _view_). The servlet decides what business logic code applies and which JSP page should present it (so the servlet is the _controller_).
 
 ## Simple (but Really Simple) MVC Example
 
-In this example, a user will choose a product to buy on the first page. When a user selects (or submits without selecting) a product, the *servlet RequestDispatcher* (controller) will determine which JSP page (view) to forward the request to, and place the product Data Transfer Object (DTO) (model) into the request scope attribute.
+In this example, a user will choose a product to buy on the first page. When a user selects (or submits without selecting) a product, the _servlet RequestDispatcher_ (controller) will determine which JSP page (view) to forward the request to, and place the product Data Transfer Object (DTO) (model) into the request scope attribute.
 
 Here are a couple of images:
 
@@ -170,7 +170,7 @@ public class Product {
 
 It is not necessary to use MVC throughout the entire web application (a "GOD servlet" is generally not a good idea). You can apply MVC in places where you think you will gain the most benefit from this pattern, and use simple JSPs elsewhere.
 
-A controller servlet in MVC *does not* create any output; the output should be handled only by JSP pages (or any other view technology). So remember, servlets do not call `response.setContentType`, `response.getWriter`, etc.
+A controller servlet in MVC _does not_ create any output; the output should be handled only by JSP pages (or any other view technology). So remember, servlets do not call `response.setContentType`, `response.getWriter`, etc.
 
 You can **forward** (using a dispatcher) or you can **redirect** (using `response.sendRedirect`) to transfer control from a controller servlet to a view (JSP page).
 
@@ -178,11 +178,14 @@ When you use **forward**, control is transferred entirely on the server (no netw
 
 When you use **redirect**, control is transferred by sending the client a `302` status code together with a `Location` response header. This requires additional network traffic, and the user sees the address of the destination JSP page.
 
-A final remark (of final remarks) is about pointing out that you are not limited to using *request scope*; you can also use *session or application scope*. However, remember to synchronize scope usage declarations in the servlet and JSP page.
+A final remark (of final remarks) is about pointing out that you are not limited to using _request scope_; you can also use _session or application scope_. However, remember to synchronize scope usage declarations in the servlet and JSP page.
 
 ## Out of the Box MVC Frameworks
 
 I must admit that I'm not a big fan of Java web frameworks. I understand that they help in organization and workload distribution in complex development endeavors, but for small projects, they are often overkill. They add complexity, but on the other hand, they introduce good patterns and common-sense guidelines.
 
 This Model-2 MVC architecture is quite powerful and serves as a good core pattern for most simple to mid-sized projects. If you are developing a reasonably complex Java web application, consider Struts 2 or Spring MVC (the most popular action-based frameworks).
+
+```
+
 ```

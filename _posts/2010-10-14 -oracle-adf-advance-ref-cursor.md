@@ -9,7 +9,7 @@ categories: oracle-adf
 
 ## Introduction
 
-By default, view objects read data directly from the database and automate JDBC interactions. However, by overriding specific methods in a View Object's implementation class, we can define a custom mechanism for data retrieval. This allows us to source data from various origins such as web services, XML files, plain JDBC, or specific database constructs like **cursors** in Oracle databases. This example demonstrates how to create a *read-only* view object that uses an Oracle **REF CURSOR** as an alternative data source. Let's get started!
+By default, view objects read data directly from the database and automate JDBC interactions. However, by overriding specific methods in a View Object's implementation class, we can define a custom mechanism for data retrieval. This allows us to source data from various origins such as web services, XML files, plain JDBC, or specific database constructs like **cursors** in Oracle databases. This example demonstrates how to create a _read-only_ view object that uses an Oracle **REF CURSOR** as an alternative data source. Let's get started!
 
 ## Initial JDeveloper Setup
 

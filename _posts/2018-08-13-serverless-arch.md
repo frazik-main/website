@@ -21,17 +21,20 @@ These architectures typically power "rich client" applications—think single-pa
 
 #### Upsides:
 
-*   No need for system administration (everything is handled by a third party).
-*   Decreased product complexity.
-*   Native microservices architecture.
-*   Lower scaling costs.
-*   Elasticity (native scaling).
-*   Reduced development and operational costs.
-*   Faster time to market.
+- No need for system administration (everything is handled by a third party).
+- Decreased product complexity.
+- Native microservices architecture.
+- Lower scaling costs.
+- Elasticity (native scaling).
+- Reduced development and operational costs.
+- Faster time to market.
 
 ### Downsides:
 
-*   Debugging and monitoring are still challenges.
-*   Tooling is not yet fully mature.
-*   Cold start issues.
+- Debugging and monitoring are still challenges.
+- Tooling is not yet fully mature.
+- Cold start issues.
+
+```
+
 ```

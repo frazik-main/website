@@ -71,10 +71,10 @@ public class Factory {
 
 The output of this example is: "** Please decorate me! **". Let's break down the code:
 
-*   **Lines 5-8:** We first create an interface, `Decorator`.
-*   **Lines 10-15 and 17-22:** Then, we implement that interface with `StarDecorator` and `OtherDecorator`. As you can see, this is straightforward so far.
-*   **Lines 29-37:** This section represents the factory that chooses which class to instantiate based on the input parameter.
-*   The `main` method then tests this functionality.
+- **Lines 5-8:** We first create an interface, `Decorator`.
+- **Lines 10-15 and 17-22:** Then, we implement that interface with `StarDecorator` and `OtherDecorator`. As you can see, this is straightforward so far.
+- **Lines 29-37:** This section represents the factory that chooses which class to instantiate based on the input parameter.
+- The `main` method then tests this functionality.
 
 ## Abstract Factory
 
@@ -154,11 +154,14 @@ public class Factory {
 
 You'll notice that this code is quite similar to the Factory Method example. However, there are small but important differences:
 
-*   **Lines 11-16 and 18-23:** Here, we introduce another layer of abstraction: `DecoratorFactory` and its concrete implementations. While this might seem like unnecessary code for this simple example, it can be beneficial if, for instance, you have more than one method to implement, and you don't want all concrete classes to implement all methods (only a relevant subset). In this way, your concrete classes implement only the methods required for their specific work and can ignore others. You can extend interfaces to achieve this. If this sounds a bit confusing, I recommend searching for more comprehensive examples of the Abstract Factory pattern to see its full potential, for example, [here](http://www.javacamp.org/designPattern/).
+- **Lines 11-16 and 18-23:** Here, we introduce another layer of abstraction: `DecoratorFactory` and its concrete implementations. While this might seem like unnecessary code for this simple example, it can be beneficial if, for instance, you have more than one method to implement, and you don't want all concrete classes to implement all methods (only a relevant subset). In this way, your concrete classes implement only the methods required for their specific work and can ignore others. You can extend interfaces to achieve this. If this sounds a bit confusing, I recommend searching for more comprehensive examples of the Abstract Factory pattern to see its full potential, for example, [here](http://www.javacamp.org/designPattern/).
 
 Creating class instances and testing are similar processes. The primary difference is the additional step of obtaining the `Decorator` instance through the `createDecorator` method of the `DecoratorFactory`.
 
 While using the Abstract Factory pattern for such a simple example might seem like overkill, my intention is to clearly illustrate the differences between the two patterns.
 
 You can download the code for these two examples from [here](http://code.google.com/p/codingwithpassionblog/source/browse/#svn/trunk/src/org/codingwithpassion/patterns%3Fstate%3Dclosed).
+
+```
+
 ```

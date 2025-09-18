@@ -11,7 +11,7 @@ categories: blockchain-concepts
 
 Having the opportunity to work on an interesting smart contract project, I decided to write something about this hot topic on my blog. So, what exactly is a smart contract?
 
-In 1994, Nick Szabo, a legal scholar and cryptographer, realized that the decentralized ledger could be used for *smart contracts*—also known as self-executing contracts, blockchain contracts, or digital contracts. In this format, contracts could be converted into computer code, stored and replicated on the system, and supervised by the network of computers that run the blockchain. This setup would also facilitate ledger feedback, such as transferring money upon receiving a product or service.
+In 1994, Nick Szabo, a legal scholar and cryptographer, realized that the decentralized ledger could be used for _smart contracts_—also known as self-executing contracts, blockchain contracts, or digital contracts. In this format, contracts could be converted into computer code, stored and replicated on the system, and supervised by the network of computers that run the blockchain. This setup would also facilitate ledger feedback, such as transferring money upon receiving a product or service.
 
 Smart contracts facilitate the exchange of money, property, shares, or anything of value in a transparent, conflict-free way, all while eliminating the need for intermediaries.
 

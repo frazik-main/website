@@ -11,9 +11,9 @@ If you are encountering the errors below while trying to execute your Truffle ex
 
 **Errors Encountered:**
 
-*   `TypeError: Cannot read property 'apply' of undefined`
-*   `exception at require.js:128:1`
-*   `TypeError: fn is not a function`
+- `TypeError: Cannot read property 'apply' of undefined`
+- `exception at require.js:128:1`
+- `TypeError: fn is not a function`
 
 For some reason, it was quite difficult to find a solution on how to correctly run an external Truffle script. After some time, I finally figured it out and am sharing it with the world:
 
@@ -22,7 +22,7 @@ For some reason, it was quite difficult to find a solution on how to correctly r
 // It addresses common issues like 'apply' of undefined or 'fn is not a function'
 // by ensuring the script exports an async function that accepts a callback.
 
-module.exports = async function(callback) {
+module.exports = async function (callback) {
   try {
     // Example: Interact with a deployed contract
     const MyContract = artifacts.require("MyContract"); // Replace with your contract name
@@ -36,7 +36,6 @@ module.exports = async function(callback) {
     // It's crucial to call the callback function to signal completion
     // when your script has finished executing successfully.
     callback();
-
   } catch (error) {
     // If any error occurs, log it and pass it to the callback
     // This allows Truffle to report the error appropriately.

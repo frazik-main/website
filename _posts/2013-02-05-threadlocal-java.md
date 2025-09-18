@@ -20,4 +20,7 @@ Another important aspect of `ThreadLocal` is its global accessibility within a t
 Another use case for `ThreadLocal` is as an alternative to an object or resource pool, especially when creating one object per thread is acceptable. This is suitable for non-trivial objects that do not require sharing among different threads.
 
 Java provides the `ThreadLocal` class, which allows you to set and retrieve thread-scoped variables. You simply create a `ThreadLocal` object and then utilize its `set()`, `get()`, and `remove()` methods.
+
+```
+
 ```

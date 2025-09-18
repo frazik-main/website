@@ -27,8 +27,11 @@ Here is the GSP page snippet:
 
 ```html
 <g:uploadForm name="myUpload" action="readUploadFile">
-  <input type="file" name="myFile"/>
-  <g:submitButton class="button" name="Upload" value="Upload"/>
+  <input type="file" name="myFile" />
+  <g:submitButton class="button" name="Upload" value="Upload" />
 </g:uploadForm>
 ```
+
+```
+
 ```

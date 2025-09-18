@@ -13,14 +13,17 @@ When working with Truffle, you might encounter several common errors when attemp
 
 Here are some of the errors you might encounter:
 
-*   `Error: VM Exception while processing transaction: out of gas`
-*   `Error: Cannot create instance of YourContract; no code at address`
-*   `Error: sender account not recognized`
-*   `Error: invalid address`
+- `Error: VM Exception while processing transaction: out of gas`
+- `Error: Cannot create instance of YourContract; no code at address`
+- `Error: sender account not recognized`
+- `Error: invalid address`
 
 ### Solution
 
 If you encounter any of these errors while attempting to execute a contract function from a Truffle script, the proper way to handle them is demonstrated in the following Gist:
 
 [View Solution on Gist.github.com](https://gist.github.com/spookysleeper/1e6ab0733df4fa4ee2840cdbbe27780e.js)
+
+```
+
 ```

@@ -18,4 +18,7 @@ You can also find an interview with Barbara Liskov from QCon, where she discusse
 [http://www.infoq.com/interviews/barbara-liskov](http://www.infoq.com/interviews/barbara-liskov)
 
 One must truly respect these seasoned IT professionals. :)
+
+```
+
 ```

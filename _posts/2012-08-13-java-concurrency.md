@@ -227,10 +227,10 @@ public class FeaturesAndCallablesMultiThreadedFibonaciArrayConstructor extends F
 
 ### Test Result Summary:
 
-*   **SingleThreadedFibonaciArrayConstructor:** 48 seconds (1 thread)
-*   **SimpleMultiThreadedFibonaciArrayConstructor:** 3 seconds (25 threads)
-*   **ThreadPooledMultiThreadedFibonaciArrayConstructor:** 11 seconds (5 threads)
-*   **FeaturesAndCallablesMultiThreadedFibonaciArrayConstructor:** 11 seconds (5 threads)
+- **SingleThreadedFibonaciArrayConstructor:** 48 seconds (1 thread)
+- **SimpleMultiThreadedFibonaciArrayConstructor:** 3 seconds (25 threads)
+- **ThreadPooledMultiThreadedFibonaciArrayConstructor:** 11 seconds (5 threads)
+- **FeaturesAndCallablesMultiThreadedFibonaciArrayConstructor:** 11 seconds (5 threads)
 
 When running all these implementations through tests, we observed the following results. Naturally, it can be seen that more threads generally lead to faster execution. In the third and fourth implementations, we used 5 threads, as opposed to the second implementation where we used 25 threads.
 
@@ -239,4 +239,7 @@ When running all these implementations through tests, we observed the following 
 Java 7 introduced a new parallel mechanism for compute-intensive tasks: the Fork/Join Framework. The Fork/Join Framework allows you to distribute a given task among several workers and then wait for the results. However, as I haven't installed Java 7 yet (and many others haven't), it will not be described in this post.
 
 The complete implementation (with tests) can be found [here](http://codingwithpassionblog.googlecode.com/files/java-concurrency.zip).
+
+```
+
 ```

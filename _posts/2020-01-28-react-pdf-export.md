@@ -14,7 +14,7 @@ If you need to export React.js components to PDF, this guide presents a straight
 To ensure `html2canvas` can accurately target and convert your React components, you need to assign unique `id` attributes to them. Here’s an example of how you might add an ID to a component you wish to export:
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 const MyComponentToExport = () => {
   return (

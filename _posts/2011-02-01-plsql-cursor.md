@@ -11,7 +11,7 @@ categories: oracle-plsql
 
 PL/SQL provides a number of different ways for data retrieval, all of which involve working with **cursors**. You can think of a **cursor** as a pointer to the results of a query run against one or more tables in the current database. PL/SQL cursors and Java Database Connectivity (JDBC) cursors also share some similarities. Now that Oracle has acquired Sun, it's only a matter of time before we see a natural mapping between JDBC cursors and PL/SQL cursors!
 
-This is, of course, a joke. These concepts should never be mixed, as the JDBC specification is designed to be vendor-independent, aiming to *prevent* vendor lock-in. The core principle of Java involves clever interfaces and delegating vendor-specific functionalities to the vendor.
+This is, of course, a joke. These concepts should never be mixed, as the JDBC specification is designed to be vendor-independent, aiming to _prevent_ vendor lock-in. The core principle of Java involves clever interfaces and delegating vendor-specific functionalities to the vendor.
 
 Let's return to the main point of this tutorial.
 
@@ -62,7 +62,7 @@ BEGIN
 END;
 ```
 
-We encapsulate the query within a procedure (this is *always* a good idea). This procedure prints employee information from the database to the *output*. We also introduce some exception handling (for cases where no employee is found).
+We encapsulate the query within a procedure (this is _always_ a good idea). This procedure prints employee information from the database to the _output_. We also introduce some exception handling (for cases where no employee is found).
 
 Because PL/SQL is so tightly integrated with the Oracle database, you can easily retrieve complex data types (such as an entire row, as demonstrated in our example).
 
@@ -119,11 +119,12 @@ END;
 ```
 
 This PL/SQL block performs the following:
-*   Declares the cursor.
-*   Declares a record based on that cursor.
-*   Opens the cursor.
-*   Fetches rows until no more rows are left.
-*   Closes the cursor.
-*   Handles exceptions and closes the cursor if it is not already closed.
 
-You can see that in this way, we have complete control over the *cursor* variable, its initialization, fetching, and so on.
+- Declares the cursor.
+- Declares a record based on that cursor.
+- Opens the cursor.
+- Fetches rows until no more rows are left.
+- Closes the cursor.
+- Handles exceptions and closes the cursor if it is not already closed.
+
+You can see that in this way, we have complete control over the _cursor_ variable, its initialization, fetching, and so on.

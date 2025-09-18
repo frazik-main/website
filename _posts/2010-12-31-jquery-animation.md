@@ -47,29 +47,31 @@ The jQuery `animate(properties, duration)` method applies an animation as specif
 Let's look at an example:
 
 ```javascript
-$(function() {
-   $("img[alt='arrow']").click(function(event) {
-      var ball = $(this);
-      var SCALE = 3;
-      ball.animate(
+$(function () {
+  $("img[alt='arrow']").click(function (event) {
+    var ball = $(this);
+    var SCALE = 3;
+    ball.animate(
       {
-        opacity: 'hide',
+        opacity: "hide",
         width: ball.width() * SCALE,
-        height: ball.height() * SCALE
+        height: ball.height() * SCALE,
       },
-      'fast');
-       ball.animate({ opacity : 'show'}, 'fast');
-       ball.animate({ top : '+=300'}, 4000);
-       ball.animate({ left : '+=600'}, 4000);
-       ball.animate({ top : '-=300'}, 4000);
-       ball.animate(
-       {
-         left : '-=600',
-         width: '80px',
-         height: '80px'
-       },
-       4000);
-   });
+      "fast"
+    );
+    ball.animate({ opacity: "show" }, "fast");
+    ball.animate({ top: "+=300" }, 4000);
+    ball.animate({ left: "+=600" }, 4000);
+    ball.animate({ top: "-=300" }, 4000);
+    ball.animate(
+      {
+        left: "-=600",
+        width: "80px",
+        height: "80px",
+      },
+      4000
+    );
+  });
 });
 ```
 

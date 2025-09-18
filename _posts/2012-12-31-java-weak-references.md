@@ -29,7 +29,7 @@ Car weakCarRef = weakCar.get();
 
 A weak reference is not strong enough to prevent garbage collection. Therefore, you may find that `.get()` suddenly starts returning `null`. While this is often the desired behavior for specific use cases, `WeakReferences` are commonly used in conjunction with the `WeakHashMap` class.
 
-In a `WeakHashMap`, entries are automatically removed once they become obsolete. Remember that `WeakHashMap` is particularly useful when the desired lifetime of cache entries is determined by external references to the *key*, not the *value*.
+In a `WeakHashMap`, entries are automatically removed once they become obsolete. Remember that `WeakHashMap` is particularly useful when the desired lifetime of cache entries is determined by external references to the _key_, not the _value_.
 
 Using `WeakHashMap` is straightforward because it implements the standard `Map` interface, just like `HashMap` and other fundamental `Map` data structures in Java.
 
@@ -40,4 +40,7 @@ A soft reference is similar to a weak reference, but it is less aggressive in di
 ## Use it or not to use it?
 
 Personally, I tend to avoid weak, soft, and phantom references because they essentially hand control of your program's object lifecycle to the garbage collector, allowing it to decide when to remove a reference, rather than you.
+
+```
+
 ```

@@ -23,7 +23,7 @@ The second (available as the first) video is less focused on conceptual insights
 
 In the third (available as the second) video, Wirth discusses the widening gap between hardware and high-level languages (like Java, C#) and how compilers need to bridge this gap. He states that as this gap widens, bridging it becomes increasingly difficult.
 
-He also mentions that hardware designers often prioritize speed without adequately considering software aspects, thus making programmers' lives more challenging. *He argues that new hardware creates difficulties for compilers, making them unnecessarily complex. Ideally, compilers should become simpler even as CPUs become more complex.*
+He also mentions that hardware designers often prioritize speed without adequately considering software aspects, thus making programmers' lives more challenging. _He argues that new hardware creates difficulties for compilers, making them unnecessarily complex. Ideally, compilers should become simpler even as CPUs become more complex._
 
 ### Program Verification and Language Design
 
@@ -31,7 +31,7 @@ The most interesting part of the interview is when he discusses program verifica
 
 ### Critiques of Modern Practices
 
-**He stated that Java is a beautiful language, but criticized it as being long, lengthy, and unnecessarily complicated.** **He added that if a language is designed in an ad-hoc manner, with the expectation that the compiler will handle all difficulties, then it cannot be a good language.** *(One might think of C++ here.)* **He argues that using languages that are neither clear nor formal leads to unnecessary complexities and potential disasters.** **He also criticized universities for merely purchasing software from companies instead of fostering the creation of new values and ideas.**
+**He stated that Java is a beautiful language, but criticized it as being long, lengthy, and unnecessarily complicated.** **He added that if a language is designed in an ad-hoc manner, with the expectation that the compiler will handle all difficulties, then it cannot be a good language.** _(One might think of C++ here.)_ **He argues that using languages that are neither clear nor formal leads to unnecessary complexities and potential disasters.** **He also criticized universities for merely purchasing software from companies instead of fostering the creation of new values and ideas.**
 
 **As a final statement, he observed that modern systems (and contemporary programmers) face numerous challenges because they often rely on libraries with improperly specified interfaces. A significant amount of effort then goes into linking programs with these libraries.** This often leads to buggy programs, and debugging, as he stated, is not a science or even engineering, but merely a try-and-error principle.
 
@@ -39,4 +39,4 @@ The most interesting part of the interview is when he discusses program verifica
 
 You can also find great [quotes](http://en.wikiquote.org/wiki/Niklaus_Wirth) on Wiki from this great scientist and engineer.
 
-I also recommend reading his book, *[Algorithms and Data Structures](http://www-old.oberon.ethz.ch/WirthPubl/AD.pdf)*. This book was considered a 'holy grail' at our university (translated into our native language), and reading it will teach you the basic principles of good programming: `algorithms + data structures = program`.
+I also recommend reading his book, _[Algorithms and Data Structures](http://www-old.oberon.ethz.ch/WirthPubl/AD.pdf)_. This book was considered a 'holy grail' at our university (translated into our native language), and reading it will teach you the basic principles of good programming: `algorithms + data structures = program`.

@@ -49,16 +49,16 @@ Generation consists of four parts:
 
 1.  **Create Fusion Web Application and Model**: Create a Fusion Web Application and its complete model. This involves basic ADF setup. I suggest adhering to the default project names and packages (e.g., `view` for the ViewController project and `model` for the Model project) when prompted by the wizard.
 
-2.  **Initialize ADF View Project**: This is necessary because JDeveloper needs to add specific libraries to the view project. To do this, create a JSF page using the "Oracle Dynamic Tabs Shell" page template. Then, drag and drop a random data control (one is sufficient to initialize its application module in the view project) from *each* application module you plan to use onto this page. While you could create multiple JSF pages for each application module, it is not necessary.
+2.  **Initialize ADF View Project**: This is necessary because JDeveloper needs to add specific libraries to the view project. To do this, create a JSF page using the "Oracle Dynamic Tabs Shell" page template. Then, drag and drop a random data control (one is sufficient to initialize its application module in the view project) from _each_ application module you plan to use onto this page. While you could create multiple JSF pages for each application module, it is not necessary.
 
 3.  **Copy Required Files**: You need to copy some files to this newly created view project, as this plugin depends on certain Java classes and predefined bindings. You can download these files from [here](http://codingwithpassionblog.googlecode.com/files/generator_files.zip). When you unpack them, please copy them according to the following pattern:
 
-    *   `public_html/images/*` -> `ViewController/public_html/images/`
-    *   `public_html/js/*` -> `ViewController/public_html/js/`
-    *   `public_html/WEB-INF/adfc-config.xml` -> `ViewController/WEB-INF/adfc-config.xml` (You can also just edit your `adfc-config.xml` file and add necessary definitions).
-    *   `adfmscr/view/AdfFacesUtil.java` -> `ViewController/adfmscr/view/AdfFacesUtil.java`
-    *   `adfmscr/view/Launcher.java` -> `ViewController/adfmscr/view/Launcher.java`
-    *   `adfmscr/view/pageDefs/NavigationPageDef.xml` -> `ViewController/adfmscr/view/pageDefs/NavigationPageDef.xml`
+    - `public_html/images/*` -> `ViewController/public_html/images/`
+    - `public_html/js/*` -> `ViewController/public_html/js/`
+    - `public_html/WEB-INF/adfc-config.xml` -> `ViewController/WEB-INF/adfc-config.xml` (You can also just edit your `adfc-config.xml` file and add necessary definitions).
+    - `adfmscr/view/AdfFacesUtil.java` -> `ViewController/adfmscr/view/AdfFacesUtil.java`
+    - `adfmscr/view/Launcher.java` -> `ViewController/adfmscr/view/Launcher.java`
+    - `adfmscr/view/pageDefs/NavigationPageDef.xml` -> `ViewController/adfmscr/view/pageDefs/NavigationPageDef.xml`
 
 4.  **Run the Generator**: The final step is to run the generator by right-clicking on either the Model or ViewController project and selecting `Generate ADF Faces`. Subsequently, if you make any changes to your model, simply repeat step 4; there's no need to rerun steps 1-3.
 
@@ -67,4 +67,7 @@ Generation consists of four parts:
 Finally, I will [share](http://codingwithpassionblog.googlecode.com/files/Application1.zip) the complete application I used in the videos, which might prove useful.
 
 Thank you.
+
+```
+
 ```

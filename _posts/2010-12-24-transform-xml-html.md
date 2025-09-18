@@ -13,12 +13,12 @@ XSLT stands for Extensible Stylesheet Language for Transformations. As you can s
 
 Please download the example files from my Google Code repository:
 
-*   XSLT: [download](http://codingwithpassionblog.googlecode.com/files/weather.xsl)
-*   XML example file: [download](http://codingwithpassionblog.googlecode.com/files/weather.xml)
+- XSLT: [download](http://codingwithpassionblog.googlecode.com/files/weather.xsl)
+- XML example file: [download](http://codingwithpassionblog.googlecode.com/files/weather.xml)
 
 ## Concepts
 
-XSLT is based on pattern matching. Most of your stylesheet consists of rules (called **templates**) used to transform XML documents. Each rule specifies, "When you see a part of a document that looks like this (e.g., a specific tag in an XML document), here's how you convert it into something else." XSLT is heavily influenced by the design of *functional programming languages* (Lisp, Scheme, F#, Haskell, etc.).
+XSLT is based on pattern matching. Most of your stylesheet consists of rules (called **templates**) used to transform XML documents. Each rule specifies, "When you see a part of a document that looks like this (e.g., a specific tag in an XML document), here's how you convert it into something else." XSLT is heavily influenced by the design of _functional programming languages_ (Lisp, Scheme, F#, Haskell, etc.).
 
 You can think of templates as equivalent to functions in functional languages. In XSLT, you do everything with [recursion](http://codingwithpassion.blogspot.com/2010/12/recursion-in-xslt.html), just as in any other functional language.
 
@@ -30,7 +30,7 @@ There are a number of free XSLT processors available (Xalan, Saxon, Microsoft XS
 
 ## Example
 
-This tutorial will demonstrate how to transform an XML file into an HTML file. We will use XML files from the [US National Weather Service](http://www.weather.gov/xml/current_obs/seek.php?state=ak&amp;Find=Find).
+This tutorial will demonstrate how to transform an XML file into an HTML file. We will use XML files from the [US National Weather Service](http://www.weather.gov/xml/current_obs/seek.php?state=ak&Find=Find).
 
 They already include XSLT in their XML files, so you need to remove that file name and assign the XSL file we will create here.
 
@@ -53,15 +53,18 @@ As you can see, we are using XSLT 1.0 for browser compatibility reasons.
 
 ### Line-by-Line Review:
 
-*   **Lines 4-6:** We match the root of the element and then apply templates for all other child elements.
-*   **Lines 8-17:** Create the HTML `<head>` element and fill it with some styles.
-*   **Line 18:** Start filling the `<body>` element.
-*   **Lines 20 and 24:** Set some `<div>`s (not important for core logic).
-*   **Line 21:** Construct an `<img>` element by combining two elements from the XML.
-*   **Line 25:** We will not show all elements; we are interested only in `"location"`, `"observation_time"`, `"pressure_string"`, and `"wind_string"`.
-*   **Lines 30-34:** For the temperature element, we will use a special template.
-*   **Lines 35-37:** For all other elements, we will use the same template. In this template, we use another template for extracting sensible names from XML element tag names (as they are mostly acceptable).
-*   **Lines 38-52:** If an element's tag name contains the string `"string"`, then we will remove it. If an element's tag name contains only the `_` character, then replace that character with a space `' '`. If this is not the case, then simply return the tag name. In this way, we can use a single template for processing all elements.
+- **Lines 4-6:** We match the root of the element and then apply templates for all other child elements.
+- **Lines 8-17:** Create the HTML `<head>` element and fill it with some styles.
+- **Line 18:** Start filling the `<body>` element.
+- **Lines 20 and 24:** Set some `<div>`s (not important for core logic).
+- **Line 21:** Construct an `<img>` element by combining two elements from the XML.
+- **Line 25:** We will not show all elements; we are interested only in `"location"`, `"observation_time"`, `"pressure_string"`, and `"wind_string"`.
+- **Lines 30-34:** For the temperature element, we will use a special template.
+- **Lines 35-37:** For all other elements, we will use the same template. In this template, we use another template for extracting sensible names from XML element tag names (as they are mostly acceptable).
+- **Lines 38-52:** If an element's tag name contains the string `"string"`, then we will remove it. If an element's tag name contains only the `_` character, then replace that character with a space `' '`. If this is not the case, then simply return the tag name. In this way, we can use a single template for processing all elements.
 
 Okay, that's it! Let's move on to another tutorial...
+
+```
+
 ```

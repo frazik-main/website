@@ -9,15 +9,16 @@ categories: java, database, oracle
 
 ## Introduction
 
-Oracle, of course, uses standard Java Database Connectivity (JDBC) interfaces for communication with its database. While standard JDBC is sufficient, if you know you will *only* be using an Oracle database for your project, it can be beneficial to leverage some Oracle-specific Java libraries.
+Oracle, of course, uses standard Java Database Connectivity (JDBC) interfaces for communication with its database. While standard JDBC is sufficient, if you know you will _only_ be using an Oracle database for your project, it can be beneficial to leverage some Oracle-specific Java libraries.
 
 In this tutorial, I will demonstrate some specific Oracle Java libraries that can help you pass structured data into PL/SQL stored procedures. This structured data can contain multiple rows, with each row containing multiple columns. So, how can you achieve this?
 
 ## Implementation
 
 We will use two Oracle-specific classes:
-*   `oracle.sql.ARRAY`
-*   `oracle.sql.STRUCT`
+
+- `oracle.sql.ARRAY`
+- `oracle.sql.STRUCT`
 
 The `ARRAY` class helps us create an array of `STRUCT` objects. A `STRUCT` object is created using the static `oracle.sql.StructDescriptor.createDescriptor` method. This method utilizes an existing database object type.
 
@@ -116,6 +117,7 @@ public class TransferStructure {
     }
 }
 ```
+
 You can use this helper class as follows:
 
 ```java
@@ -134,6 +136,7 @@ public static void main(String[] args) throws Exception {
 
 }
 ```
+
 You will also need a method to call a stored procedure from Java. Such methods are readily available online.
 
 It's important to note that this example is primarily implemented for the Oracle ADF framework. However, it should also function in other non-Oracle development environments, provided you acquire the necessary Oracle JDBC and SQL libraries.

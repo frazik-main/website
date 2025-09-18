@@ -12,4 +12,7 @@ The Facade Pattern is a structural design pattern. It primarily hides complexity
 Just as excessive abstraction can harm code readability, so too can over-simplification. Introducing too many layers, while seemingly simplifying, can inadvertently add new layers of complexity.
 
 A **Session Facade** is particularly useful for encapsulating the complexities involved in interactions between a client and a server. It manages business objects and provides a uniform service access layer to clients. Essentially, it acts as a centralized component that minimizes method calls over a network, exposes a consistent interface, and manages security and transactions from a single point.
+
+```
+
 ```

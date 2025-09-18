@@ -13,9 +13,9 @@ I like recursion! It is pure and formal. When you solve problems using recursion
 
 This is all well and good, but in XSLT (as in any functional language), we are often compelled to use recursion in situations where we need to create custom functions (templates) that are not part of the XSLT 1.0 or 2.0 specifications. Furthermore, recursion is a natural way to traverse XML (or any other tree-like structured document) in XSLT.
 
-To work effectively with recursion in XSLT, you need to be familiar with a couple of key concepts. First are, of course, *templates*. Templates are analogous (or at least similar) to functions in functional languages (e.g., Scheme, LISP, F#). They can have parameters and variables. Variables in XSLT are immutable; their state cannot be changed after the initial value assignment. For example, the `String` object in Java is also immutable. Templates can call themselves for recursive operations. There are no traditional loops in XSLT (don't try to find them). While `xsl:for-each` exists, it behaves differently than loops in imperative languages.
+To work effectively with recursion in XSLT, you need to be familiar with a couple of key concepts. First are, of course, _templates_. Templates are analogous (or at least similar) to functions in functional languages (e.g., Scheme, LISP, F#). They can have parameters and variables. Variables in XSLT are immutable; their state cannot be changed after the initial value assignment. For example, the `String` object in Java is also immutable. Templates can call themselves for recursive operations. There are no traditional loops in XSLT (don't try to find them). While `xsl:for-each` exists, it behaves differently than loops in imperative languages.
 
-The second crucial concept is [XPath](http://codingwithpassion.blogspot.com/2010/10/xpath-tutorial-for-busy-programmer.html). **XPath** is a syntax used to describe parts of an XML document. XPath is designed to be used within an attribute in an XML document. Its syntax is a blend of basic programming language expressions and *Unix-like* path expressions.
+The second crucial concept is [XPath](http://codingwithpassion.blogspot.com/2010/10/xpath-tutorial-for-busy-programmer.html). **XPath** is a syntax used to describe parts of an XML document. XPath is designed to be used within an attribute in an XML document. Its syntax is a blend of basic programming language expressions and _Unix-like_ path expressions.
 
 ## Example
 
@@ -81,7 +81,7 @@ The recursion starts at line 34. Here, we create a template with two parameters.
 
 Line 38 checks if the recursion should stop. It terminates if there are no values left (or if there were no values initially) in the sequence. If the sequence is not empty, we proceed with recursion and call the template (line 40) again with the following parameters:
 
-*   Line 41: The rest of the values in the sequence (everything after the first item, i.e., `position() > 1`).
-*   Line 42: Concatenate the first value from the sequence into the resulting string (we handle the first value differently).
+- Line 41: The rest of the values in the sequence (everything after the first item, i.e., `position() > 1`).
+- Line 42: Concatenate the first value from the sequence into the resulting string (we handle the first value differently).
 
 Finished!
