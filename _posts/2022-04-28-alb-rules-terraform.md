@@ -22,4 +22,3 @@ Consider a scenario where you have 30 ECS services running on AWS Fargate, but o
 Below is a practical example illustrating how to implement this architecture, with comments providing specific details. The full code example can be found in the following GitHub Gist:
 
 [GitHub Gist: ALB Routing Example](https://gist.github.com/spookysleeper/72085ce300f4af9fcfa1dbd1836be1be.js)
-```

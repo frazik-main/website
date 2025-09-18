@@ -43,4 +43,3 @@ While the full implementation details are beyond this snippet, the general flow 
 4.  **Using `pdfMake`:** Take the data URL from the generated canvas and incorporate it into a `pdfMake` document definition, then create and download the PDF.
 
 This method provides a flexible way to capture complex React component layouts and present them in a portable PDF format.
-```
