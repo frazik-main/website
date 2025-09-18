@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Custom Events in jQuery - A Powerful Technique
+title: "Custom Events in jQuery - A Powerful Technique"
 date: 2010-09-29 10:00:00
-description: Learn how to create and use custom events in jQuery to simulate the observer pattern and build dynamic web applications.
+description: "Learn how to create and use custom events in jQuery to simulate the observer pattern and build dynamic web applications."
 tags: jQuery, custom events, observer pattern, javascript
 categories: javascript, jquery
 ---
