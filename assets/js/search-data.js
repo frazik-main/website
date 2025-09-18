@@ -24,17 +24,6 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/2014-09-06-erasure-bridge-method/";
-        
-      },
-    },{id: "post-",
-      
-        title: "",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
           window.location.href = "/blog/2025/2014-03-12-threads-java/";
         
       },
@@ -267,6 +256,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2014/transform-if-polym/";
+        
+      },
+    },{id: "post-java-generics-understanding-type-erasure-and-bridge-methods",
+      
+        title: "Java Generics: Understanding Type Erasure and Bridge Methods",
+      
+      description: "An in-depth look at how Java implements generics through type erasure, including the steps involved, its compile-time nature, and the role of synthetic bridge methods in preserving polymorphism, illustrated with code examples.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2014/erasure-bridge-method/";
         
       },
     },{id: "post-groovy-memoization-with-memoize",
