@@ -67,7 +67,3 @@ Generation consists of four parts:
 Finally, I will [share](http://codingwithpassionblog.googlecode.com/files/Application1.zip) the complete application I used in the videos, which might prove useful.
 
 Thank you.
-
-```
-
-```
