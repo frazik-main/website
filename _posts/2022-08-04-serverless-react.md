@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Terraform Example
+title: Terraform Example: Serverless React App with AWS API Gateway and Lambda
 date: 2022-08-04 16:09:00
-description: A Terraform example
+description: A Terraform example demonstrating how to create a serverless React application using AWS API Gateway to invoke an AWS Lambda function, including CORS configuration.
+tags: terraform, aws, serverless, react, api-gateway, lambda, programming
 categories: aws
 ---
 
