@@ -1,6 +1,6 @@
 ---
 layout: post
-title:" "Groovy: An Introduction to its Core Concepts""
+title: "Groovy: An Introduction to its Core Concepts"
 date: 2011-09-25 21:05:00
 description: "An introduction to the Groovy programming language, covering its core concepts, fundamental differences from Java, productivity features, operators, data types, collections, and regular expression support."
 tags: groovy, java, jvm, programming, dynamic-language, operators, collections, regular-expressions
@@ -186,16 +186,16 @@ In Groovy, you have access to all primitive Java types, along with some Groovy-s
 
   This eliminates the need for clumsy Java string concatenation, improving readability and conciseness.
 
-  **Multiline strings (`"""`)** are another Groovy extension. They allow you to easily create string literals that span multiple lines and include line breaks.
+  **Multiline strings (`""`)** are another Groovy extension. They allow you to easily create string literals that span multiple lines and include line breaks.
 
   ```groovy
   // So this is how you used to do this in Java:
   String bla1 = "Something, something,..." + "\n\n" +
                 "              Another thing...."
   // Same code in Groovy:
-  String bla1 = """Something, something,...
+  String bla1 = ""Something, something,...
 
-                  Another thing...."""
+                  Another thing....""
   ```
 
   This avoids the need for `+ "\n" +` concatenation for multiline strings.

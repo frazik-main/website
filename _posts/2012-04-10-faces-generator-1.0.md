@@ -1,8 +1,8 @@
 ---
 layout: post
-title:" "ADF Faces Generator - Automating ADF View Creation""
+title: "ADF Faces Generator - Automating ADF View Creation"
 date: 2012-04-10 20:02:00
-description:" "An alpha version of a JDeveloper extension that automatically generates the view part of an ADF Fusion Web Application from its model, including installation instructions and usage examples.""
+description: "An alpha version of a JDeveloper extension that automatically generates the view part of an ADF Fusion Web Application from its model, including installation instructions and usage examples."
 tags: adf, jdeveloper, faces, generator, automation, fusion-web-application, extension, oracle
 categories: adf-development, jdeveloper-extensions
 ---

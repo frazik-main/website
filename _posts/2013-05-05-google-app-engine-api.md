@@ -92,7 +92,7 @@ demolib.init = (function () {
     var centerY = e.pageY - canvas.offsetTop;
     var token = "${token}";
     var color = "${color}";
-    console.log(centerX + " " + centerY);
+    console.log(centerX +  " + centerY);
 
     demolib.writeCircle(centerX, centerY, color);
     demolib.sendMessage("/play", "?x=" + centerX + "&y=" + centerY + "&color=" + color);

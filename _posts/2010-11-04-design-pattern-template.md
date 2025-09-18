@@ -1,6 +1,6 @@
 ---
 layout: post
-title:" "Design Patterns - Creational: Factory Method and Abstract Factory""
+title: "Design Patterns - Creational: Factory Method and Abstract Factory"
 date: 2010-11-04 22:35:00
 description: "An introduction to creational design patterns, focusing on the Factory Method and Abstract Factory patterns, with Java examples and a comparison of their usage."
 tags: design-patterns, creational-patterns, factory-method, abstract-factory, java, programming

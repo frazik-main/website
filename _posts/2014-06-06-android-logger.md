@@ -80,7 +80,7 @@ public final class Logger {
     private static String buildLog(String msg) {
         return sdf.format(new Date()) +
                 " REMOTE " +
-                APPLICATION_LOG_TAG + " " +
+                APPLICATION_LOG_TAG +  " +
                 msg;
     }
 }

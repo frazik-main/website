@@ -73,7 +73,7 @@ $(function () {
 Here is the JSP page for the driver list:
 
 ```html
-<option value=""></option>
+<option value="></option>
 <option value="001">Lewis Hamilton</option>
 <option value="002">Fernando Alonso</option>
 <option value="003">Michael Schumacher</option>

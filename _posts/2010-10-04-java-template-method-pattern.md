@@ -89,7 +89,7 @@ class JSONObject extends CreateObject {
         sb.append("\"prop") // Start key quote and "prop"
           .append(indx)     // Append index to key
           .append("\":")    // End key quote and append colon
-          .append("\"").append(value).append("\",") // Value with quotes and comma
+          .append("\").append(value).append("\",") // Value with quotes and comma
           .append("\n");
     }
 

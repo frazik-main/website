@@ -89,7 +89,7 @@ That's almost it; just remember to **always** return `this` for chaining support
       $("div.details").remove();
       // Substitute '<' with appropriate start tag and '>' with end tag...
       $("<div/>")
-        .addClass("details" + (settings.customClass ? " " + settings.customClass : ""))
+        .addClass("details" + (settings.customClass ?  " + settings.customClass : "))
         .css({
           display: "none",
         })

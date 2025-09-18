@@ -1,8 +1,8 @@
 ---
 layout: post
-title:" "Caching Static Data in PL/SQL for Performance Improvement""
+title: "Caching Static Data in PL/SQL for Performance Improvement"
 date: 2010-09-03 10:00:00
-description:" "Optimize PL/SQL performance by caching static data in a collection stored in the session's PGA.""
+description: "Optimize PL/SQL performance by caching static data in a collection stored in the session's PGA."
 tags: plsql, oracle, performance, caching, collections
 categories: database, performance-tuning
 ---
