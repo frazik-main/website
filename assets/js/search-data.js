@@ -24,17 +24,6 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/2022-08-04-serverless-react/";
-        
-      },
-    },{id: "post-",
-      
-        title: "",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
           window.location.href = "/blog/2025/2014-09-06-erasure-bridge-method/";
         
       },
@@ -124,6 +113,17 @@ ninja.data = [{
       handler: () => {
         
           window.location.href = "/blog/2022/kibana-reverse-proxy/";
+        
+      },
+    },{id: "post-terraform-example-serverless-react-app-with-aws-api-gateway-and-lambda",
+      
+        title: "Terraform Example: Serverless React App with AWS API Gateway and Lambda",
+      
+      description: "A Terraform example demonstrating how to create a serverless React application using AWS API Gateway to invoke an AWS Lambda function, including CORS configuration.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2022/serverless-react/";
         
       },
     },{id: "post-application-load-balancer-host-and-path-based-routing-for-multiple-ecs-services",
