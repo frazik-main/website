@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Groovy: An Introduction to its Core Concepts
+title: "Groovy: An Introduction to its Core Concepts"
 date: 2011-09-25 21:05:00
 description: An introduction to the Groovy programming language, covering its core concepts, fundamental differences from Java, productivity features, operators, data types, collections, and regular expression support.
 tags: groovy, java, jvm, programming, dynamic-language, operators, collections, regular-expressions
