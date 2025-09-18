@@ -478,17 +478,6 @@ ninja.data = [{
           window.location.href = "/blog/2012/apache-nutch-solr/";
         
       },
-    },{id: "post-adf-faces-generator-automating-adf-view-creation",
-      
-        title: "ADF Faces Generator - Automating ADF View Creation",
-      
-      description: "An alpha version of a JDeveloper extension that automatically generates the view part of an ADF Fusion Web Application from its model, including installation instructions and usage examples.",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2012/faces-generator-1.0/";
-        
-      },
     },{id: "post-grails-controller-unit-testing",
       
         title: "Grails Controller Unit Testing",
