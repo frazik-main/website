@@ -22,7 +22,7 @@ Here are some of the errors you might encounter:
 
 If you encounter any of these errors while attempting to execute a contract function from a Truffle script, the proper way to handle them is demonstrated in the following Gist:
 
-[View Solution on Gist.github.com](https://gist.github.com/spookysleeper/1e6ab0733df4fa4ee2840cdbbe27780e.js)
+[View Solution on Gist.github.com](https://gist.github.com/spookysleeper/1e6ab0733df4fa4ee2840cdbbe27780e)
 
 ```
 

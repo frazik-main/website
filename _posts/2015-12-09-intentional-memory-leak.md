@@ -40,7 +40,7 @@ To run this example, type: `gradlew runByteTest`
 
 This demonstrates a straightforward memory leak using an `ArrayList` and byte arrays. The list continuously grows, with each element holding a reference to a one-megabyte byte array. Arrays need to be allocated as contiguous chunks of memory within the heap space. If memory becomes fragmented, the JVM struggles and eventually throws a `java.lang.OutOfMemoryError: Java heap space` exception.
 
-The code for this example is available as a Gist: [byteleak.js](https://gist.github.com/spookysleeper/9ac127b37334820272d6.js).
+The code for this example is available as a Gist: [byteleak.js](https://gist.github.com/spookysleeper/9ac127b37334820272d6).
 
 As you can see from the graph below, the Garbage Collector didn't stand a chance. It's a massacre!
 
@@ -52,7 +52,7 @@ To run this example, type: `gradlew runListTest`
 
 The list leak is similar to the previous example. It creates a list of `BigDecimal` objects that are never dereferenced, making it simple and effective. `BigDecimal` is chosen because it is heavier than simpler types like `Integer` or `Float`.
 
-The code for this example is available as a Gist: [listleak.js](https://gist.github.com/spookysleeper/37e96318216e32948690.js).
+The code for this example is available as a Gist: [listleak.js](https://gist.github.com/spookysleeper/37e96318216e32948690).
 
 As the graph shows, the GC tries very hard to clean the heap but eventually fails.
 
@@ -64,7 +64,7 @@ This next leak is a bit more sophisticated, but at its core, it's no different f
 
 You can run this example by typing `gradlew runMapBadKeyTest`, or you can type `gradlew runMapGoodKeyTest` to test it with a correct key implementation.
 
-The code for this example is available as a Gist: [mapleak.js](https://gist.github.com/spookysleeper/0bd5b80675ea4f736f76.js).
+The code for this example is available as a Gist: [mapleak.js](https://gist.github.com/spookysleeper/0bd5b80675ea4f736f76).
 
 This time, the GC barely attempts to recover, possibly because `StringBuilder` objects with 100,000 elements are significantly heavier than `BigDecimal`, giving it no time to act.
 
@@ -76,7 +76,7 @@ The Permanent Generation (PermGen) holds internal representations of Java classe
 
 To run this example, type: `gradlew runClassTest`
 
-The code for this example is available as a Gist: [classleak.js](https://gist.github.com/spookysleeper/e314244ab1edf2b0b219.js).
+The code for this example is available as a Gist: [classleak.js](https://gist.github.com/spookysleeper/e314244ab1edf2b0b219).
 
 As you can see, the situation escalates pretty quickly. Due to this rapid escalation, you might not always get a `PermGen` exception; the application might simply crash unexpectedly.
 

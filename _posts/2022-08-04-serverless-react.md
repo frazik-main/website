@@ -19,4 +19,4 @@ This section contains the actual Terraform infrastructure definition, which incl
 
 This is the Python Lambda function code that will return "Hello World."
 
-[View Lambda Function Gist](https://gist.github.com/spookysleeper/754b0ea994cb2d305dcc781f9aee8998.js)
+[View Lambda Function Gist](https://gist.github.com/spookysleeper/754b0ea994cb2d305dcc781f9aee8998)
