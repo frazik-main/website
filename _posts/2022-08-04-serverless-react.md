@@ -13,7 +13,7 @@ This Terraform example demonstrates how to create a **serverless React applicati
 
 This section contains the actual Terraform infrastructure definition, which includes CORS configuration.
 
-[View Terraform Infrastructure Definition Gist](https://gist.github.com/spookysleeper/b8ebded1d37f3eeb564e47eaeff8d93f.js)
+[View Terraform Infrastructure Definition Gist](https://gist.github.com/spookysleeper/b8ebded1d37f3eeb564e47eaeff8d93f)
 
 ### Lambda Function
 
