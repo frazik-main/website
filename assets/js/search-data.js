@@ -16,7 +16,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "post-optimizing-large-language-models-a-look-at-key-techniques",
+        },{id: "post-amplifier-vs-claude-code-where-microsoft-s-agent-framework-fits-in",
+      
+        title: "Amplifier vs Claude Code — where Microsoft’s Agent Framework fits in",
+      
+      description: "A concise comparison of Microsoft Amplifier and Anthropic&#39;s Claude Code, and how Microsoft&#39;s new Agent Framework complements both for production agent development.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/amplifier-vs-claude-and-ms-agent-framework/";
+        
+      },
+    },{id: "post-optimizing-large-language-models-a-look-at-key-techniques",
       
         title: "Optimizing Large Language Models A Look at Key Techniques",
       
