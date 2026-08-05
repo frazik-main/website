@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "The Complexity We Choose"
-date: 2026-08-05 22:23:00
+date: 2026-08-05
 description: "AI can help us write more software, but our real opportunity is to make software simpler to understand, verify, and own."
 tags: software-engineering, artificial-intelligence, large-language-models, software-complexity, testing, refactoring
 categories: software-engineering, artificial-intelligence
