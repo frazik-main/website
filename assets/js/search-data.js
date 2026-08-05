@@ -16,7 +16,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "post-amplifier-vs-claude-code-where-microsoft-s-agent-framework-fits-in",
+        },{id: "post-the-complexity-we-choose",
+      
+        title: "The Complexity We Choose",
+      
+      description: "AI can help us write more software, but our real opportunity is to make software simpler to understand, verify, and own.",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2026/the-complexity-we-choose/";
+        
+      },
+    },{id: "post-amplifier-vs-claude-code-where-microsoft-s-agent-framework-fits-in",
       
         title: "Amplifier vs Claude Code — where Microsoft’s Agent Framework fits in",
       
