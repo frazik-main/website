@@ -64,4 +64,3 @@ They are not mutually exclusive. A common pattern is:
 Final note
 
 Each project targets a different layer of the stack: Claude Code (developer agent), Amplifier (agentic development environment and experimentation), and Microsoft Agent Framework (framework for building and running agent systems at scale). Evaluate them by the problem you need to solve: ad-hoc help, structured experimentation, or production orchestration.
-
