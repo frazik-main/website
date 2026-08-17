@@ -1,0 +1,24 @@
+---
+import type { BlogPost } from "../lib/blog";
+import { postPath, postTags } from "../lib/blog";
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const tags = postTags(post.data.tags);
+---
+
+<article class="post-card">
+  <h2><a href={postPath(post)}>{post.data.title ?? post.id}</a></h2>
+  {post.data.description && <p>{post.data.description}</p>}
+  <p class="post-meta">
+    {post.data.date?.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })}
+    {tags.length > 0 && <span> · {tags.join(" · ")}</span>}
+  </p>
+</article>

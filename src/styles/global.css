@@ -1,0 +1,58 @@
+:root {
+  --bg: #fff;
+  --text: #000;
+  --muted: #828282;
+  --theme: #b509ac;
+  --divider: rgba(0, 0, 0, 0.1);
+  --max-width: 930px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; padding-top: 56px; min-width: 320px; line-height: 1.5; }
+a { color: var(--theme); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container, .nav-inner, .footer-inner { width: min(var(--max-width), calc(100% - 2rem)); margin-inline: auto; }
+.navbar { position: fixed; z-index: 10; inset: 0 0 auto; height: 56px; background: color-mix(in srgb, var(--bg) 94%, transparent); border-bottom: 1px solid var(--divider); backdrop-filter: blur(8px); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.brand { color: var(--text); font-size: 1.1rem; font-weight: 300; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { color: var(--muted); font-size: 0.9rem; }
+.nav-links a.active, .nav-links a:hover { color: var(--theme); }
+main.container { min-height: calc(100vh - 140px); padding-block: 4rem; }
+.hero { display: grid; grid-template-columns: 1fr 220px; gap: 4rem; align-items: center; min-height: 360px; }
+.hero h1, .page-header h1, .post-header h1 { margin: 0.25rem 0 1rem; font-size: clamp(2.25rem, 6vw, 4rem); font-weight: 300; line-height: 1.1; }
+.eyebrow { margin: 0; color: var(--theme); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+blockquote { max-width: 620px; margin: 2rem 0; padding: 1rem 1.5rem; border-left: 4px solid var(--theme); font-size: 1.15rem; font-style: italic; }
+blockquote cite { display: block; margin-top: 0.75rem; color: var(--muted); font-size: 0.9rem; }
+.profile-image { width: 100%; border-radius: 0.25rem; }
+.latest-posts, .post-list { margin-top: 4rem; }
+.section-heading, .page-header { margin-bottom: 2rem; }
+.section-heading h2 { margin: 0.25rem 0 0; font-size: 2rem; font-weight: 400; }
+.post-card { padding: 1.5rem 0; border-top: 1px solid var(--divider); }
+.post-card h2 { margin: 0 0 0.5rem; font-size: 1.35rem; font-weight: 400; }
+.post-card p { margin: 0.5rem 0; }
+.post-meta { color: var(--muted); font-size: 0.85rem; }
+.text-link { display: inline-block; margin-top: 1rem; }
+.post { max-width: 760px; margin-inline: auto; }
+.post-header { margin-bottom: 3rem; }
+.post-content { font-size: 1.05rem; line-height: 1.75; }
+.post-content h2 { margin-top: 2.5rem; font-size: 1.75rem; font-weight: 500; line-height: 1.25; }
+.post-content h3 { margin-top: 2rem; font-size: 1.3rem; }
+.post-content img { max-width: 100%; height: auto; }
+.post-content pre { overflow-x: auto; padding: 1rem; background: #faf7fb; border: 1px solid var(--divider); }
+.post-content code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.empty-state { padding: 8rem 0; text-align: center; }
+footer { margin-top: 3rem; padding: 2rem 0; color: #ddd; background: #1c1c1d; font-size: 0.85rem; }
+.footer-inner { display: flex; justify-content: space-between; gap: 1rem; }
+footer a { color: #fff; }
+@media (max-width: 700px) {
+  .hero { grid-template-columns: 1fr; gap: 2rem; }
+  .profile-image { width: 160px; }
+  main.container { padding-block: 2.5rem; }
+  .footer-inner { flex-direction: column; }
+}

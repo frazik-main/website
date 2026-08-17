@@ -1,0 +1,15 @@
+---
+const currentPath = Astro.url.pathname;
+---
+
+<header>
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="brand" href="/">Frazik</a>
+      <div class="nav-links">
+        <a class:list={{ active: currentPath === "/" }} href="/">About</a>
+        <a class:list={{ active: currentPath.startsWith("/blog") }} href="/blog/">Blog</a>
+      </div>
+    </div>
+  </nav>
+</header>
