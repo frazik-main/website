@@ -1,145 +1,152 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Visitor Design Pattern | Frazik </title> <meta name="author" content="Frazik Content Knitting and Lead Alchemy"> <meta name="description" content="An explanation of the Visitor design pattern, demonstrating how to define new operations on objects without modifying their classes, using a Java example with vehicle fuel efficiency calculations."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/data_array.svg?a67830f68c3523b294fc45d8e9b8773d"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://frazik.com/blog/2013/design-pattern-visitor/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
-    initTheme();
-  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Frazik </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Visitor Design Pattern</h1> <p class="post-meta"> Created in May 19, 2013 </p> <p class="post-tags"> <a href="/blog/2013"> <i class="fa-solid fa-calendar fa-sm"></i> 2013 </a>   ·   <a href="/blog/tag/design-patterns"> <i class="fa-solid fa-hashtag fa-sm"></i> design-patterns,</a>   <a href="/blog/tag/visitor"> <i class="fa-solid fa-hashtag fa-sm"></i> visitor,</a>   <a href="/blog/tag/java"> <i class="fa-solid fa-hashtag fa-sm"></i> java,</a>   <a href="/blog/tag/programming"> <i class="fa-solid fa-hashtag fa-sm"></i> programming,</a>   <a href="/blog/tag/object-oriented"> <i class="fa-solid fa-hashtag fa-sm"></i> object-oriented</a>   ·   <a href="/blog/category/design-patterns"> <i class="fa-solid fa-tag fa-sm"></i> design-patterns</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <p>Visitor allows you to define a new operation (method) on an object without changing the classes (interface) of the elements on which it operates. This is the essence of the Visitor pattern. The name “Visitor” is somewhat misleading, as this pattern has nothing to do with visiting, iteration, or similar concepts. If you need to perform operations across a disparate set of objects, the Visitor pattern might be suitable for you. Let’s explore how it works.</p> <p>Let’s presume we have a disparate object structure and we want to run a single operation on each object within this structure. Here’s how it works:</p> <p>The core of this pattern is the <strong>Visitor</strong> interface. This interface defines a <code class="language-plaintext highlighter-rouge">visit</code> operation for each type within the object structure. The object (an element from the structure) interface simply defines an <code class="language-plaintext highlighter-rouge">accept</code> method to allow the visitor to perform an action on that object. This <code class="language-plaintext highlighter-rouge">accept</code> operation grants the visitor access to the object.</p> <p>Here’s an example that will calculate the average “Per Seat Fuel Economy” for different types of vehicles. The calculation is quite simple: <code class="language-plaintext highlighter-rouge">consumption / number of seats</code>. Each vehicle is represented by simple POJOs (Plain Old Java Objects). Each of these objects has an <code class="language-plaintext highlighter-rouge">accept</code> method, providing access to the object through a unified interface.</p> <h3 id="interfaces">Interfaces:</h3> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Visitable</span> <span class="o">{</span>
-
-    <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">);</span>
-
-<span class="o">}</span>
-
-<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Visitor</span> <span class="o">{</span>
-
-    <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">Bike</span> <span class="n">bike</span><span class="o">);</span>
-    <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">Bus</span> <span class="n">bus</span><span class="o">);</span>
-    <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">Car</span> <span class="n">car</span><span class="o">);</span>
-
-<span class="o">}</span>
-</code></pre></div></div> <h3 id="simple-pojos">Simple POJOs:</h3> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Bike</span> <span class="kd">implements</span> <span class="nc">Visitable</span> <span class="o">{</span>
-
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">consumption</span><span class="o">;</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="nf">Bike</span><span class="o">(</span><span class="kt">int</span> <span class="n">consumption</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">consumption</span> <span class="o">=</span> <span class="n">consumption</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getConsumption</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">consumption</span><span class="o">;</span>
-    <span class="o">}</span>
-
-<span class="o">}</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Bus</span> <span class="kd">implements</span> <span class="nc">Visitable</span> <span class="o">{</span>
-
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">numberOfSeats</span><span class="o">;</span>
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">litersConsumption</span><span class="o">;</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="nf">Bus</span><span class="o">(</span><span class="kt">int</span> <span class="n">numberOfSeats</span><span class="o">,</span> <span class="kt">int</span> <span class="n">litersConsumption</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">numberOfSeats</span> <span class="o">=</span> <span class="n">numberOfSeats</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">litersConsumption</span> <span class="o">=</span> <span class="n">litersConsumption</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getNumberOfSeats</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">numberOfSeats</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getLitersConsumption</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">litersConsumption</span><span class="o">;</span>
-    <span class="o">}</span>
-
-<span class="o">}</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Car</span> <span class="kd">implements</span> <span class="nc">Visitable</span> <span class="o">{</span>
-
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">consumption</span><span class="o">;</span>
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">weight</span><span class="o">;</span>
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">seats</span><span class="o">;</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="nf">Car</span><span class="o">(</span><span class="kt">int</span> <span class="n">consumption</span><span class="o">,</span> <span class="kt">int</span> <span class="n">weight</span><span class="o">,</span> <span class="kt">int</span> <span class="n">seats</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">consumption</span> <span class="o">=</span> <span class="n">consumption</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">weight</span> <span class="o">=</span> <span class="n">weight</span><span class="o">;</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">seats</span> <span class="o">=</span> <span class="n">seats</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getConsumption</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">consumption</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getWeight</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">weight</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getSeats</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">seats</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div> <p>Although these objects don’t inherently know how to calculate average per-seat consumption, we will enable them to do so without modifying their original classes:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EfficiencyVisitor</span> <span class="kd">implements</span> <span class="nc">Visitor</span> <span class="o">{</span>
-
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">efficiency</span><span class="o">;</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">Bike</span> <span class="n">bike</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">efficiency</span> <span class="o">+=</span> <span class="n">bike</span><span class="o">.</span><span class="na">getConsumption</span><span class="o">()</span> <span class="o">/</span> <span class="mi">2</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">Bus</span> <span class="n">bus</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">efficiency</span> <span class="o">+=</span> <span class="n">bus</span><span class="o">.</span><span class="na">getLitersConsumption</span><span class="o">()</span> <span class="o">/</span> <span class="n">bus</span><span class="o">.</span><span class="na">getNumberOfSeats</span><span class="o">();</span>
-    <span class="o">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">Car</span> <span class="n">car</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">efficiency</span> <span class="o">+=</span> <span class="n">car</span><span class="o">.</span><span class="na">getConsumption</span><span class="o">()</span> <span class="o">/</span> <span class="n">car</span><span class="o">.</span><span class="na">getSeats</span><span class="o">()</span> <span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getEfficiency</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">efficiency</span><span class="o">;</span>
-    <span class="o">}</span>
-
-<span class="o">}</span>
-</code></pre></div></div> <h3 id="client">Client:</h3> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-
-    <span class="cm">/**
-     * @param args the command line arguments
-     */</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-
-        <span class="kt">int</span> <span class="n">averageConsumptionPerSeat</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-
-        <span class="nc">List</span> <span class="o">&lt;</span><span class="nc">Visitable</span><span class="o">&gt;</span> <span class="n">vehicles</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
-
-        <span class="nc">Car</span> <span class="n">mazda</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Car</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="mi">1024</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
-        <span class="n">vehicles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">mazda</span><span class="o">);</span>
-        <span class="nc">Car</span> <span class="n">skoda</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Car</span><span class="o">(</span><span class="mi">7</span><span class="o">,</span> <span class="mi">1200</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
-        <span class="n">vehicles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">skoda</span><span class="o">);</span>
-        <span class="nc">Bus</span> <span class="n">merc</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Bus</span><span class="o">(</span><span class="mi">60</span><span class="o">,</span> <span class="mi">30</span><span class="o">);</span>
-        <span class="n">vehicles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">merc</span><span class="o">);</span>
-        <span class="nc">Bike</span> <span class="n">suzuki</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Bike</span><span class="o">(</span><span class="mi">4</span><span class="o">);</span>
-        <span class="n">vehicles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">suzuki</span><span class="o">);</span>
-
-        <span class="nc">EfficiencyVisitor</span> <span class="n">efficiencyVisitor</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">EfficiencyVisitor</span><span class="o">();</span>
-
-        <span class="k">for</span> <span class="o">(</span><span class="nc">Visitable</span> <span class="n">vehicle</span> <span class="o">:</span> <span class="n">vehicles</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">vehicle</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">efficiencyVisitor</span><span class="o">);</span>
-            <span class="n">averageConsumptionPerSeat</span> <span class="o">+=</span> <span class="n">efficiencyVisitor</span><span class="o">.</span><span class="na">getEfficiency</span><span class="o">();</span>
-        <span class="o">}</span>
-
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">averageConsumptionPerSeat</span> <span class="o">/</span> <span class="n">vehicles</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div> <p>A key advantage of this pattern is the ease with which you can add new vehicle types or change existing methods without altering the interfaces or methods of the “old” vehicle types.</p> <p>The primary purpose of this pattern is to clean up your code. It allows you to separate specific logic from the elements themselves, thereby keeping your data classes simple and focused.</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/the-complexity-we-choose/">The Complexity We Choose</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/amplifier-vs-claude-and-ms-agent-framework/">Amplifier vs Claude Code — where Microsoft’s Agent Framework fits in</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2024/modern-techniques-llm-perf/">Optimizing Large Language Models A Look at Key Techniques</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2022/kibana-reverse-proxy/">Nginx Reverse Proxy for Amazon OpenSearch Kibana with Ansible</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2022/serverless-react/">Terraform Example: Serverless React App with AWS API Gateway and Lambda</a> </li> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Frazik Content Knitting and Lead Alchemy. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a>. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
-    addBackToTop();
-  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="An explanation of the Visitor design pattern, demonstrating how to define new operations on objects without modifying their classes, using a Java example with vehicle fuel efficiency calculations."><meta name="generator" content="Astro v7.2.2"><title>Visitor Design Pattern | Frazik</title><style>:root{--bg:#fff;--text:#000;--muted:#828282;--theme:#b509ac;--divider:#0000001a;--max-width:930px;color:var(--text);background:var(--bg);font-synthesis:none;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{min-width:320px;margin:0;padding-top:56px;line-height:1.5}a{color:var(--theme);text-decoration:none}a:hover{text-decoration:underline}.container,.nav-inner,.footer-inner{width:min(var(--max-width), calc(100% - 2rem));margin-inline:auto}.navbar{z-index:10;background:color-mix(in srgb, var(--bg) 94%, transparent);border-bottom:1px solid var(--divider);backdrop-filter:blur(8px);height:56px;position:fixed;inset:0 0 auto}.nav-inner{justify-content:space-between;align-items:center;height:100%;display:flex}.brand{color:var(--text);font-size:1.1rem;font-weight:300}.nav-links{gap:1.5rem;display:flex}.nav-links a{color:var(--muted);font-size:.9rem}.nav-links a.active,.nav-links a:hover{color:var(--theme)}main.container{min-height:calc(100vh - 140px);padding-block:4rem}.hero{grid-template-columns:1fr 220px;align-items:center;gap:4rem;min-height:360px;display:grid}.hero h1,.page-header h1,.post-header h1{margin:.25rem 0 1rem;font-size:clamp(2.25rem,6vw,4rem);font-weight:300;line-height:1.1}.eyebrow{color:var(--theme);letter-spacing:.12em;text-transform:uppercase;margin:0;font-size:.75rem;font-weight:600}blockquote{border-left:4px solid var(--theme);max-width:620px;margin:2rem 0;padding:1rem 1.5rem;font-size:1.15rem;font-style:italic}blockquote cite{color:var(--muted);margin-top:.75rem;font-size:.9rem;display:block}.profile-image{border-radius:.25rem;width:100%}.latest-posts,.post-list{margin-top:4rem}.section-heading,.page-header{margin-bottom:2rem}.section-heading h2{margin:.25rem 0 0;font-size:2rem;font-weight:400}.post-card{border-top:1px solid var(--divider);padding:1.5rem 0}.post-card h2{margin:0 0 .5rem;font-size:1.35rem;font-weight:400}.post-card p{margin:.5rem 0}.post-meta{color:var(--muted);font-size:.85rem}.text-link{margin-top:1rem;display:inline-block}.post{max-width:760px;margin-inline:auto}.post-header{margin-bottom:3rem}.post-content{font-size:1.05rem;line-height:1.75}.post-content h2{margin-top:2.5rem;font-size:1.75rem;font-weight:500;line-height:1.25}.post-content h3{margin-top:2rem;font-size:1.3rem}.post-content img{max-width:100%;height:auto}.post-content pre{border:1px solid var(--divider);background:#faf7fb;padding:1rem;overflow-x:auto}.post-content code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.empty-state{text-align:center;padding:8rem 0}footer{color:#ddd;background:#1c1c1d;margin-top:3rem;padding:2rem 0;font-size:.85rem}.footer-inner{justify-content:space-between;gap:1rem;display:flex}footer a{color:#fff}@media (width<=700px){.hero{grid-template-columns:1fr;gap:2rem}.profile-image{width:160px}main.container{padding-block:2.5rem}.footer-inner{flex-direction:column}}
+</style></head><body><header><nav class="navbar" aria-label="Main navigation"><div class="nav-inner"><a class="brand" href="/">Frazik</a><div class="nav-links"><a href="/">About</a><a class="active" href="/blog/">Blog</a></div></div></nav></header><main class="container"><article class="post"><header class="post-header"><p class="eyebrow">Blog</p><h1>Visitor Design Pattern</h1><p class="post-meta">May 19, 2013<span> · design-patterns · visitor · java · programming · object-oriented</span></p></header><div class="post-content"><p>Visitor allows you to define a new operation (method) on an object without changing the classes (interface) of the elements on which it operates. This is the essence of the Visitor pattern. The name “Visitor” is somewhat misleading, as this pattern has nothing to do with visiting, iteration, or similar concepts. If you need to perform operations across a disparate set of objects, the Visitor pattern might be suitable for you. Let’s explore how it works.</p>
+<p>Let’s presume we have a disparate object structure and we want to run a single operation on each object within this structure. Here’s how it works:</p>
+<p>The core of this pattern is the <strong>Visitor</strong> interface. This interface defines a <code>visit</code> operation for each type within the object structure. The object (an element from the structure) interface simply defines an <code>accept</code> method to allow the visitor to perform an action on that object. This <code>accept</code> operation grants the visitor access to the object.</p>
+<p>Here’s an example that will calculate the average “Per Seat Fuel Economy” for different types of vehicles. The calculation is quite simple: <code>consumption / number of seats</code>. Each vehicle is represented by simple POJOs (Plain Old Java Objects). Each of these objects has an <code>accept</code> method, providing access to the object through a unified interface.</p>
+<h3 id="interfaces">Interfaces:</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> Visitable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> accept</span><span style="color:#E1E4E8">(Visitor </span><span style="color:#FFAB70">visitor</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> Visitor</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> visit</span><span style="color:#E1E4E8">(Bike </span><span style="color:#FFAB70">bike</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> visit</span><span style="color:#E1E4E8">(Bus </span><span style="color:#FFAB70">bus</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> visit</span><span style="color:#E1E4E8">(Car </span><span style="color:#FFAB70">car</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="simple-pojos">Simple POJOs:</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Bike</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Visitable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> consumption;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> accept</span><span style="color:#E1E4E8">(Visitor </span><span style="color:#FFAB70">visitor</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        visitor.</span><span style="color:#B392F0">visit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> Bike</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> consumption</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.consumption </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> consumption;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getConsumption</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> consumption;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Bus</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Visitable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> numberOfSeats;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> litersConsumption;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> accept</span><span style="color:#E1E4E8">(Visitor </span><span style="color:#FFAB70">visitor</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        visitor.</span><span style="color:#B392F0">visit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> Bus</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> numberOfSeats</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> litersConsumption</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.numberOfSeats </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> numberOfSeats;</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.litersConsumption </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> litersConsumption;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getNumberOfSeats</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> numberOfSeats;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getLitersConsumption</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> litersConsumption;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Car</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Visitable</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> consumption;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> weight;</span></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> seats;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> accept</span><span style="color:#E1E4E8">(Visitor </span><span style="color:#FFAB70">visitor</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        visitor.</span><span style="color:#B392F0">visit</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> Car</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> consumption</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> weight</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">int</span><span style="color:#FFAB70"> seats</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.consumption </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> consumption;</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.weight </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> weight;</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.seats </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> seats;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getConsumption</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> consumption;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getWeight</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> weight;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getSeats</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> seats;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Although these objects don’t inherently know how to calculate average per-seat consumption, we will enable them to do so without modifying their original classes:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> EfficiencyVisitor</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> Visitor</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#F97583"> int</span><span style="color:#E1E4E8"> efficiency;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> visit</span><span style="color:#E1E4E8">(Bike </span><span style="color:#FFAB70">bike</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        efficiency </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> bike.</span><span style="color:#B392F0">getConsumption</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">/</span><span style="color:#79B8FF"> 2</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> visit</span><span style="color:#E1E4E8">(Bus </span><span style="color:#FFAB70">bus</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        efficiency </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> bus.</span><span style="color:#B392F0">getLitersConsumption</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> bus.</span><span style="color:#B392F0">getNumberOfSeats</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    @</span><span style="color:#F97583">Override</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> visit</span><span style="color:#E1E4E8">(Car </span><span style="color:#FFAB70">car</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        efficiency </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> car.</span><span style="color:#B392F0">getConsumption</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> car.</span><span style="color:#B392F0">getSeats</span><span style="color:#E1E4E8">() ;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> int</span><span style="color:#B392F0"> getEfficiency</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">        return</span><span style="color:#E1E4E8"> efficiency;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="client">Client:</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Main</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#FFAB70"> args</span><span style="color:#6A737D"> the command line arguments</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">[] </span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        int</span><span style="color:#E1E4E8"> averageConsumptionPerSeat </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        List &lt;</span><span style="color:#F97583">Visitable</span><span style="color:#E1E4E8">&gt; vehicles </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#E1E4E8"> ArrayList&lt;&gt;();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        Car mazda </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Car</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1024</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        vehicles.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(mazda);</span></span>
+<span class="line"><span style="color:#E1E4E8">        Car skoda </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Car</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1200</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        vehicles.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(skoda);</span></span>
+<span class="line"><span style="color:#E1E4E8">        Bus merc </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Bus</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">60</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">30</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        vehicles.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(merc);</span></span>
+<span class="line"><span style="color:#E1E4E8">        Bike suzuki </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Bike</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        vehicles.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(suzuki);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        EfficiencyVisitor efficiencyVisitor </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> EfficiencyVisitor</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">        for</span><span style="color:#E1E4E8"> (Visitable vehicle </span><span style="color:#F97583">:</span><span style="color:#E1E4E8"> vehicles) {</span></span>
+<span class="line"><span style="color:#E1E4E8">            vehicle.</span><span style="color:#B392F0">accept</span><span style="color:#E1E4E8">(efficiencyVisitor);</span></span>
+<span class="line"><span style="color:#E1E4E8">            averageConsumptionPerSeat </span><span style="color:#F97583">+=</span><span style="color:#E1E4E8"> efficiencyVisitor.</span><span style="color:#B392F0">getEfficiency</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(averageConsumptionPerSeat </span><span style="color:#F97583">/</span><span style="color:#E1E4E8"> vehicles.</span><span style="color:#B392F0">size</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>A key advantage of this pattern is the ease with which you can add new vehicle types or change existing methods without altering the interfaces or methods of the “old” vehicle types.</p>
+<p>The primary purpose of this pattern is to clean up your code. It allows you to separate specific logic from the elements themselves, thereby keeping your data classes simple and focused.</p>
+</div><a class="text-link" href="/blog/">← Back to all posts</a></article></main><footer><div class="container footer-inner"><span>&copy; 2026 Frazik Content Knitting and Lead Alchemy.</span><span>Powered by <a href="https://astro.build/">Astro</a>.</span></div></footer></body></html>

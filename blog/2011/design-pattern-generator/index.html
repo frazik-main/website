@@ -1,107 +1,118 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Java Design Patterns - Decorator (Wrapper) | Frazik </title> <meta name="author" content="Frazik Content Knitting and Lead Alchemy"> <meta name="description" content="An explanation of the Decorator design pattern in Java, including its definition, implementation examples, and a demonstration of how it adds functionality to objects dynamically."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="/assets/img/data_array.svg?a67830f68c3523b294fc45d8e9b8773d"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://frazik.com/blog/2011/design-pattern-generator/"> <script src="/assets/js/theme.js?9a0c749ec5240d9cda97bc72359a72c0"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
-    initTheme();
-  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> Frazik </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Java Design Patterns - Decorator (Wrapper)</h1> <p class="post-meta"> Created in April 19, 2011 </p> <p class="post-tags"> <a href="/blog/2011"> <i class="fa-solid fa-calendar fa-sm"></i> 2011 </a>   ·   <a href="/blog/tag/java"> <i class="fa-solid fa-hashtag fa-sm"></i> java,</a>   <a href="/blog/tag/design-patterns"> <i class="fa-solid fa-hashtag fa-sm"></i> design-patterns,</a>   <a href="/blog/tag/decorator"> <i class="fa-solid fa-hashtag fa-sm"></i> decorator,</a>   <a href="/blog/tag/wrapper"> <i class="fa-solid fa-hashtag fa-sm"></i> wrapper,</a>   <a href="/blog/tag/programming"> <i class="fa-solid fa-hashtag fa-sm"></i> programming,</a>   <a href="/blog/tag/oo"> <i class="fa-solid fa-hashtag fa-sm"></i> oo</a>   ·   <a href="/blog/category/java-design-patterns"> <i class="fa-solid fa-tag fa-sm"></i> java-design-patterns</a> </p> </header> <article class="post-content"> <div id="markdown-content"> <h2 id="introduction">Introduction</h2> <p>As “The holy grail of Java OO design book” (GoF - <em>Elements of Reusable OO Software</em>) says: “<strong>Decorator</strong> design pattern is intended to add additional responsibility to an object dynamically. This design pattern is also known as <strong>Wrapper</strong>.”</p> <p>In other words, this design pattern enables object inheritance at runtime. It achieves this by using interface inheritance and class composition.</p> <h2 id="implementation">Implementation</h2> <p>The <code class="language-plaintext highlighter-rouge">java.io</code> package in Java also uses the <strong>Decorator design pattern</strong>. For example:</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">File</span> <span class="n">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"d:\\something.txt"</span><span class="o">);</span>
-<span class="c1">// Here FileInputStream "inherits" File class.</span>
-<span class="nc">FileInputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FileInputStream</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
-<span class="c1">// Here we add buffering capability to FileInputStream using decorator.</span>
-<span class="nc">BufferedInputStream</span> <span class="n">bis</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedInputStream</span><span class="o">(</span><span class="n">is</span><span class="o">);</span>
-</code></pre></div></div> <p>It’s worth noting that the <strong>Decorator design pattern</strong> can also be used to remove responsibility from an object (though this example will not demonstrate that).</p> <p>The following code represents a simple implementation of this pattern in Java.</p> <p>First, an interface that defines our basic “object” functionality. This object will later be decorated (extended).</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
- * Basic phone that can do only basic ringing.
- */</span>
-<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IPhone</span> <span class="o">{</span>
-
-    <span class="kt">void</span> <span class="nf">announceCall</span><span class="o">();</span>
-
-    <span class="kt">void</span> <span class="nf">announceMessage</span><span class="o">();</span>
-
-<span class="o">}</span>
-</code></pre></div></div> <p>Next, a decorator interface that extends our basic “object” interface. This demonstrates interface inheritance, moving beyond static class inheritance.</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
- * Decorator that adds additional functionality to basic Phone.
- */</span>
-<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IPhoneDecorator</span> <span class="kd">extends</span> <span class="nc">IPhone</span> <span class="o">{</span>
-
-    <span class="kt">void</span> <span class="nf">vibrate</span><span class="o">(</span><span class="kt">int</span> <span class="n">milliseconds</span><span class="o">);</span>
-
-    <span class="kt">void</span> <span class="nf">flashLED</span><span class="o">();</span>
-<span class="o">}</span>
-</code></pre></div></div> <p>Here’s a concrete implementation of our basic “default” object (a straightforward interface implementation).</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Phone</span> <span class="kd">implements</span> <span class="nc">IPhone</span> <span class="o">{</span>
-
-    <span class="cm">/*
-     * This Phone announces calls only by ringing.
-     */</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">announceCall</span><span class="o">()</span> <span class="o">{</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Ring!"</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="cm">/*
-     * A Phone announces messages by making some sound.
-     */</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">announceMessage</span><span class="o">()</span> <span class="o">{</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Make a sound!"</span><span class="o">);</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div> <p>This concrete decorator implementation handles all operations. It delegates part of the functionality to our “default” object and adds its own additional features. It includes a field named <code class="language-plaintext highlighter-rouge">phone</code> which represents the “default” object implementation to which tasks will be delegated.</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
- * Concrete decorator class that adds additional functionality.
- * @author jan.krizan
- */</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UpgradePhoneDecorator</span> <span class="kd">implements</span> <span class="nc">IPhoneDecorator</span> <span class="o">{</span>
-
-    <span class="kd">private</span> <span class="nc">IPhone</span> <span class="n">phone</span><span class="o">;</span>
-
-    <span class="cm">/**
-     * Constructor through which the client provides
-     * the instance that will be decorated.
-     * @param phone
-     */</span>
-    <span class="kd">public</span> <span class="nf">UpgradePhoneDecorator</span><span class="o">(</span><span class="nc">IPhone</span> <span class="n">phone</span><span class="o">)</span> <span class="o">{</span>
-        <span class="kd">super</span><span class="o">();</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">phone</span> <span class="o">=</span> <span class="n">phone</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">vibrate</span><span class="o">(</span><span class="kt">int</span> <span class="n">milliseconds</span><span class="o">)</span> <span class="o">{</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Vibrating for "</span> <span class="o">+</span> <span class="n">milliseconds</span> <span class="o">+</span> <span class="s">" milliseconds."</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">flashLED</span><span class="o">()</span> <span class="o">{</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Make a LED flash!"</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">announceCall</span><span class="o">()</span> <span class="o">{</span>
-        <span class="c1">// Delegate basic functionality to Phone class.</span>
-        <span class="n">phone</span><span class="o">.</span><span class="na">announceCall</span><span class="o">();</span>
-        <span class="c1">// Add additional functionality.</span>
-        <span class="n">vibrate</span><span class="o">(</span><span class="mi">1500</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">announceMessage</span><span class="o">()</span> <span class="o">{</span>
-        <span class="c1">// Delegate basic functionality to Phone class.</span>
-        <span class="n">phone</span><span class="o">.</span><span class="na">announceMessage</span><span class="o">();</span>
-        <span class="c1">// Add additional functionality.</span>
-        <span class="n">flashLED</span><span class="o">();</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div> <p>Now, let’s observe what our basic “default” object can do <em>before</em> and <em>after</em> it has been decorated. Notice how we provide the <code class="language-plaintext highlighter-rouge">Phone</code> instance to the decorator’s constructor, and by leveraging polymorphism (dynamic binding), we delegate basic tasks back to our “default” object.</p> <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-        <span class="nc">IPhone</span> <span class="n">oldPhone</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Phone</span><span class="o">();</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"What can old phone do!"</span><span class="o">);</span>
-        <span class="n">oldPhone</span><span class="o">.</span><span class="na">announceCall</span><span class="o">();</span>
-        <span class="n">oldPhone</span><span class="o">.</span><span class="na">announceMessage</span><span class="o">();</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
-        <span class="nc">IPhoneDecorator</span> <span class="n">decoratedPhone</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UpgradePhoneDecorator</span><span class="o">(</span><span class="n">oldPhone</span><span class="o">);</span>
-        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"What can new phone do!"</span><span class="o">);</span>
-        <span class="n">decoratedPhone</span><span class="o">.</span><span class="na">announceCall</span><span class="o">();</span>
-        <span class="n">decoratedPhone</span><span class="o">.</span><span class="na">announceMessage</span><span class="o">();</span>
-    <span class="o">}</span>
-</code></pre></div></div> <p>Hope you liked this!</p> <p>Here is the output from running the example (using ANT):</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>run:
-What can old phone do!
-Ring!
-Make a sound!
-
-What can new phone do!
-Ring!
-Vibrating for 1500 milliseconds.
-Make a sound!
-Make a LED flash!
-BUILD SUCCESSFUL (total time: 0 seconds)
-</code></pre></div></div> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2026/the-complexity-we-choose/">The Complexity We Choose</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/amplifier-vs-claude-and-ms-agent-framework/">Amplifier vs Claude Code — where Microsoft’s Agent Framework fits in</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2024/modern-techniques-llm-perf/">Optimizing Large Language Models A Look at Key Techniques</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2022/kibana-reverse-proxy/">Nginx Reverse Proxy for Amazon OpenSearch Kibana with Ansible</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2022/serverless-react/">Terraform Example: Serverless React App with AWS API Gateway and Lambda</a> </li> </div> </div> <footer class="sticky-bottom mt-5" role="contentinfo"> <div class="container"> © Copyright 2026 Frazik Content Knitting and Lead Alchemy. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a>. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?12775fdf7f95e901d7119054556e495f" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
-    addBackToTop();
-  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="An explanation of the Decorator design pattern in Java, including its definition, implementation examples, and a demonstration of how it adds functionality to objects dynamically."><meta name="generator" content="Astro v7.2.2"><title>Java Design Patterns - Decorator (Wrapper) | Frazik</title><style>:root{--bg:#fff;--text:#000;--muted:#828282;--theme:#b509ac;--divider:#0000001a;--max-width:930px;color:var(--text);background:var(--bg);font-synthesis:none;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{min-width:320px;margin:0;padding-top:56px;line-height:1.5}a{color:var(--theme);text-decoration:none}a:hover{text-decoration:underline}.container,.nav-inner,.footer-inner{width:min(var(--max-width), calc(100% - 2rem));margin-inline:auto}.navbar{z-index:10;background:color-mix(in srgb, var(--bg) 94%, transparent);border-bottom:1px solid var(--divider);backdrop-filter:blur(8px);height:56px;position:fixed;inset:0 0 auto}.nav-inner{justify-content:space-between;align-items:center;height:100%;display:flex}.brand{color:var(--text);font-size:1.1rem;font-weight:300}.nav-links{gap:1.5rem;display:flex}.nav-links a{color:var(--muted);font-size:.9rem}.nav-links a.active,.nav-links a:hover{color:var(--theme)}main.container{min-height:calc(100vh - 140px);padding-block:4rem}.hero{grid-template-columns:1fr 220px;align-items:center;gap:4rem;min-height:360px;display:grid}.hero h1,.page-header h1,.post-header h1{margin:.25rem 0 1rem;font-size:clamp(2.25rem,6vw,4rem);font-weight:300;line-height:1.1}.eyebrow{color:var(--theme);letter-spacing:.12em;text-transform:uppercase;margin:0;font-size:.75rem;font-weight:600}blockquote{border-left:4px solid var(--theme);max-width:620px;margin:2rem 0;padding:1rem 1.5rem;font-size:1.15rem;font-style:italic}blockquote cite{color:var(--muted);margin-top:.75rem;font-size:.9rem;display:block}.profile-image{border-radius:.25rem;width:100%}.latest-posts,.post-list{margin-top:4rem}.section-heading,.page-header{margin-bottom:2rem}.section-heading h2{margin:.25rem 0 0;font-size:2rem;font-weight:400}.post-card{border-top:1px solid var(--divider);padding:1.5rem 0}.post-card h2{margin:0 0 .5rem;font-size:1.35rem;font-weight:400}.post-card p{margin:.5rem 0}.post-meta{color:var(--muted);font-size:.85rem}.text-link{margin-top:1rem;display:inline-block}.post{max-width:760px;margin-inline:auto}.post-header{margin-bottom:3rem}.post-content{font-size:1.05rem;line-height:1.75}.post-content h2{margin-top:2.5rem;font-size:1.75rem;font-weight:500;line-height:1.25}.post-content h3{margin-top:2rem;font-size:1.3rem}.post-content img{max-width:100%;height:auto}.post-content pre{border:1px solid var(--divider);background:#faf7fb;padding:1rem;overflow-x:auto}.post-content code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.empty-state{text-align:center;padding:8rem 0}footer{color:#ddd;background:#1c1c1d;margin-top:3rem;padding:2rem 0;font-size:.85rem}.footer-inner{justify-content:space-between;gap:1rem;display:flex}footer a{color:#fff}@media (width<=700px){.hero{grid-template-columns:1fr;gap:2rem}.profile-image{width:160px}main.container{padding-block:2.5rem}.footer-inner{flex-direction:column}}
+</style></head><body><header><nav class="navbar" aria-label="Main navigation"><div class="nav-inner"><a class="brand" href="/">Frazik</a><div class="nav-links"><a href="/">About</a><a class="active" href="/blog/">Blog</a></div></div></nav></header><main class="container"><article class="post"><header class="post-header"><p class="eyebrow">Blog</p><h1>Java Design Patterns - Decorator (Wrapper)</h1><p class="post-meta">April 19, 2011<span> · java · design-patterns · decorator · wrapper · programming · oo</span></p></header><div class="post-content"><h2 id="introduction">Introduction</h2>
+<p>As “The holy grail of Java OO design book” (GoF - <em>Elements of Reusable OO Software</em>) says: “<strong>Decorator</strong> design pattern is intended to add additional responsibility to an object dynamically. This design pattern is also known as <strong>Wrapper</strong>.”</p>
+<p>In other words, this design pattern enables object inheritance at runtime. It achieves this by using interface inheritance and class composition.</p>
+<h2 id="implementation">Implementation</h2>
+<p>The <code>java.io</code> package in Java also uses the <strong>Decorator design pattern</strong>. For example:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#E1E4E8">File f </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> File</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"d:</span><span style="color:#79B8FF">\\</span><span style="color:#9ECBFF">something.txt"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#6A737D">// Here FileInputStream "inherits" File class.</span></span>
+<span class="line"><span style="color:#E1E4E8">FileInputStream is </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> FileInputStream</span><span style="color:#E1E4E8">(f);</span></span>
+<span class="line"><span style="color:#6A737D">// Here we add buffering capability to FileInputStream using decorator.</span></span>
+<span class="line"><span style="color:#E1E4E8">BufferedInputStream bis </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> BufferedInputStream</span><span style="color:#E1E4E8">(is);</span></span></code></pre>
+<p>It’s worth noting that the <strong>Decorator design pattern</strong> can also be used to remove responsibility from an object (though this example will not demonstrate that).</p>
+<p>The following code represents a simple implementation of this pattern in Java.</p>
+<p>First, an interface that defines our basic “object” functionality. This object will later be decorated (extended).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * Basic phone that can do only basic ringing.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> IPhone</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> announceCall</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> announceMessage</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Next, a decorator interface that extends our basic “object” interface. This demonstrates interface inheritance, moving beyond static class inheritance.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * Decorator that adds additional functionality to basic Phone.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> interface</span><span style="color:#B392F0"> IPhoneDecorator</span><span style="color:#F97583"> extends</span><span style="color:#B392F0"> IPhone</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> vibrate</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> milliseconds</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    void</span><span style="color:#B392F0"> flashLED</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Here’s a concrete implementation of our basic “default” object (a straightforward interface implementation).</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> Phone</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> IPhone</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /*</span></span>
+<span class="line"><span style="color:#6A737D">     * This Phone announces calls only by ringing.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> announceCall</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Ring!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /*</span></span>
+<span class="line"><span style="color:#6A737D">     * A Phone announces messages by making some sound.</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> announceMessage</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Make a sound!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>This concrete decorator implementation handles all operations. It delegates part of the functionality to our “default” object and adds its own additional features. It includes a field named <code>phone</code> which represents the “default” object implementation to which tasks will be delegated.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * Concrete decorator class that adds additional functionality.</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@author</span><span style="color:#6A737D"> jan.krizan</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> class</span><span style="color:#B392F0"> UpgradePhoneDecorator</span><span style="color:#F97583"> implements</span><span style="color:#B392F0"> IPhoneDecorator</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    private</span><span style="color:#E1E4E8"> IPhone phone;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    /**</span></span>
+<span class="line"><span style="color:#6A737D">     * Constructor through which the client provides</span></span>
+<span class="line"><span style="color:#6A737D">     * the instance that will be decorated.</span></span>
+<span class="line"><span style="color:#6A737D">     * </span><span style="color:#F97583">@param</span><span style="color:#FFAB70"> phone</span></span>
+<span class="line"><span style="color:#6A737D">     */</span></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#B392F0"> UpgradePhoneDecorator</span><span style="color:#E1E4E8">(IPhone </span><span style="color:#FFAB70">phone</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">        super</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#79B8FF">        this</span><span style="color:#E1E4E8">.phone </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> phone;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> vibrate</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">int</span><span style="color:#FFAB70"> milliseconds</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Vibrating for "</span><span style="color:#F97583"> +</span><span style="color:#E1E4E8"> milliseconds </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> " milliseconds."</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> flashLED</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"Make a LED flash!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> announceCall</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // Delegate basic functionality to Phone class.</span></span>
+<span class="line"><span style="color:#E1E4E8">        phone.</span><span style="color:#B392F0">announceCall</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">        // Add additional functionality.</span></span>
+<span class="line"><span style="color:#B392F0">        vibrate</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1500</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    public</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> announceMessage</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">        // Delegate basic functionality to Phone class.</span></span>
+<span class="line"><span style="color:#E1E4E8">        phone.</span><span style="color:#B392F0">announceMessage</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#6A737D">        // Add additional functionality.</span></span>
+<span class="line"><span style="color:#B392F0">        flashLED</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>Now, let’s observe what our basic “default” object can do <em>before</em> and <em>after</em> it has been decorated. Notice how we provide the <code>Phone</code> instance to the decorator’s constructor, and by leveraging polymorphism (dynamic binding), we delegate basic tasks back to our “default” object.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="java"><code><span class="line"><span style="color:#F97583">public</span><span style="color:#F97583"> static</span><span style="color:#F97583"> void</span><span style="color:#B392F0"> main</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">String</span><span style="color:#E1E4E8">[] args) {</span></span>
+<span class="line"><span style="color:#E1E4E8">        IPhone oldPhone </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Phone</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"What can old phone do!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        oldPhone.</span><span style="color:#B392F0">announceCall</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        oldPhone.</span><span style="color:#B392F0">announceMessage</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        IPhoneDecorator decoratedPhone </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> UpgradePhoneDecorator</span><span style="color:#E1E4E8">(oldPhone);</span></span>
+<span class="line"><span style="color:#E1E4E8">        System.out.</span><span style="color:#B392F0">println</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"What can new phone do!"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">        decoratedPhone.</span><span style="color:#B392F0">announceCall</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">        decoratedPhone.</span><span style="color:#B392F0">announceMessage</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span></code></pre>
+<p>Hope you liked this!</p>
+<p>Here is the output from running the example (using ANT):</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="text"><code><span class="line"><span>run:</span></span>
+<span class="line"><span>What can old phone do!</span></span>
+<span class="line"><span>Ring!</span></span>
+<span class="line"><span>Make a sound!</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>What can new phone do!</span></span>
+<span class="line"><span>Ring!</span></span>
+<span class="line"><span>Vibrating for 1500 milliseconds.</span></span>
+<span class="line"><span>Make a sound!</span></span>
+<span class="line"><span>Make a LED flash!</span></span>
+<span class="line"><span>BUILD SUCCESSFUL (total time: 0 seconds)</span></span></code></pre>
+</div><a class="text-link" href="/blog/">← Back to all posts</a></article></main><footer><div class="container footer-inner"><span>&copy; 2026 Frazik Content Knitting and Lead Alchemy.</span><span>Powered by <a href="https://astro.build/">Astro</a>.</span></div></footer></body></html>
