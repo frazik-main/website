@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "./PostCard.astro";
+import type { Locale } from "../content/site";
+import { contactFormUrl, getCopy } from "../content/site";
+import { sortPosts } from "../lib/blog";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const posts = sortPosts(await getCollection("blog")).slice(0, 3);
+const prefix = locale === "sk" ? "" : "/en";
+---
+
+<BaseLayout locale={locale} title={locale === "sk" ? "AI technológie a automatizácia" : "AI technology and automation"} description={copy.home.intro}>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">{copy.home.eyebrow}</p>
+      <h1>{copy.home.title}</h1>
+      <p class="brand-line">{copy.home.brandLine}</p>
+      <p class="lead">{copy.home.intro}</p>
+      <div class="hero-actions">
+        <a class="button" href={`${prefix}/hardware/`}>{copy.home.primaryCta} <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/blog/">{copy.home.secondaryCta}</a>
+      </div>
+    </div>
+    <img class="profile-image" src="/assets/img/prof_pic.jpg" alt="Frazik" />
+  </section>
+  <section class="intro-section">
+    <div><p class="eyebrow">{copy.home.personalEyebrow}</p><h2>{copy.home.personalTitle}</h2></div>
+    <p>{copy.home.personalText}</p>
+  </section>
+  <section class="service-overview" aria-labelledby="services-heading">
+    <div class="section-heading"><p class="eyebrow">{copy.home.servicesEyebrow}</p><h2 id="services-heading">{copy.home.servicesTitle}</h2></div>
+    <div class="service-cards">
+      <a class="service-card" href={`${prefix}/hardware/`}><p class="card-number">01</p><h3>{copy.services.hardware.title}</h3><p>{copy.services.hardware.intro}</p><span class="text-link">{copy.services.hardware.cta} →</span></a>
+      <a class="service-card" href={`${prefix}/automation/`}><p class="card-number">02</p><h3>{copy.services.automation.title}</h3><p>{copy.services.automation.intro}</p><span class="text-link">{copy.services.automation.cta} →</span></a>
+    </div>
+  </section>
+  <section class="process-section"><div class="section-heading"><p class="eyebrow">{copy.home.processEyebrow}</p><h2>{copy.home.processTitle}</h2></div><div class="process-grid">{copy.home.process.map(([number, title, text]) => <div class="process-card"><span>{number}</span><h3>{title}</h3><p>{text}</p></div>)}</div></section>
+  <section class="latest-posts" aria-labelledby="latest-heading"><div class="section-heading"><p class="eyebrow">{copy.home.blogEyebrow}</p><h2 id="latest-heading">{copy.home.blogTitle}</h2></div>{posts.map((post) => <PostCard post={post} />)}<a class="text-link" href="/blog/">{copy.home.blogCta} →</a></section>
+  <section class="callout" id="contact"><h2>{copy.home.ctaTitle}</h2><p>{copy.home.ctaText}</p><a class="button" href={contactFormUrl} target="_blank" rel="noreferrer">{copy.home.contactCta} <span aria-hidden="true">→</span></a></section>
+</BaseLayout>

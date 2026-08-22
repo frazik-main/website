@@ -1,14 +1,25 @@
 ---
+import { contactFormUrl } from "../content/site";
 const currentPath = Astro.url.pathname;
+const locale = Astro.props.locale ?? "en";
+const isSlovak = locale === "sk";
+const homePath = isSlovak ? "/" : "/en/";
+const copy = isSlovak
+  ? { about: "O Fraziku", hardware: "Lokálna AI", automation: "Automatizácia", blog: "Blog", contact: "Kontakt", switch: "English" }
+  : { about: "About", hardware: "Local AI", automation: "Automation", blog: "Blog", contact: "Contact", switch: "Slovenčina" };
 ---
 
 <header>
   <nav class="navbar" aria-label="Main navigation">
     <div class="nav-inner">
-      <a class="brand" href="/">Frazik</a>
+      <a class="brand" href={homePath}>Frazik</a>
       <div class="nav-links">
-        <a class:list={{ active: currentPath === "/" }} href="/">About</a>
-        <a class:list={{ active: currentPath.startsWith("/blog") }} href="/blog/">Blog</a>
+        <a class:list={{ active: currentPath === homePath }} href={homePath}>{copy.about}</a>
+        <a class:list={{ active: currentPath.includes("/hardware") }} href={isSlovak ? "/hardware/" : "/en/hardware/"}>{copy.hardware}</a>
+        <a class:list={{ active: currentPath.includes("/automation") }} href={isSlovak ? "/automation/" : "/en/automation/"}>{copy.automation}</a>
+        <a class:list={{ active: currentPath.startsWith(isSlovak ? "/sk/blog" : "/blog") }} href={isSlovak ? "/blog/" : "/blog/"}>{copy.blog}</a>
+        <a href={contactFormUrl} target="_blank" rel="noreferrer">{copy.contact}</a>
+        <a class="language-link" href={isSlovak ? "/en/" : "/"}>{copy.switch}</a>
       </div>
     </div>
   </nav>

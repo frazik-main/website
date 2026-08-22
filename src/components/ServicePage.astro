@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import type { Locale } from "../content/site";
+import { contactFormUrl, getCopy } from "../content/site";
+
+interface Props {
+  locale?: Locale;
+  service: "hardware" | "automation";
+}
+
+const { locale = "en", service } = Astro.props;
+const copy = getCopy(locale);
+const content = copy.services[service];
+const contactHref = contactFormUrl;
+---
+
+<BaseLayout locale={locale} title={service === "hardware" ? "Local AI hardware" : "AI automation"} description={content.intro}>
+  <article class="service-page">
+    <header class="page-header service-hero">
+      <p class="eyebrow">{content.eyebrow}</p>
+      <h1>{content.title}</h1>
+      <p class="lead">{content.intro}</p>
+      <a class="button" href={contactHref} target="_blank" rel="noreferrer">{content.cta} <span aria-hidden="true">→</span></a>
+    </header>
+    <section class="service-grid">
+      <div>
+        <p class="eyebrow">Frazik</p>
+        <h2>{content.benefitsTitle}</h2>
+      </div>
+      <ul class="feature-list">
+        {content.benefits.map((benefit) => <li>{benefit}</li>)}
+      </ul>
+    </section>
+    <section class="process-section">
+      <p class="eyebrow">{content.stepsTitle}</p>
+      <div class="process-grid">
+        {content.steps.map((step, index) => <div class="process-card"><span>0{index + 1}</span><p>{step}</p></div>)}
+      </div>
+    </section>
+    <section class="callout" id="contact">
+      <h2>{copy.home.ctaTitle}</h2>
+      <p>{copy.home.ctaText}</p>
+      <a class="text-link" href={contactHref} target="_blank" rel="noreferrer">{content.cta} →</a>
+    </section>
+  </article>
+</BaseLayout>

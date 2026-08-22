@@ -1,6 +1,11 @@
+---
+const locale = Astro.props.locale ?? "en";
+const text = locale === "sk"
+  ? "Frazik · AI technológie a automatizácia"
+  : "Frazik · AI technology and automation";
+---
 <footer>
   <div class="container footer-inner">
-    <span>&copy; {new Date().getFullYear()} Frazik Content Knitting and Lead Alchemy.</span>
-    <span>Powered by <a href="https://astro.build/">Astro</a>.</span>
+    <span>&copy; {new Date().getFullYear()} {text}.</span>
   </div>
 </footer>
