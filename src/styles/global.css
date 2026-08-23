@@ -78,7 +78,11 @@ footer { margin-top: 3rem; padding: 2rem 0; color: #ddd; background: #1c1c1d; fo
 .footer-inner { display: flex; justify-content: space-between; gap: 1rem; }
 footer a { color: #fff; }
 @media (max-width: 700px) {
-  .nav-links { gap: 0.6rem; overflow-x: auto; }
+  body { padding-top: 104px; }
+  .navbar { height: auto; }
+  .nav-inner { flex-wrap: wrap; padding-block: 0.6rem 0; }
+  .nav-links { flex-basis: 100%; gap: 1rem; margin-top: 0.6rem; padding: 0.55rem 0 0.65rem; overflow-x: auto; border-top: 1px solid var(--divider); scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
   .nav-links a { white-space: nowrap; font-size: 0.78rem; }
   .hero { grid-template-columns: 1fr; gap: 2rem; }
   .profile-image { width: 200px; }
