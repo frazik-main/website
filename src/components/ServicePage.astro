@@ -5,7 +5,7 @@ import { contactFormUrl, getCopy } from "../content/site";
 
 interface Props {
   locale?: Locale;
-  service: "hardware" | "automation";
+  service: "security" | "hardware" | "automation";
 }
 
 const { locale = "en", service } = Astro.props;
@@ -14,7 +14,7 @@ const content = copy.services[service];
 const contactHref = contactFormUrl;
 ---
 
-<BaseLayout locale={locale} title={service === "hardware" ? "Local AI hardware" : "AI automation"} description={content.intro}>
+<BaseLayout locale={locale} title={content.title} description={content.intro}>
   <article class="service-page">
     <header class="page-header service-hero">
       <p class="eyebrow">{content.eyebrow}</p>
