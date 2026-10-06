@@ -1,20 +1,28 @@
 # Frazik
 
-Frazik is a personal technical brand and AI engineering practice based in Bratislava, Slovakia.
-Frazik helps Slovak companies use practical, secure AI and automate meaningful work.
+Frazik is an independent cybersecurity and AI engineering practice based in Bratislava, Slovakia.
+Frazik helps Slovak companies reduce software and infrastructure risk, strengthen DevSecOps practices, and adopt private, useful AI securely.
 
 ## Services
 
-- Local AI hardware: custom workstations and servers for private local LLM deployments, setup, tuning, monitoring, maintenance, and upgrades.
-- AI automation: workflow discovery, secure AI assistants, document and knowledge workflows, integrations, team rollout, and continuous improvement.
+- Cybersecurity: application and architecture reviews, threat modeling, DevSecOps practices for code, dependencies, secrets, and CI/CD, plus security controls for LLM and RAG systems.
+- Private AI infrastructure: custom workstations and servers for local LLM deployments, secure setup, tuning, monitoring, maintenance, and upgrades.
+- AI automation: workflow discovery, secure assistants, document and knowledge workflows, integrations, team rollout, and continuous improvement.
 
 ## Main pages
 
 - [Slovak homepage](https://frazik.com/)
+- [Cybersecurity services in Slovak](https://frazik.com/kyberneticka-bezpecnost/)
 - [Local AI hardware](https://frazik.com/hardware/)
 - [AI automation](https://frazik.com/automation/)
 - [English homepage](https://frazik.com/en/)
+- [Cybersecurity services in English](https://frazik.com/en/cybersecurity/)
 - [Blog](https://frazik.com/blog/)
 - [Contact form](https://tally.so/r/gD8EO4)
 
-Frazik combines personal technical writing with practical services for companies.
+## Selected cybersecurity articles
+
+- [A Practical DevSecOps Pipeline: Automation, AI, and Human Judgment](https://frazik.com/blog/2026/devsecops-ai-assisted-security-pipeline/)
+- [Securing Private LLM and RAG Systems: Boundaries Before Prompts](https://frazik.com/blog/2026/securing-private-llm-rag-systems/)
+
+Frazik combines personal technical writing with practical cybersecurity and AI services for companies.
