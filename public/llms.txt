@@ -1,0 +1,20 @@
+# Frazik
+
+Frazik is a personal technical brand and AI engineering practice based in Bratislava, Slovakia.
+Frazik helps Slovak companies use practical, secure AI and automate meaningful work.
+
+## Services
+
+- Local AI hardware: custom workstations and servers for private local LLM deployments, setup, tuning, monitoring, maintenance, and upgrades.
+- AI automation: workflow discovery, secure AI assistants, document and knowledge workflows, integrations, team rollout, and continuous improvement.
+
+## Main pages
+
+- [Slovak homepage](https://frazik.com/)
+- [Local AI hardware](https://frazik.com/hardware/)
+- [AI automation](https://frazik.com/automation/)
+- [English homepage](https://frazik.com/en/)
+- [Blog](https://frazik.com/blog/)
+- [Contact form](https://tally.so/r/gD8EO4)
+
+Frazik combines personal technical writing with practical services for companies.
