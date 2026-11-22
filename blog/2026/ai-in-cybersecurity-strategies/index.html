@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><meta name="description" content="Where AI genuinely helps defenders today, which new approaches are ready for real use, and how to adopt them without handing enforcement to a model."><meta name="generator" content="Astro v7.2.2"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://frazik.com/blog/2026/ai-in-cybersecurity-strategies/"><title>AI in Cybersecurity: Strategies That Work Now | Frazik</title><link rel="stylesheet" href="/_astro/BaseLayout.BSXa3Im8.css"></head><body><header><nav class="navbar" aria-label="Main navigation"><div class="nav-inner"><a class="brand" href="/en/">Frazik</a><div class="nav-links"><a href="/en/">About</a><a href="/en/cybersecurity/">Cybersecurity</a><a href="/en/home-sentinel/">Sentinel</a><a href="/en/hardware/">Private AI</a><a href="/en/automation/">AI automation</a><a class="active" href="/blog/">Blog</a><a href="https://tally.so/r/gD8EO4" target="_blank" rel="noreferrer">Contact</a><a class="language-link" href="/">Slovenčina</a></div></div></nav></header><main class="container"><article class="post"><header class="post-header"><p class="eyebrow">Blog</p><h1>AI in Cybersecurity: Strategies That Work Now</h1><p class="post-meta">November 22, 2026<span> · AI security · cybersecurity strategy · agentic AI · SOC · detection engineering</span></p></header><div class="post-content"><p>Most discussions of AI in cybersecurity swing between two claims: that models will soon defend networks on their own, and that they are an expensive distraction. Neither helps anyone decide what to run on Monday.</p>
+<p>The useful question is narrower. AI is a set of capabilities that fit at specific points in a security workflow. Some of those points are now practical because models follow structured instructions, call tools, and handle long context at a cost that makes per-alert enrichment viable. Others remain demos with a dashboard.</p>
+<p>This is a strategy map: where AI earns its place, which new approaches are usable now, and what must stay deterministic.</p>
+<h2 id="the-principle-models-advise-systems-enforce">The principle: models advise, systems enforce</h2>
+<p>Security is a chain of decisions: what exists, what is exposed, what is normal, what changed, what matters, and what to do. AI is strongest in the middle of that chain, where the work is reading, summarizing, correlating, and explaining. It is weakest at the ends, where ground truth is established and irreversible actions are taken.</p>
+<p>That suggests a durable split:</p>
+<ul>
+<li><strong>Deterministic systems establish facts.</strong> Asset inventory, identity, configuration, signatures, network policy, and authorization are enforced by code and tested.</li>
+<li><strong>Models interpret those facts.</strong> They summarize evidence, propose hypotheses, draft queries and rules, and rank findings.</li>
+<li><strong>Humans own consequential decisions.</strong> Isolating a host, revoking access, changing a firewall rule, or accepting risk stays with an accountable person.</li>
+</ul>
+<p>The split matters because model output is probabilistic and can be influenced by its input. A log line, a document, a hostname, or a web page can contain adversarial text. Any design where untrusted content can influence enforcement is not an AI strategy; it is a new attack path.</p>
+<h2 id="strategy-1-compress-alert-to-evidence-not-alert-to-action">Strategy 1: Compress alert-to-evidence, not alert-to-action</h2>
+<p>The expensive part of security operations is not seeing an alert. It is assembling enough context to decide whether it matters: which asset, which identity, what changed recently, whether the behavior is normal for that peer group, and what the last three similar incidents concluded.</p>
+<p>That work suits a bounded agent. Give it read-only tools: query the endpoint platform, look up the identity provider, search the ticket system, retrieve asset ownership, pull prior incidents. Give it a schema for the answer: timeline, affected entities, evidence for and against, open questions, and a recommended next step. Scope every tool to the minimum data it needs, rate-limit it, and log every call.</p>
+<p>What changed: tool calling and structured outputs are reliable enough for this pattern, and inference is cheap enough to run per alert rather than once a day. Local and quantized models make it possible to keep telemetry inside the organization, although a smaller model narrows the tasks it can handle well. Standardized tool connectors, such as Model Context Protocol (MCP) servers, reduce integration work, but each server becomes a supply-chain dependency with its own credentials and permissions.</p>
+<p>What has not changed: the connectors are the hard part. Asset data quality, deduplication, identity resolution, and the definition of normal still decide whether a summary is useful. An agent over a bad inventory produces confident nonsense faster.</p>
+<p>The guardrail is simple: the agent never closes, blocks, or isolates. It produces a case file. A human sees it before anything irreversible happens.</p>
+<h2 id="strategy-2-treat-detection-content-as-code-with-ai-as-the-junior-author">Strategy 2: Treat detection content as code, with AI as the junior author</h2>
+<p>Detection engineering has the right shape for AI assistance: a clear artifact, a testable target, and a review process. A model can draft a Sigma rule from an incident write-up, translate it between query languages, explain which ATT&amp;CK technique it covers, and suggest which fields will drive false positives.</p>
+<p>The useful new practice is not “generate more rules.” It is the loop around the rule:</p>
+<ol>
+<li>Write the detection intent in plain language and link it to a technique or incident.</li>
+<li>Generate a first draft.</li>
+<li>Validate syntax and schema in CI.</li>
+<li>Replay representative telemetry and assert expected matches.</li>
+<li>Test known-benign activity for false positives.</li>
+<li>Record the owner, data source, and review or expiry date.</li>
+</ol>
+<p>What changed: models are good enough to produce a plausible first draft and to explain unfamiliar query languages. Detection-as-code pipelines make it possible to reject bad drafts automatically.</p>
+<p>The failure mode is a repository of rules nobody understands, each producing alerts nobody triages. A model can help write and tune; it cannot supply the operational ownership that makes a rule real.</p>
+<h2 id="strategy-3-prioritize-exposure-with-context-not-scores">Strategy 3: Prioritize exposure with context, not scores</h2>
+<p>Vulnerability management is saturated with findings and starved of context. A CVSS score describes how bad a defect could be in the abstract. It does not say whether the vulnerable function is reachable, whether the service is internet-facing, whether the data behind it matters, or whether an exploit is being used against systems like ours.</p>
+<p>AI helps in three places:</p>
+<ul>
+<li>Summarizing advisories and vendor guidance into a short, comparable form.</li>
+<li>Tracing dependency and call paths to support or challenge reachability claims.</li>
+<li>Drafting a remediation plan that respects ownership, change windows, and compensating controls.</li>
+</ul>
+<p>What changed: code-aware models can reason over a repository, an SBOM, and infrastructure definitions together, which makes reachability analysis more practical for teams without a dedicated product security group. Agentic tools can follow references across files instead of relying on a single prompt.</p>
+<p>The limit: a model’s claim that a path is unreachable is a hypothesis, not a proof. Validate it with the scanner, the compiler, runtime telemetry, or a focused test. Keep deterministic scanners as the source of facts and let the model improve the order of work.</p>
+<h2 id="strategy-4-review-ai-generated-code-as-a-security-boundary">Strategy 4: Review AI-generated code as a security boundary</h2>
+<p>The fastest-growing source of new attack surface is software written with AI assistance. The defects are familiar — missing authorization checks, secrets in client-side code, permissive CORS, unsafe defaults, missing tenant isolation — but they arrive faster and with more confidence.</p>
+<p>A practical response is to add AI-specific review to the pipeline:</p>
+<ul>
+<li>Check that authorization is enforced server-side, not in a prompt or a user interface.</li>
+<li>Look for secrets and internal endpoints in generated front-end bundles.</li>
+<li>Verify that database row-level security and tenant filters are actually applied.</li>
+<li>Treat generated infrastructure code as production code: review network exposure, IAM scope, and public storage.</li>
+<li>Require tests for permission boundaries, not just happy paths.</li>
+</ul>
+<p>A model can help review this at scale, but it should not be the only reviewer of code it helped write. Use deterministic checks for defect classes that are cheap to detect, and human review for the ones that require understanding intent.</p>
+<h2 id="strategy-5-defend-the-human-channel-against-synthetic-media">Strategy 5: Defend the human channel against synthetic media</h2>
+<p>AI has made phishing cheaper and impersonation more convincing. Voice cloning and realistic video remove the cues that older awareness training relied on. The strategic answer is not a better deepfake detector; detection is adversarial and probabilistic.</p>
+<p>The usable controls are procedural:</p>
+<ul>
+<li>Verify money movement, credential resets, and access changes through a separate channel with a known identity.</li>
+<li>Require callback verification for bank-detail changes and urgent payment requests.</li>
+<li>Bind trust to devices and identities, not to the appearance of a caller.</li>
+<li>Use content provenance signals where they exist, but do not treat them as proof.</li>
+<li>Train people to verify, not to spot artifacts.</li>
+</ul>
+<p>What changed is the cost of synthetic voice and video, which now reaches ordinary employees rather than only executives. What must change is the process around high-consequence requests.</p>
+<h2 id="new-approaches-that-are-ready-and-their-conditions">New approaches that are ready, and their conditions</h2>
+<p>A short list of patterns worth piloting now, each with the condition that makes it safe:</p>
+<p><strong>Read-only triage agents.</strong> Ready when tool permissions are narrow and the output is a reviewed case file. Not ready for autonomous containment.</p>
+<p><strong>Detection co-pilots with replay tests.</strong> Ready when the pipeline can reject invalid or untested rules. Not ready as a replacement for detection ownership.</p>
+<p><strong>Context-aware vulnerability prioritization.</strong> Ready when scanners supply ground truth and reachability claims are verified. Not ready as the sole basis for accepting risk.</p>
+<p><strong>AI-assisted threat modeling.</strong> Ready as a brainstorming and coverage tool: describe the architecture, ask for trust boundaries, abuse cases, and missing controls, then have engineers confirm. Not ready as an oracle.</p>
+<p><strong>Natural-language analytics over security data.</strong> Ready with read-only credentials, query limits, cost controls, and an allow-list of tables. Not ready with write access or unrestricted production queries.</p>
+<p><strong>Small local models for sensitive classification.</strong> Ready for narrow tasks such as log clustering, DLP triage, and summarizing alerts that cannot leave the environment. Not ready as a general analyst replacement.</p>
+<p><strong>Scoped offensive agents.</strong> Ready for authorized, sandboxed testing with defined rules of engagement, no destructive actions, and human supervision. Not ready for unattended production exploitation.</p>
+<p><strong>Control mapping and evidence drafting.</strong> Ready to map existing evidence to frameworks and to draft audit narratives, with a human validating every claim. Not ready to certify compliance.</p>
+<h2 id="secure-the-assistant-itself">Secure the assistant itself</h2>
+<p>An AI capability inside a security program is also a system that must be secured. The main risks are ordinary ones with new names:</p>
+<ul>
+<li><strong>Prompt injection through telemetry.</strong> Logs, documents, emails, and web content are untrusted input. Keep instructions and data separated, and never let retrieved text grant permissions or define tool behavior.</li>
+<li><strong>Over-broad agent credentials.</strong> An agent that can read everything and write anywhere turns a prompt mistake into an incident. Use dedicated service identities, least privilege, and short-lived tokens.</li>
+<li><strong>Tool and model supply chain.</strong> Every model, connector, and plugin is a dependency. Pin versions, verify sources, and record what changed.</li>
+<li><strong>Data leakage through prompts and logs.</strong> Redact sensitive fields, restrict retention, and apply the same egress policy to the AI path as to any other outbound connection.</li>
+<li><strong>Evaluation drift.</strong> Re-test abuse cases when the model, prompt, tools, or retrieval sources change. A previously safe configuration is not permanently safe.</li>
+</ul>
+<p>These controls are not exotic. They are the same principles already applied to production systems, extended to a component that reads natural language and calls tools.</p>
+<h2 id="what-to-measure">What to measure</h2>
+<p>Model accuracy is a weak proxy for security value. Measure the workflow:</p>
+<ul>
+<li>Time from alert to a correct disposition.</li>
+<li>Percentage of alerts enriched automatically and sampled for quality.</li>
+<li>False-positive rate against a known-good baseline.</li>
+<li>Time to detect a new technique after threat intelligence arrives.</li>
+<li>Number of enforcement changes rolled back.</li>
+<li>Cost per investigated alert, including inference and engineering time.</li>
+<li>How often an analyst overrides the model, and whether the override was right.</li>
+</ul>
+<p>The last metric is the most honest. A system that analysts quietly ignore has failed regardless of its benchmark scores.</p>
+<h2 id="an-adoption-path">An adoption path</h2>
+<ol>
+<li><strong>Fix the fundamentals first.</strong> Asset inventory, identity, centralized logging, backups, patching, and a tested recovery path. AI cannot compensate for missing telemetry.</li>
+<li><strong>Assist, read-only.</strong> Start with enrichment, summarization, query drafting, and documentation. Keep a human in the loop and sample output for quality.</li>
+<li><strong>Automate reversible steps.</strong> Ticket routing, deduplication, evidence collection, and draft reports. Require approval for anything that changes access or availability.</li>
+<li><strong>Allow narrow autonomy.</strong> Only in bounded, observable, reversible domains with a rollback path and a named owner. Malware sandbox enrichment or duplicate alert suppression are better first candidates than host isolation.</li>
+</ol>
+<p>Each stage needs an exit criterion and a rollback plan. If the model disappears, the security controls must still work.</p>
+<h2 id="the-part-that-does-not-change">The part that does not change</h2>
+<p>Attackers get the same models. They can write phishing faster, generate malware variants, map defenses, and automate reconnaissance. The advantage does not come from having a better model. It comes from better data, tighter permissions, faster feedback, and the discipline to keep consequential actions under human control.</p>
+<p>The new approaches are real, but they are narrow. The winning strategy is unglamorous: instrument the environment, constrain the tools, measure decisions instead of demos, and let AI shorten the distance from signal to understanding while deterministic systems keep doing the jobs they were always better at.</p>
+</div><a class="text-link" href="/blog/">← Back to all posts</a></article></main><footer><div class="container footer-inner"><span>&copy; 2026 Frazik · Cybersecurity and secure AI.</span></div></footer></body></html>
